@@ -1,0 +1,2488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn Dutch Daily — Fast Track</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#003082;--orange:#E77500;--green:#2d8a4e;
+  --bg:#f4f5f7;--white:#fff;--border:#dde1e7;--text:#1a1a1a;--muted:#6b7280;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── HEADER ── */
+#hdr{background:var(--blue);color:#fff;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+#hdr h1{font-size:1.15rem;font-weight:700;letter-spacing:-.3px}
+#hdr h1 em{color:var(--orange);font-style:normal}
+#prog-wrap{display:flex;align-items:center;gap:10px;font-size:.82rem}
+#prog-bar{width:160px;height:7px;background:rgba(255,255,255,.2);border-radius:4px;overflow:hidden}
+#prog-fill{height:100%;background:var(--orange);border-radius:4px;transition:width .4s ease;width:0%}
+#prog-txt{font-weight:600;min-width:50px;text-align:right}
+
+/* ── LAYOUT ── */
+#layout{display:flex;max-width:1300px;margin:0 auto}
+
+/* ── SIDEBAR ── */
+#sidebar{width:272px;min-width:272px;background:var(--white);border-right:1px solid var(--border);height:calc(100vh - 56px);position:sticky;top:56px;overflow-y:auto;padding-bottom:24px}
+#sidebar::-webkit-scrollbar{width:4px}
+#sidebar::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}
+.sb-section{font-size:.68rem;text-transform:uppercase;letter-spacing:.8px;color:var(--orange);font-weight:700;padding:14px 16px 6px;border-top:1px solid var(--border)}
+.sb-section:first-child{border-top:none}
+.sb-item{display:flex;align-items:center;gap:8px;padding:7px 16px;cursor:pointer;font-size:.83rem;border-left:3px solid transparent;transition:background .12s;color:var(--text);text-decoration:none;line-height:1.3}
+.sb-item:hover{background:#f0f4ff}
+.sb-item.active{border-left-color:var(--orange);background:#fff5ec;font-weight:600}
+.sb-item.done{color:var(--green)}
+.sb-num{min-width:22px;height:22px;background:var(--blue);color:#fff;border-radius:50%;font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-item.done .sb-num{background:var(--green)}
+.sb-chk{margin-left:auto;color:var(--green);font-size:.85rem;flex-shrink:0}
+
+/* ── MAIN ── */
+#main{flex:1;padding:20px 24px;min-width:0}
+
+/* ── WARNING ── */
+#voice-warn{background:#fffbeb;border:1px solid #f59e0b;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:.83rem;display:none}
+
+/* ── CHAPTER CARD ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:8px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card.done{border-color:#b7dfc6}
+.card-hdr{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;user-select:none;transition:background .12s}
+.card-hdr:hover{background:#fafafa}
+.card-hdr.open{border-bottom:1px solid var(--border)}
+.card.done .card-hdr{background:#f6fff9}
+.ch-num{min-width:30px;height:30px;background:var(--blue);color:#fff;border-radius:50%;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card.done .ch-num{background:var(--green)}
+.ch-meta{flex:1;min-width:0}
+.ch-title{font-size:.95rem;font-weight:600;color:var(--blue)}
+.card.done .ch-title{color:var(--green)}
+.ch-book{font-size:.7rem;color:var(--muted);margin-top:1px}
+.ch-count{font-size:.7rem;padding:2px 8px;background:#eef2ff;border-radius:20px;color:#4f46e5;flex-shrink:0}
+.card.done .ch-count{background:#e6f5ec;color:var(--green)}
+.ch-arrow{font-size:.85rem;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.card-hdr.open .ch-arrow{transform:rotate(180deg)}
+.ch-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.level-badge{font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:9px;flex-shrink:0;letter-spacing:.4px}
+.level-a1{background:#e6f5ec;color:#1e7a3c;border:1px solid #b7dfc6}
+.level-a2{background:#e8eeff;color:#003082;border:1px solid #c7d3f8}
+.level-b1{background:#fff0e0;color:#c96200;border:1px solid #ffd6a0}
+.sb-ch-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-level{font-size:.58rem;font-weight:700;padding:1px 5px;border-radius:7px;flex-shrink:0}
+
+/* ── CHEAT CODE CHAPTER ── */
+.tbl tr.rule-start td{border-top:2px solid var(--border)}
+.dark .tbl tr.rule-start td{border-top:2px solid #4b5563}
+.rule-section-hdr{background:var(--bg);font-weight:700;font-size:.72rem;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;padding:7px 10px !important}
+.dark .rule-section-hdr{background:#1a2236}
+.cheat-section{margin-bottom:20px}
+.cheat-section h4{font-size:.88rem;font-weight:700;color:var(--blue);margin-bottom:8px;padding:6px 10px;background:#eef2ff;border-radius:6px;border-left:3px solid var(--blue)}
+.cheat-intro{font-size:.82rem;color:var(--muted);margin-bottom:10px;font-style:italic}
+
+/* ── PLAY CHAPTER BTN ── */
+.pc-btn{background:transparent;border:1.5px solid var(--orange);color:var(--orange);border-radius:20px;padding:4px 11px;font-size:.73rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;flex-shrink:0;white-space:nowrap;line-height:1.4;letter-spacing:.2px}
+.pc-btn:hover{background:var(--orange);color:#fff}
+.pc-btn.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.pc-btn.active:hover{background:#c96200;border-color:#c96200}
+
+/* ── CARD BODY ── */
+.card-body{display:none}
+.card-body.open{display:block}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem}
+.tbl th{background:var(--blue);color:#fff;padding:9px 14px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.tbl th:last-child{width:48px;text-align:center}
+.tbl td{padding:9px 14px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(even) td{background:#fafafa}
+.tbl tr:hover td{background:#fff8f0}
+.dc{font-weight:600;color:var(--blue)}
+.pc{font-style:italic;color:#555;font-family:Consolas,monospace;font-size:.82rem}
+.tbl td:last-child{text-align:center;padding:6px}
+
+/* ── PLAY BTN ── */
+.pbtn{background:var(--orange);color:#fff;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.75rem;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.pbtn:hover{background:#c96200;transform:scale(1.1)}
+.pbtn:active{transform:scale(.95)}
+.pbtn.playing{background:#c96200;animation:pulse .7s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+
+/* ── CARD FOOTER ── */
+.card-foot{padding:14px 18px;display:flex;justify-content:flex-end;border-top:1px solid var(--border);background:#f9fafb}
+.done-btn{background:var(--blue);color:#fff;border:none;padding:9px 22px;border-radius:6px;cursor:pointer;font-size:.87rem;font-weight:600;display:flex;align-items:center;gap:7px;transition:background .15s}
+.done-btn:hover{background:#0048b8}
+.done-btn:disabled{background:var(--green);cursor:default}
+
+/* ── PLAY COURSE BTN ── */
+#course-btn{background:transparent;border:1.5px solid rgba(255,255,255,.55);color:#fff;border-radius:20px;padding:5px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;letter-spacing:.2px;flex-shrink:0}
+#course-btn:hover{background:rgba(255,255,255,.12);border-color:#fff}
+#course-btn.active{background:var(--orange);border-color:var(--orange)}
+#course-btn.active:hover{background:#c96200;border-color:#c96200}
+
+/* ── SPECIAL CHAPTERS ── */
+.intro-body,.concl-wrap{padding:20px 18px}
+.intro-body h2,.concl-wrap h2{color:var(--blue);font-size:1.1rem;font-weight:700;margin:0 0 14px}
+.intro-body h3,.concl-wrap h3{color:var(--blue);font-size:.92rem;font-weight:700;margin:18px 0 8px;border-bottom:1px solid var(--border);padding-bottom:4px}
+.intro-body p,.concl-wrap p{font-size:.88rem;line-height:1.75;margin-bottom:10px}
+.intro-body ul,.concl-wrap ul.next-steps{padding-left:0;list-style:none;margin-bottom:12px}
+.intro-body li,.concl-wrap li{font-size:.87rem;line-height:1.65;padding:3px 0;border-bottom:1px solid #f5f5f5}
+.study-tbl{width:100%;border-collapse:collapse;margin:10px 0;font-size:.84rem}
+.study-tbl th{background:var(--blue);color:#fff;padding:8px 12px;text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.4px}
+.study-tbl td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
+.study-tbl tr:nth-child(even) td{background:#fafafa}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:16px 0}
+.stat-card{background:#eef2ff;border-radius:8px;padding:16px;text-align:center}
+.stat-num{font-size:2rem;font-weight:700;color:var(--blue)}
+.stat-label{font-size:.75rem;color:var(--muted);margin-top:4px}
+/* ── DICTIONARY ── */
+.dict-wrap{padding:16px 18px}
+.dict-search{flex:1;padding:9px 14px;border:1px solid var(--border);border-radius:6px;font-size:.88rem;outline:none}
+.dict-search:focus{border-color:var(--orange)}
+.dict-count{font-size:.82rem;color:var(--muted);white-space:nowrap}
+/* ── FLASH CARDS ── */
+.fc-wrap{padding:20px 18px}
+.fc-controls{display:flex;gap:14px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
+.fc-controls label{font-size:.88rem;cursor:pointer;display:flex;align-items:center;gap:5px}
+.fc-select{border:1px solid var(--border);border-radius:4px;padding:5px 10px;font-size:.84rem}
+.dict-controls{display:flex;gap:14px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.dict-controls label{font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:5px;color:var(--muted)}
+.dict-controls label:has(input:checked){color:var(--text);font-weight:600}
+.dict-group-hdr td{display:flex;align-items:center;justify-content:space-between;background:var(--bg)!important;font-weight:700;font-size:.7rem;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;padding:5px 8px 5px 10px!important;border-top:2px solid var(--border)}
+.dict-lvl-a1 td{color:#1e7a3c!important}.dict-lvl-a2 td{color:#003082!important}.dict-lvl-b1 td{color:#c96200!important}
+.dark .dict-lvl-a1 td{color:#6ee7b7!important}.dark .dict-lvl-a2 td{color:#93c5fd!important}.dark .dict-lvl-b1 td{color:#fb923c!important}
+.dict-play-btn{background:var(--blue);color:#fff;border:none;border-radius:11px;padding:2px 9px;font-size:.68rem;font-weight:700;cursor:pointer;white-space:nowrap;text-transform:none;letter-spacing:0;flex-shrink:0}
+.dict-play-btn:hover{opacity:.82}.dict-play-btn.active{background:var(--orange)}
+.fc-card{background:#f8f9ff;border:2px solid var(--border);border-radius:14px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:30px 20px;text-align:center;transition:border-color .15s;user-select:none;margin-bottom:16px}
+.fc-card:hover{border-color:var(--orange)}
+.fc-dutch{font-size:2.2rem;font-weight:700;color:var(--blue);margin-bottom:8px}
+.fc-pron{font-size:.95rem;color:var(--muted);font-style:italic;margin-bottom:4px}
+.fc-english{font-size:1.6rem;color:var(--green);font-weight:600}
+.fc-hint{font-size:.75rem;color:#bbb;margin-top:14px}
+.fc-nav{display:flex;align-items:center;justify-content:center;gap:16px}
+.fc-btn{background:var(--blue);color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:600;transition:background .12s}
+.fc-btn:hover{background:#0048b8}
+.fc-counter{font-size:.88rem;color:var(--muted);min-width:80px;text-align:center}
+.fc-progress{text-align:center;font-size:.78rem;color:var(--muted);margin-top:10px}
+
+/* ── LOGO ── */
+.app-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-text{font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1}
+.logo-text em{color:var(--orange);font-style:normal}
+.logo-sub{font-size:.6rem;font-weight:400;color:rgba(255,255,255,.65);display:block;margin-top:1px;letter-spacing:.3px}
+.version-badge{font-size:.62rem;background:rgba(255,255,255,.15);color:#fff;padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+
+/* ── GLOBAL SEARCH ── */
+#search-wrap{position:relative;flex:1;max-width:340px;margin:0 16px}
+#search-input{width:100%;padding:6px 12px;border-radius:20px;border:none;font-size:.84rem;outline:none;background:rgba(255,255,255,.15);color:#fff}
+#search-input::placeholder{color:rgba(255,255,255,.55)}
+#search-input:focus{background:rgba(255,255,255,.25)}
+#search-results{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.15);max-height:320px;overflow-y:auto;z-index:300;display:none}
+.sr-item{padding:9px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;transition:background .1s}
+.sr-item:last-child{border-bottom:none}
+.sr-item:hover{background:#f4f5f7}
+.sr-dutch{font-weight:700;color:var(--blue);font-size:.9rem;margin-right:8px}
+.sr-eng{font-size:.82rem;color:var(--text);margin-right:8px}
+.sr-ch{font-size:.72rem;color:var(--muted);float:right}
+.sr-none{padding:10px 14px;color:var(--muted);font-size:.84rem}
+
+/* ── STUDY DAILY PLAN ── */
+.study-track-wrap{margin-top:16px;display:flex;align-items:center;gap:10px}
+.study-track-wrap label{font-size:.85rem;font-weight:600;color:var(--text)}
+.study-track-sel{border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:.84rem;cursor:pointer}
+#study-daily{margin-top:12px}
+.study-daily-tbl td:first-child{white-space:nowrap;font-size:.82rem}
+.study-daily-tbl td:nth-child(2){font-size:.78rem;color:var(--muted);white-space:nowrap}
+.study-daily-tbl td:nth-child(3){font-size:.78rem}
+
+/* ── DISCLAIMER ── */
+.disclaimer{margin-top:20px;margin-bottom:20px;background:#fff8e1;border-left:3px solid var(--orange);padding:10px 14px;border-radius:0 6px 6px 0;font-size:.8rem;color:#6b4c00}
+
+/* ── A1/A2 COVERAGE ── */
+.cefr-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:12px 0}
+.cefr-card{background:#f8f9ff;border:1px solid #dde1e7;border-radius:8px;padding:12px 16px}
+.cefr-card h4{font-size:.9rem;color:var(--blue);margin-bottom:8px}
+.cefr-card ul{padding-left:16px;font-size:.8rem;line-height:1.7}
+.cefr-gap{font-size:.8rem;background:#fff3f3;border-left:3px solid #e55;padding:8px 12px;border-radius:0 6px 6px 0;margin-top:8px}
+.cefr-gap strong{color:#c00}
+
+/* ── THEME TOGGLE BTN ── */
+#theme-btn{background:transparent;border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:18px;padding:4px 12px;font-size:.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+#theme-btn:hover{background:rgba(255,255,255,.15)}
+
+/* ── ENGLISH TOGGLE ── */
+#eng-toggle-wrap{display:flex;align-items:center;gap:5px;cursor:pointer;flex-shrink:0;color:#fff;font-size:.75rem;font-weight:600;user-select:none}
+#eng-toggle-wrap .eng-lbl{white-space:nowrap}
+#eng-toggle{display:none}
+.eng-slider{display:inline-block;width:34px;height:18px;background:rgba(255,255,255,.25);border-radius:9px;position:relative;transition:background .2s;border:1px solid rgba(255,255,255,.45);box-sizing:border-box;flex-shrink:0}
+#eng-toggle:checked + .eng-slider{background:rgba(52,211,153,.75)}
+.eng-slider::after{content:'';position:absolute;width:12px;height:12px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+#eng-toggle:checked + .eng-slider::after{left:18px}
+
+/* ── DARK THEME ── */
+:root.dark{--bg:#111827;--white:#1f2937;--border:#374151;--text:#e5e7eb;--muted:#9ca3af;--blue:#60a5fa;--orange:#fb923c;--green:#34d399}
+.dark body{color:var(--text)}
+.dark #hdr{background:#0f172a;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.dark #sidebar{background:var(--white);border-color:var(--border)}
+.dark .sb-section{color:var(--orange)}
+.dark .sb-item:hover{background:#263148}
+.dark .sb-item.active{background:#2d1d10}
+.dark .sb-num{background:var(--blue)}
+.dark .card{background:var(--white);border-color:var(--border)}
+.dark .card.done{border-color:#1e5c3a}
+.dark .card-hdr:hover{background:#252f3e}
+.dark .card.done .card-hdr{background:#162516}
+.dark .ch-title{color:var(--blue)}
+.dark .card.done .ch-title{color:var(--green)}
+.dark .ch-count{background:#263148;color:#93c5fd}
+.dark .ch-num{background:var(--blue)}
+.dark .tbl th{background:#263148;color:var(--text);border-color:var(--border)}
+.dark .tbl td{border-color:var(--border)}
+.dark .tbl tr:nth-child(even){background:#263148}
+.dark .tbl td.dc{color:#93c5fd}
+.dark .tbl td.pc{color:#c4b5fd}
+.dark .fc-card{background:#263148;border-color:var(--border)}
+.dark .fc-card:hover{border-color:var(--orange)}
+.dark .fc-dutch{color:var(--blue)}
+.dark .fc-english{color:var(--green)}
+.dark .fc-btn{background:var(--blue);color:#111}
+.dark .fc-btn:hover{background:#93c5fd}
+.dark .stat-card{background:#263148}
+.dark .stat-num{color:var(--blue)}
+.dark .cefr-card{background:#263148;border-color:var(--border)}
+.dark .cefr-card h4{color:var(--blue)}
+.dark .cefr-gap{background:#2d1f1f;border-left-color:#f87171}
+.dark .cefr-gap strong{color:#f87171}
+.dark .disclaimer{background:#2d2200;border-left-color:var(--orange);color:#fcd34d}
+.dark .cheat-section h4{background:#263148;color:var(--blue)}
+.dark #search-results{background:var(--white);border-color:var(--border)}
+.dark .sr-item{border-bottom-color:var(--border)}
+.dark .sr-item:hover{background:#263148}
+.dark .sr-dutch{color:var(--blue)}
+.dark .sr-eng{color:var(--text)}
+.dark .sr-ch{color:var(--muted)}
+.dark .level-a1{background:#1a3a2a;color:#6ee7b7;border-color:#1e5c3a}
+.dark .level-a2{background:#1e2d4a;color:#93c5fd;border-color:#263f6a}
+.dark .level-b1{background:#3a2510;color:#fb923c;border-color:#5c3a10}
+.dark .done-btn{background:var(--green);color:#111}
+.dark #prog-fill{background:var(--orange)}
+.dark .fc-controls label{color:var(--text)}
+
+@media(max-width:768px){
+  #sidebar{display:none}
+  #main{padding:14px}
+  .logo-text{font-size:.85rem}
+  #search-wrap{max-width:140px;margin:0 8px}
+  #prog-bar{width:80px}
+  #course-btn{font-size:.7rem;padding:4px 10px}
+  .tbl{font-size:.8rem}
+  .tbl td,.tbl th{padding:7px 9px}
+  .cefr-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <div class="app-logo">
+    <svg viewBox="0 0 38 38" width="38" height="38" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="19" cy="19" r="18" fill="#E77500"/>
+      <text x="19" y="26" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Segoe UI,sans-serif">FD</text>
+    </svg>
+    <div>
+      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.0</span></div>
+      <span class="logo-sub">Fast-Track Dutch for Expats</span>
+    </div>
+  </div>
+  <div id="search-wrap">
+    <input id="search-input" type="text" placeholder="Search words, phrases…" autocomplete="off"/>
+    <div id="search-results"></div>
+  </div>
+  <label id="eng-toggle-wrap" title="Read English meaning aloud">
+    <span class="eng-lbl">Read EN</span>
+    <input type="checkbox" id="eng-toggle" checked>
+    <span class="eng-slider"></span>
+  </label>
+  <button id="theme-btn" title="Toggle light / dark theme">☀ Light</button>
+  <button id="course-btn" title="Play the entire course from start to finish">▶ Play Course</button>
+  <div id="prog-wrap">
+    <div id="prog-bar"><div id="prog-fill"></div></div>
+    <span id="prog-txt">0 / 0</span>
+  </div>
+</header>
+
+<div id="layout">
+  <nav id="sidebar"><div id="sb-list"></div></nav>
+  <main id="main">
+    <div id="voice-warn">⚠️ No Dutch (nl-NL) voice detected. Play uses default voice. For accurate Dutch TTS install Dutch language in your OS or use Chrome/Edge.</div>
+    <div id="chapters"></div>
+  </main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  CHAPTER DATA
+// ═══════════════════════════════════════════════════════
+const CHAPTERS = [
+
+// ── Introduction ──────────────────────────────────────────────────────
+{id:57, title:"How to Use This App", book:"Introduction", type:'intro', cols:[], sc:0, rows:[]},
+
+// ── Pronunciation Guide ────────────────────────────────────────────────
+{id:55, title:"Dutch Alphabet", book:"Pronunciation Guide",
+ cols:["Letter","Dutch Name","Sounds Like","Dutch Example","Pronunciation","English"], sc:3, alphPlay:0, rows:[
+  ["A","ah","Open 'ah' — like 'a' in 'father'","appel","AH-pel","apple"],
+  ["B","bay","Like English 'b'","boek","book","book"],
+  ["C","say","'k' before a / o / u — 's' before e / i / y","café","kah-FAY","café"],
+  ["D","day","Like English 'd', softer at word end","dag","dakh","day"],
+  ["E","ay","'ay' as in 'day' (short form)","eten","AY-ten","to eat"],
+  ["F","ef","Like English 'f'","fiets","feets","bicycle"],
+  ["G","khay","Guttural — deep throat sound, like Scottish 'loch'","goed","khoot","good"],
+  ["H","hah","Like English 'h'","huis","hows","house"],
+  ["I","ee","'ee' as in 'see'","ik","Ik","I"],
+  ["J","yay","'y' as in 'yes' — never like English 'j'","ja","Yah","yes"],
+  ["K","kah","Like English 'k'","koffie","KOFF-ee","coffee"],
+  ["L","el","Like English 'l'","lamp","lamp","lamp"],
+  ["M","em","Like English 'm'","melk","melk","milk"],
+  ["N","en","Like English 'n'","nee","Nay","no"],
+  ["O","oh","'oh' as in 'go'","oom","ohm","uncle"],
+  ["P","pay","Like English 'p'","pen","pen","pen"],
+  ["Q","kuu","'k' sound — rare, foreign words only","quiz","kviz","quiz"],
+  ["R","er","Lightly rolled or guttural 'r'","raam","raam","window"],
+  ["S","es","Like English 's'","stoel","stool","chair"],
+  ["T","tay","Like English 't'","trein","trayn","train"],
+  ["U","uu","Rounded 'ew' — round lips and say 'ee'","u","uu","you (formal)"],
+  ["V","vay","Softer than English 'v', near 'f' at times","vader","VAH-der","father"],
+  ["W","way","Soft v / w blend — not like English 'w'","water","VAH-ter","water"],
+  ["X","iks","'ks' sound — rare, foreign words only","taxi","TAK-see","taxi"],
+  ["Y","ay-khrek","'y' or 'ee' — rare in native Dutch words","yoghurt","YOH-khurt","yoghurt"],
+  ["Z","zet","Like English 'z'","zijn","Zayn","to be"],
+  ["IJ","ay","'ay' diphthong — treated as one letter in Dutch","ijs","ays","ice"],
+]},
+
+{id:56, title:"Reading the Pronunciation Guide", book:"Pronunciation Guide",
+ cols:["Symbol / Pattern","Sounds Like","Dutch Example","English"], sc:2, rows:[
+  ["CAPITALS","Stressed syllable — say it louder and longer","Hallo","Hello"],
+  ["Hyphen ( - )","Syllable break — brief pause between parts","Goedemorgen","Good morning"],
+  ["kh","Guttural Dutch g / ch — throat sound like Scottish 'loch'","Goed","Good"],
+  ["ah","Open 'a' — like 'a' in 'father'","Hallo","Hello"],
+  ["ay","Long 'a' — like 'a' in 'day'; also used for ij / ei / ee","Week","Week"],
+  ["ee","Long 'ee' — like 'ee' in 'see' (Dutch ie)","Tien","Ten"],
+  ["oh","Long 'o' — like 'o' in 'go' (Dutch o / oo)","Bonen","Beans"],
+  ["oo","Long 'oo' — like 'oo' in 'moon' (Dutch oe)","Boek","Book"],
+  ["uu","Rounded 'ew' — round lips and say 'ee' (Dutch u / uu)","Muur","Wall"],
+  ["ow","Diphthong — like 'ow' in 'cow' (Dutch au / ou)","Auto","Car"],
+  ["oy","Diphthong — like 'oy' in 'boy' (Dutch ui)","Druiven","Grapes"],
+  ["v","Dutch 'w' is written as v in this guide — soft v / w blend","Water","Water"],
+  ["y","English 'y' as in 'yes' — represents Dutch j","Ja","Yes"],
+  ["z","English 'z' as in 'zero' — represents Dutch z","Zijn","To be"],
+  ["ts","'ts' as in 'bits' — Dutch station / tj / sj","Station","Station"],
+  ["ng","Nasal 'ng' as in 'sing' — Dutch ng","Twintig","Twenty"],
+  ["r","Slightly rolled or guttural 'r' — not like English 'r'","Raam","Window"],
+  ["kh + vowel","Dutch g at start of word — kh- prefix (khoo-, khaa-)","Groenten","Vegetables"],
+  ["-kh (end)","Dutch g / ch at end of syllable — soft throat release","Dag","Day"],
+  ["Final -d → t","Word-final devoicing: -d is always pronounced as -t","Goed","Good (sounds: khoot not khood)"],
+  ["Final -b → p","Word-final devoicing: -b is always pronounced as -p","Web","Web"],
+  ["Final -g → kh","Word-final devoicing: -g is always a guttural kh","Dag","Day (sounds: dakh)"],
+  ["Final -v → f","Word-final devoicing: -v is always pronounced as -f","Geef","Give"],
+  ["aa / ee / oo / uu","Double vowel = long sound — held longer than a single vowel","Maan","Moon"],
+  ["Single a / e / o / u","Short vowel — clipped, not held","Man","Man"],
+]},
+
+// ── Book 1: Core Dutch Words for Expats ──────────────────────────
+{id:1, title:"Greetings and Basic Conversations", book:"Core Dutch Words for Expats",
+ cols:["Dutch","Pronunciation","English"], sc:0, rows:[
+  ["Hallo","HAH-loh","Hello"],
+  ["Hoi","Hoy","Hi"],
+  ["Goedemorgen","KHOO-duh-MOR-khen","Good morning"],
+  ["Goedemiddag","KHOO-duh-mi-DAGH","Good afternoon"],
+  ["Goedenavond","KHOO-duh-NAH-vont","Good evening"],
+  ["Doei","Doo-ey","Bye"],
+  ["Dank u","Dank uu","Thank you (formal)"],
+  ["Bedankt","Buh-DANKT","Thanks"],
+  ["Alstublieft","ALS-tu-bleeft","Please"],
+  ["Graag gedaan","Khraakh khuh-DAAN","You're welcome"],
+]},
+
+{id:69, title:"Cheat Code — Dutch for English Speakers", book:"Core Dutch Words for Expats",
+ type:'cheatcode', cols:[], sc:0, rows:[]},
+
+{id:2, title:"Essential Daily Words", book:"Core Dutch Words for Expats",
+ cols:["Dutch","Pronunciation","English"], sc:0, rows:[
+  ["Alleen","ah-LAYN","Alone"],
+  ["Alles","AL-les","Everything"],
+  ["Altijd","ALT-ayt","Always"],
+  ["Daar","dahr","There"],
+  ["Echt","ekht","Really / Truly"],
+  ["Genoeg","khuh-NOOKH","Enough"],
+  ["Gisteren","KHIS-tu-ren","Yesterday"],
+  ["Goed","khoot","Good / Fine"],
+  ["Groot","khroht","Big / Large"],
+  ["Hier","heer","Here"],
+  ["Iets","eets","Something"],
+  ["Ingang","IN-khang","Entrance"],
+  ["Ja","Yah","Yes"],
+  ["Klaar","klaar","Ready / Done"],
+  ["Klein","klayn","Small"],
+  ["Langzaam","LANG-zaam","Slow"],
+  ["Links","links","Left"],
+  ["Lopen","LOH-pen","To walk"],
+  ["Misschien","Mis-SKHEEN","Maybe"],
+  ["Morgen","MOR-khen","Tomorrow"],
+  ["Nee","Nay","No"],
+  ["Nooit","noyt","Never"],
+  ["Nu","Nuu","Now"],
+  ["Rechtdoor","REKHT-door","Straight ahead"],
+  ["Rechts","rekhts","Right"],
+  ["Rennen","REN-nen","To run"],
+  ["Samen","SAH-men","Together"],
+  ["Slecht","slekht","Bad"],
+  ["Snel","snel","Fast / Quick"],
+  ["Soms","soms","Sometimes"],
+  ["Starten","START-en","To start"],
+  ["Stoppen","STOP-pen","To stop"],
+  ["Uitgang","OWT-khang","Exit"],
+  ["Vandaag","Fan-DAKH","Today"],
+  ["Veel","fayl","A lot / Many"],
+  ["Weinig","VAY-nikh","Little / Few"],
+  ["Blauw","blaw","Blue"],
+  ["Bruin","brown","Brown"],
+  ["Geel","khayl","Yellow"],
+  ["Groen","khroon","Green"],
+  ["Grijs","khrays","Grey"],
+  ["Oranje","oh-RAN-yuh","Orange"],
+  ["Paars","paars","Purple"],
+  ["Rood","roht","Red"],
+  ["Wit","vit","White"],
+  ["Zwart","zvart","Black"],
+]},
+
+{id:61, title:"Body Parts", book:"Core Dutch Words for Expats",
+ cols:["Dutch","Pronunciation","English"], sc:0, rows:[
+  ["Arm","arm","Arm"],
+  ["Been","bayn","Leg"],
+  ["Borst","borst","Chest"],
+  ["Buik","bowk","Belly / Abdomen"],
+  ["Haar","haar","Hair"],
+  ["Hand","hant","Hand"],
+  ["Hoofd","hohft","Head"],
+  ["Knie","KNEE-yuh","Knee"],
+  ["Lip","lip","Lip"],
+  ["Mond","mont","Mouth"],
+  ["Nek","nek","Neck"],
+  ["Neus","noos","Nose"],
+  ["Oog","ohkh","Eye"],
+  ["Oor","ohr","Ear"],
+  ["Rug","rukh","Back"],
+  ["Schouder","SKHOW-der","Shoulder"],
+  ["Tand","tant","Tooth"],
+  ["Teen","tayn","Toe"],
+  ["Vinger","VING-er","Finger"],
+  ["Voet","voot","Foot"],
+]},
+
+{id:28, title:"Numbers", book:"Core Dutch Words for Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["1","een","ayn"],
+  ["2","twee","tvay"],
+  ["3","drie","dree"],
+  ["4","vier","feer"],
+  ["5","vijf","vayf"],
+  ["6","zes","zes"],
+  ["7","zeven","ZAY-ven"],
+  ["8","acht","akht"],
+  ["9","negen","NAY-khen"],
+  ["10","tien","teen"],
+  ["11","elf","elf"],
+  ["12","twaalf","tvaalf"],
+  ["13","dertien","DER-teen"],
+  ["14","veertien","FAYR-teen"],
+  ["15","vijftien","VAYF-teen"],
+  ["16","zestien","ZES-teen"],
+  ["17","zeventien","ZAY-ven-teen"],
+  ["18","achttien","AKHT-teen"],
+  ["19","negentien","NAY-khen-teen"],
+  ["20","twintig","TVIN-tikh"],
+  ["21","eenentwintig","AYN-en-TVIN-tikh"],
+  ["22","tweeëntwintig","TVAY-en-TVIN-tikh"],
+  ["23","drieëntwintig","DREE-en-TVIN-tikh"],
+  ["24","vierentwintig","FEER-en-TVIN-tikh"],
+  ["25","vijfentwintig","VAYF-en-TVIN-tikh"],
+  ["26","zesentwintig","ZES-en-TVIN-tikh"],
+  ["27","zevenentwintig","ZAY-ven-en-TVIN-tikh"],
+  ["28","achtentwintig","AKHT-en-TVIN-tikh"],
+  ["29","negenentwintig","NAY-khen-en-TVIN-tikh"],
+  ["30","dertig","DER-tikh"],
+  ["100","honderd","HON-derd"],
+  ["125","honderdvijfentwintig","HON-derd-VAYF-en-TVIN-tikh"],
+  ["1,000","duizend","DOY-zent"],
+  ["1,025","duizend vijfentwintig","DOY-zent-VAYF-en-TVIN-tikh"],
+  ["10,251","tienduizend tweehonderdeenenvijftig","TEEN-DOY-zent-TVAY-HON-derd-AYN-en-VAYF-tikh"],
+  ["100,251","honderdduizend tweehonderdeenenvijftig","HON-derd-DOY-zent-TVAY-HON-derd-AYN-en-VAYF-tikh"],
+  ["1,000,000","miljoen","mil-YOON"],
+]},
+
+{id:62, title:"Ordinal Numbers", book:"Core Dutch Words for Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["1st","eerste","AYR-stuh"],
+  ["2nd","tweede","TVAY-duh"],
+  ["3rd","derde","DER-duh"],
+  ["4th","vierde","FEER-duh"],
+  ["5th","vijfde","VAYF-duh"],
+  ["6th","zesde","ZES-duh"],
+  ["7th","zevende","ZAY-ven-duh"],
+  ["8th","achtste","AKHT-stuh"],
+  ["9th","negende","NAY-khen-duh"],
+  ["10th","tiende","TEEN-duh"],
+  ["20th","twintigste","TVIN-tikh-stuh"],
+  ["100th","honderdste","HON-derd-stuh"],
+  ["last","laatste","LAATS-tuh"],
+]},
+
+{id:3, title:"Pronouns", book:"Core Dutch Words for Expats",
+ cols:["Dutch","Pronunciation","English"], sc:0, rows:[
+  ["Ik","Ik","I"],
+  ["Jij","Yay","You"],
+  ["U","Uu","Formal you"],
+  ["Hij","Hay","He"],
+  ["Zij","Zay","She / They"],
+  ["Wij","Vay","We"],
+  ["Jullie","YUL-lee","You all"],
+]},
+
+{id:54, title:"Sentences with Pronouns", book:"Core Dutch Words for Expats",
+ cols:["Tense","Dutch","Pronunciation","English"], sc:1, rows:[
+  ["Present — zijn","Ik ben blij","Ik ben blay","I am happy"],
+  ["Present — zijn","Hij is blij","Hay is blay","He is happy"],
+  ["Present — zijn","Zij is blij","Zay is blay","She is happy"],
+  ["Present — zijn","Wij zijn blij","Vay zayn blay","We are happy"],
+  ["Present — zijn","Zij zijn blij","Zay zayn blay","They are happy"],
+  ["Present — zijn","Jij bent blij","Yay bent blay","You are happy (Singular)"],
+  ["Present — zijn","Jullie zijn blij","YUL-lee zayn blay","You are happy (Plural)"],
+  ["Past — zijn","Ik was blij","Ik vas blay","I was happy"],
+  ["Past — zijn","Hij was blij","Hay vas blay","He was happy"],
+  ["Past — zijn","Zij was blij","Zay vas blay","She was happy"],
+  ["Past — zijn","Wij waren blij","Vay VAH-ren blay","We were happy"],
+  ["Past — zijn","Zij waren blij","Zay VAH-ren blay","They were happy"],
+  ["Past — zijn","Jij was blij","Yay vas blay","You were happy (Singular)"],
+  ["Past — zijn","Jullie waren blij","YUL-lee VAH-ren blay","You were happy (Plural)"],
+  ["Future — zijn","Ik zal blij zijn","Ik zal blay zayn","I will be happy"],
+  ["Future — zijn","Hij zal blij zijn","Hay zal blay zayn","He will be happy"],
+  ["Future — zijn","Zij zal blij zijn","Zay zal blay zayn","She will be happy"],
+  ["Future — zijn","Wij zullen blij zijn","Vay ZUL-len blay zayn","We will be happy"],
+  ["Future — zijn","Zij zullen blij zijn","Zay ZUL-len blay zayn","They will be happy"],
+  ["Future — zijn","Jij zal blij zijn","Yay zal blay zayn","You will be happy (Singular)"],
+  ["Future — zijn","Jullie zullen blij zijn","YUL-lee ZUL-len blay zayn","You will be happy (Plural)"],
+  ["Present — hebben","Ik heb geld","Ik heb khelt","I have money"],
+  ["Present — hebben","Hij heeft geld","Hay hayft khelt","He has money"],
+  ["Present — hebben","Zij heeft geld","Zay hayft khelt","She has money"],
+  ["Present — hebben","Wij hebben geld","Vay HEB-ben khelt","We have money"],
+  ["Present — hebben","Zij hebben geld","Zay HEB-ben khelt","They have money"],
+  ["Present — hebben","Jij hebt geld","Yay hebt khelt","You have money (Singular)"],
+  ["Past — hebben","Ik had geld","Ik had khelt","I had money"],
+  ["Past — hebben","Hij had geld","Hay had khelt","He had money"],
+  ["Past — hebben","Zij had geld","Zay had khelt","She had money"],
+  ["Past — hebben","Wij hadden geld","Vay HAD-den khelt","We had money"],
+  ["Past — hebben","Zij hadden geld","Zay HAD-den khelt","They had money"],
+  ["Past — hebben","Jij had geld","Yay had khelt","You had money (Singular)"],
+  ["Past — hebben","Jullie hadden geld","YUL-lee HAD-den khelt","You had money (Plural)"],
+]},
+
+{id:4, title:"Common Verbs", book:"Core Dutch Words for Expats",
+ cols:["Dutch","Pronunciation","English"], sc:0, rows:[
+  ["Begrijpen","Buh-KHRAY-pen","To understand"],
+  ["Drinken","DRINK-en","To drink"],
+  ["Eten","AY-ten","To eat"],
+  ["Gaan","Khaan","To go"],
+  ["Hebben","HEB-ben","To have"],
+  ["Komen","KOH-men","To come"],
+  ["Spreken","SPRAY-ken","To speak"],
+  ["Werken","VERK-en","To work"],
+  ["Wonen","VOH-nen","To live"],
+  ["Zijn","Zayn","To be"],
+]},
+
+{id:5, title:"Transport", book:"Core Dutch Words for Expats",
+ cols:["Dutch","Pronunciation","English"], sc:0, rows:[
+  ["Auto","OW-to","Car"],
+  ["Bus","Bus","Bus"],
+  ["Fiets","Feets","Bicycle"],
+  ["Luchthaven","LUKHT-hah-fen","Airport"],
+  ["Schiphol","SKHIP-hol","Schiphol Airport"],
+  ["Station","Sta-TSYON","Station"],
+  ["Tram","Tram","Tram"],
+  ["Trein","Trayn","Train"],
+]},
+
+{id:6, title:"Shopping & Food", book:"Core Dutch Words for Expats",
+ cols:["Dutch","Pronunciation","English"], sc:0, rows:[
+  ["Betalen","Buh-TAH-len","To pay"],
+  ["Brood","Broht","Bread"],
+  ["Fruit","Frout","Fruit"],
+  ["Groenten","Khroo-en-ten","Vegetables"],
+  ["Koffie","KOFF-ee","Coffee"],
+  ["Melk","Melk","Milk"],
+  ["Supermarkt","SUU-per-markt","Supermarket"],
+  ["Thee","Tay","Tea"],
+  ["Water","VAH-ter","Water"],
+  ["Winkel","VING-kel","Shop"],
+]},
+
+{id:7, title:"Useful Question Words", book:"Core Dutch Words for Expats",
+ cols:["Dutch","Pronunciation","English"], sc:0, rows:[
+  ["Hoe","Hoo","How"],
+  ["Hoeveel","Hoo-FAYL","How much"],
+  ["Waar","Vaar","Where"],
+  ["Waarom","Vah-RAHM","Why"],
+  ["Wanneer","Vuh-NAYR","When"],
+  ["Wat","Vaht","What"],
+  ["Welke","VEL-ke","Which"],
+  ["Wie","Vee","Who"],
+]},
+
+// ── Book 2: Dutch Pronunciation & Tense Guide ──────────────────────────
+{id:8, title:"Dutch Vowels & Special Sounds", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Dutch Sound","English Approximation","Example Word"], sc:2, rows:[
+  ["ij / ei","eye","Hij (he)"],
+  ["g / ch","hard throat sound (like Scottish loch)","goed"],
+  ["ui","ow + oi mixed","huis"],
+  ["oe","oo (as in moon)","boek"],
+  ["eu","uh with rounded lips","leuk"],
+  ["aa","long ah","maan"],
+  ["ee","ay (as in day)","meer"],
+  ["oo","oh (as in go)","boot"],
+  ["uu","ew (as in few)","muur"],
+  ["sch","skh","school"],
+  ["z","z","zij"],
+  ["w","soft v/w","water"],
+  ["j","y (as in yes)","jaar"],
+]},
+
+{id:65, title:"De / Het — Article Rules", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Rule / Pattern","Dutch Example","Article","Pronunciation","English"], sc:1, rows:[
+  ["All plural nouns use 'de'","de kinderen","de","duh KIN-duh-ren","the children"],
+  ["Diminutives (-tje / -je) always use 'het'","het huisje","het","het HOYS-yuh","the little house"],
+  ["Words ending in -ing use 'de'","de vergadering","de","duh fur-KHAH-duh-ring","the meeting"],
+  ["Words ending in -heid use 'de'","de vriendelijkheid","de","duh FREE-en-duh-likh-hayt","the friendliness"],
+  ["Words ending in -ie use 'de'","de familie","de","duh fa-MEE-lee-yuh","the family"],
+  ["Person nouns ending in -aar / -er use 'de'","de leraar","de","duh lay-RAAR","the teacher"],
+  ["Verb-derived nouns (ge-...) often use 'het'","het gesprek","het","het khuh-SPREK","the conversation"],
+  ["Countries, cities, languages use 'het'","het Nederlands","het","het NAY-der-lants","Dutch (language)"],
+  ["Infinitives used as nouns use 'het'","het werken","het","het VER-ken","the working / work"],
+  ["When unsure — 'de' is safer (≈ 2/3 of words use de)","de auto","de","duh OW-toh","the car"],
+]},
+
+{id:9, title:"Verb Tenses — Ik (I)", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Tense","Dutch Sentence","Pronunciation","English"], sc:1, rows:[
+  ["Present","Ik drink koffie.","Ik drink KOFF-ee","I drink coffee."],
+  ["Past","Ik dronk koffie.","Ik dronk KOFF-ee","I drank coffee."],
+  ["Future","Ik zal koffie drinken.","Ik zal KOFF-ee DRINK-en","I will drink coffee."],
+  ["Present Perfect","Ik heb koffie gedronken.","Ik heb KOFF-ee guh-DRONK-en","I have drunk coffee."],
+  ["Past Perfect","Ik had koffie gedronken.","Ik had KOFF-ee guh-DRONK-en","I had drunk coffee."],
+  ["Future Perfect","Ik zal koffie hebben gedronken.","Ik zal KOFF-ee HEB-ben guh-DRONK-en","I will have drunk coffee."],
+]},
+
+{id:10, title:"Verb Tenses — Jij / Hij / Zij / Wij", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Subject","Tense","Dutch Sentence","English"], sc:2, rows:[
+  ["Jij (You)","Present","Jij drinkt koffie.","You drink coffee."],
+  ["Jij (You)","Past","Jij dronk koffie.","You drank coffee."],
+  ["Jij (You)","Future","Jij zal koffie drinken.","You will drink coffee."],
+  ["Hij (He)","Present","Hij drinkt koffie.","He drinks coffee."],
+  ["Hij (He)","Past","Hij dronk koffie.","He drank coffee."],
+  ["Hij (He)","Future","Hij zal koffie drinken.","He will drink coffee."],
+  ["Zij (She/They)","Present","Zij drinkt koffie.","She drinks coffee."],
+  ["Zij (She/They)","Past","Zij dronk koffie.","She drank coffee."],
+  ["Zij (She/They)","Future","Zij zal koffie drinken.","She will drink coffee."],
+  ["Wij (We)","Present","Wij drinken koffie.","We drink coffee."],
+  ["Wij (We)","Past","Wij dronken koffie.","We drank coffee."],
+  ["Wij (We)","Future","Wij zullen koffie drinken.","We will drink coffee."],
+]},
+
+{id:11, title:"Question Forms", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Dutch Question","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Drink ik koffie?","Drink ik KOFF-ee?","Do I drink coffee?"],
+  ["Dronk ik koffie?","Dronk ik KOFF-ee?","Did I drink coffee?"],
+  ["Zal ik koffie drinken?","Zal ik KOFF-ee DRINK-en?","Will I drink coffee?"],
+  ["Heb ik koffie gedronken?","Heb ik KOFF-ee guh-DRONK-en?","Have I drunk coffee?"],
+  ["Had ik koffie gedronken?","Had ik KOFF-ee guh-DRONK-en?","Had I drunk coffee?"],
+  ["Zal ik koffie hebben gedronken?","Zal ik KOFF-ee HEB-ben guh-DRONK-en?","Will I have drunk coffee?"],
+]},
+
+{id:12, title:"Negative Sentences", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Tense","Dutch Negative","Pronunciation","English"], sc:1, rows:[
+  ["Present","Ik drink geen koffie.","Ik drink khayn KOFF-ee","I do not drink coffee."],
+  ["Past","Ik dronk geen koffie.","Ik dronk khayn KOFF-ee","I did not drink coffee."],
+  ["Future","Ik zal geen koffie drinken.","Ik zal khayn KOFF-ee DRINK-en","I will not drink coffee."],
+  ["Present Perfect","Ik heb geen koffie gedronken.","Ik heb khayn KOFF-ee guh-DRONK-en","I have not drunk coffee."],
+  ["Past Perfect","Ik had geen koffie gedronken.","Ik had khayn KOFF-ee guh-DRONK-en","I had not drunk coffee."],
+  ["Future Perfect","Ik zal geen koffie hebben gedronken.","Ik zal khayn KOFF-ee HEB-ben guh-DRONK-en","I will not have drunk coffee."],
+]},
+
+{id:13, title:"Word Order Rules", book:"Dutch Pronunciation & Tense Guide",
+ cols:["English","Dutch"], sc:1, rows:[
+  ["I drink coffee.","Ik drink koffie."],
+  ["I will drink coffee.","Ik zal koffie drinken."],
+  ["I have drunk coffee.","Ik heb koffie gedronken."],
+  ["I do not drink coffee.","Ik drink geen koffie."],
+  ["Do you drink coffee?","Drink jij koffie?"],
+]},
+
+{id:14, title:"Modal Verbs", book:"Dutch Pronunciation & Tense Guide",
+ cols:["English","Dutch Modal","Example Sentence"], sc:2, rows:[
+  ["can","kunnen","Ik kan koffie drinken."],
+  ["must","moeten","Ik moet koffie drinken."],
+  ["should","moeten","Jij moet op tijd komen."],
+  ["may","mogen","Ik mag koffie drinken."],
+  ["want","willen","Ik wil koffie drinken."],
+  ["would like","willen","Ik wil graag thee."],
+]},
+
+{id:15, title:"Separable Verbs", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Verb","Meaning","Example Sentence"], sc:2, rows:[
+  ["aankomen","arrive","De trein komt aan."],
+  ["binnenkomen","come in","Hij komt binnen."],
+  ["meenemen","take along","Ik neem koffie mee."],
+  ["opbellen","call up","Ik bel je op."],
+  ["opstaan","wake up / get up","Ik sta om 7 uur op."],
+  ["uitgaan","go out","Wij gaan vanavond uit."],
+]},
+
+{id:63, title:"Conjunctions — Connecting Sentences", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Dutch","Pronunciation","Type","English Meaning","Example"], sc:0, rows:[
+  ["en","en","Coordinating","and","Ik werk en studeer."],
+  ["maar","maar","Coordinating","but","Ik wil koffie maar er is geen."],
+  ["of","of","Coordinating","or","Thee of koffie?"],
+  ["dus","dus","Coordinating","so / therefore","Het regent, dus ik blijf thuis."],
+  ["want","vant","Coordinating","because (informal)","Ik ga niet, want ik ben moe."],
+  ["dat","dat","Subordinating","that — verb to end","Ik weet dat hij komt."],
+  ["omdat","OHM-dat","Subordinating","because — verb to end","Ik blijf thuis omdat ik ziek ben."],
+  ["als","als","Subordinating","if / when — verb to end","Als het regent, neem ik een jas."],
+  ["wanneer","van-NAYR","Subordinating","when — verb to end","Ik weet niet wanneer hij komt."],
+  ["terwijl","ter-VAYL","Subordinating","while — verb to end","Ik lees terwijl zij kookt."],
+  ["hoewel","hoo-VEL","Subordinating","although — verb to end","Hoewel het koud is, ga ik fietsen."],
+  ["zodat","zoh-DAT","Subordinating","so that — verb to end","Ik oefen zodat ik beter word."],
+  ["tenzij","ten-ZAY","Subordinating","unless — verb to end","Ik ga, tenzij het regent."],
+]},
+
+{id:64, title:"Dutch Diminutives — The -tje Rule", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Base Word","Diminutive","Pronunciation","English","Rule"], sc:1, rows:[
+  ["huis (house)","huisje","HOYS-yuh","little house / the house","+ je after most words"],
+  ["boek (book)","boekje","BOOK-yuh","little book / booklet","+ je after k, p, t, f, s"],
+  ["auto (car)","autootje","OW-toh-tyuh","little car / the car","+ tje after stressed long vowel"],
+  ["bloem (flower)","bloemetje","BLOO-muh-tyuh","little flower","+ etje after m, n, ng, l, r + short vowel"],
+  ["tram","trammetje","TRAM-muh-tyuh","little tram","double consonant + etje after short vowel"],
+  ["kind (child)","kindje","KINT-yuh","little child / dear child","+ je"],
+  ["kopje","kopje","KOP-yuh","cup (of coffee)","Ik wil een kopje koffie."],
+  ["beetje","beetje","BAYT-yuh","a little bit","Een beetje Nederlands spreken."],
+  ["meisje","meisje","MAY-syuh","girl","Already a diminutive — base form"],
+  ["All diminutives use 'het'","het huisje","het HOYS-yuh","the little house","het / een + diminutive always"],
+]},
+
+{id:16, title:"Mini Dialogues", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Dutch","English"], sc:0, rows:[
+  ["Drink jij koffie?","Do you drink coffee?"],
+  ["Ja, ik drink koffie.","Yes, I drink coffee."],
+  ["Wanneer drink jij koffie?","When do you drink coffee?"],
+  ["Ik drink koffie in de ochtend.","I drink coffee in the morning."],
+  ["Hoe laat ga jij naar het werk?","What time do you go to work?"],
+  ["Ik ga om negen uur naar het werk.","I go to work at nine o'clock."],
+]},
+
+{id:17, title:"Common Daily Verbs — Conjugation", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Infinitive","Present","Past","Perfect","English"], sc:0, rows:[
+  ["drinken","drinkt","dronk","gedronken","drink"],
+  ["eten","eet","at","gegeten","eat"],
+  ["gaan","gaat","ging","gegaan","go"],
+  ["hebben","heeft","had","gehad","have"],
+  ["komen","komt","kwam","gekomen","come"],
+  ["schrijven","schrijft","schreef","geschreven","write"],
+  ["spreken","spreekt","sprak","gesproken","speak"],
+  ["werken","werkt","werkte","gewerkt","work"],
+  ["wonen","woont","woonde","gewoond","live"],
+  ["zijn","is","was","geweest","be"],
+]},
+
+{id:66, title:"Comparative & Superlative Adjectives", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Adjective","Comparative","Superlative","English"], sc:0, rows:[
+  ["goed","beter","het best","good → better → best (irregular)"],
+  ["groot","groter","het grootst","big → bigger → biggest"],
+  ["klein","kleiner","het kleinst","small → smaller → smallest"],
+  ["kort","korter","het kortst","short → shorter → shortest"],
+  ["lang","langer","het langst","long / tall → longer → longest"],
+  ["langzaam","langzamer","het langzaamst","slow → slower → slowest"],
+  ["mooi","mooier","het mooist","beautiful → more beautiful → most beautiful"],
+  ["oud","ouder","het oudst","old → older → oldest"],
+  ["duur","duurder","het duurst","expensive → more expensive → most expensive"],
+  ["goedkoop","goedkoper","het goedkoopst","cheap → cheaper → cheapest"],
+  ["snel","sneller","het snelst","fast → faster → fastest"],
+  ["jong","jonger","het jongst","young → younger → youngest"],
+  ["veel","meer","het meest","much / many → more → most (irregular)"],
+  ["weinig","minder","het minst","few / little → fewer → fewest (irregular)"],
+]},
+
+{id:67, title:"Reflexive Verbs — zich + verb", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Infinitive","Example Sentence","Pronunciation","English"], sc:0, rows:[
+  ["zich wassen","Ik was mij.","Ik vas may","I wash myself."],
+  ["zich voelen","Ik voel mij goed.","Ik fool may khoot","I feel good."],
+  ["zich herinneren","Ik herinner mij dat niet.","Ik her-IN-er may dat neet","I do not remember that."],
+  ["zich vergissen","Ik vergis mij.","Ik fer-KHIS may","I am mistaken."],
+  ["zich schamen","Hij schaamt zich.","Hay SKHAAMD zikh","He is ashamed."],
+  ["zich gedragen","Hij gedraagt zich goed.","Hay khuh-DRAAKHT zikh khoot","He behaves well."],
+  ["zich aankleden","Ik kleed mij aan.","Ik klayd may aan","I get dressed."],
+  ["zich ontspannen","Wij ontspannen ons.","Vay ont-SPAN-nen ons","We relax."],
+  ["zich realiseren","Ik realiseer mij dat het moeilijk is.","Ik ray-ah-lee-ZAYR may dat het MOO-ee-likh is","I realise that it is difficult."],
+  ["zich bewust zijn","Ik ben mij bewust van de regels.","Ik ben may buh-VUST van duh RAY-khels","I am aware of the rules."],
+]},
+
+{id:68, title:"Indirect Speech — Reported Sentences", book:"Dutch Pronunciation & Tense Guide",
+ cols:["Direct Speech","Indirect Speech","Pronunciation","English"], sc:1, rows:[
+  ["\"Ik ben moe.\"","Hij zegt dat hij moe is.","Hay zekht dat hay moo is","He says that he is tired."],
+  ["\"Ik werk hier.\"","Zij zegt dat zij hier werkt.","Zay zekht dat zay heer verkt","She says that she works here."],
+  ["\"Ik heb honger.\"","Ze zegt dat ze honger heeft.","Zuh zekht dat zuh HONG-er hayft","She says she is hungry."],
+  ["\"Ik woon in Amsterdam.\"","Hij vertelt dat hij in Amsterdam woont.","Hay fer-TELT dat hay in AM-ster-dam vohnt","He says he lives in Amsterdam."],
+  ["\"Ga naar huis!\"","Hij zegt dat ik naar huis moet gaan.","Hay zekht dat ik naar hoys moot khaan","He says I must go home."],
+  ["\"Wanneer kom jij?\"","Ik vraag wanneer jij komt.","Ik vraakh van-NAYR yay komt","I ask when you are coming."],
+  ["\"Heb je een auto?\"","Hij vraagt of ik een auto heb.","Hay vraakht of ik uhn OW-toh hep","He asks if I have a car."],
+  ["\"Ik houd van Nederland.\"","Ze zegt dat ze van Nederland houdt.","Zuh zekht dat zuh van NAY-der-lant howt","She says she loves the Netherlands."],
+]},
+
+// ── Book 3: Dutch Sentences for Expats ─────────────────────
+{id:18, title:"Arrival & Airport", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik ben net aangekomen in Nederland.","Ik ben net aan-khe-KOH-men in NAY-der-land","I have just arrived in the Netherlands."],
+  ["Waar is de uitgang?","Vaar is duh OWT-khang","Where is the exit?"],
+  ["Waar kan ik een taxi vinden?","Vaar kan ik uhn TAK-see VIN-den","Where can I find a taxi?"],
+  ["Ik ga naar Amsterdam.","Ik khaa naar AHM-ster-dam","I am going to Amsterdam."],
+  ["Hoe kom ik bij het treinstation?","Hoo kom ik bay het TRAYN-sta-tsyon","How do I get to the train station?"],
+]},
+
+{id:19, title:"Immigration & Documents", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Hier is mijn paspoort.","Heer is main PAS-poort","Here is my passport."],
+  ["Ik heb een werkvisum.","Ik heb uhn VERK-vee-zum","I have a work visa."],
+  ["Waar kan ik mijn BSN krijgen?","Vaar kan ik main BAY-ESS-ENN KHRAY-khen","Where can I get my BSN?"],
+  ["Ik moet mij registreren bij de gemeente.","Ik moet may re-khis-TRAY-ren bay duh khuh-MAYN-tuh","I need to register at the municipality."],
+]},
+
+{id:20, title:"Finding a Home — Sentences", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik zoek een appartement.","Ik zook uhn ah-par-te-MENT","I am looking for an apartment."],
+  ["Hoeveel is de huur per maand?","Hoo-fayl is duh huur per maand","How much is the rent per month?"],
+  ["Wanneer kan ik intrekken?","Vuh-NAYR kan ik IN-trek-en","When can I move in?"],
+  ["Ik heb een sleutel nodig.","Ik heb uhn SLUH-tel NOH-dikh","I need a key."],
+  ["Ik wil het huis bezichtigen voor ik een borg betaal en teken.","Ik vil het hoys buh-ZIKH-tikh-en FOHR ik uhn BORGH buh-TAAL en TAY-ken","I want to view the house before I pay a deposit and sign."],
+]},
+
+{id:21, title:"Office & Work", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik werk vanuit huis vandaag.","Ik verk van-OWT hays fan-DAKH","I am working from home today."],
+  ["Wanneer begint de vergadering?","Vuh-NAYR buh-KHINT duh fur-KHAH-duh-ring","When does the meeting start?"],
+  ["Ik stuur je een e-mail.","Ik stuur yuh uhn ee-mail","I will send you an email."],
+  ["Kunnen we morgen praten?","KUN-nen vuh MOR-khen PRAH-ten","Can we talk tomorrow?"],
+  ["Mijn vrouw is op zoek naar een baan. Hoe kan zij solliciteren?","Mayn FROW is op zook naar uhn baan. Hoo kan zay sol-lee-see-TAY-ren","My wife is looking for a job. How can she apply?"],
+]},
+
+{id:22, title:"Eating Out — Sentences", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik ben vegetariër.","Ik ben vay-khe-tah-REE-er","I am a vegetarian."],
+  ["Zonder ei alstublieft.","ZON-der eye ALS-tu-bleeft","Without egg please."],
+  ["Heeft u vegan eten?","Hayft uu vay-KHAHN AY-ten","Do you have vegan food?"],
+  ["De rekening alstublieft.","Duh REK-uh-ning ALS-tu-bleeft","The bill please."],
+  ["Ik eet geen vlees, ei of kip. Zuivel is wel oké.","Ik ayt khayn flayz, ay of kip. ZOY-vel is vel oh-KAY","I don't eat meat, egg or chicken. Dairy is ok."],
+]},
+
+{id:23, title:"Getting Around — Sentences", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Welke trein gaat naar Utrecht?","VEL-kuh trayn khaat naar UU-trekht","Which train goes to Utrecht?"],
+  ["Hoe laat vertrekt de trein?","Hoo laat fur-TREKT duh trayn","What time does the train leave?"],
+  ["Ik heb een OV-chipkaart.","Ik heb uhn OH-vay-khip-kaart","I have an OV-chip card."],
+  ["Waar kan ik een fiets huren?","Vaar kan ik uhn feets HUU-ren","Where can I rent a bicycle?"],
+  ["Waar kan ik mijn fiets parkeren?","Vaar kan ik mayn feets par-KAY-ren","Where can I park my bicycle?"],
+  ["Waar is de bushalte?","Vaar is duh BUS-hal-tuh","Where is the bus stop?"],
+  ["Hoe ver is het treinstation?","Hoo fer is het TRAYN-sta-shon","How far is the train station?"],
+  ["Ik wil een retourticket kopen.","Ik vil uhn ruh-TOOR-ti-ket KOH-pen","I want to buy a return ticket."],
+]},
+
+{id:24, title:"At the Doctor — Sentences", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik heb een afspraak met de dokter.","Ik heb uhn AFS-praak met duh DOK-ter","I have an appointment with the doctor."],
+  ["Waar is het ziekenhuis?","Vaar is het ZEE-ken-hows","Where is the hospital?"],
+  ["Ik voel mij niet goed.","Ik fool may neet khoot","I do not feel well."],
+  ["Ik heb hoofdpijn.","Ik heb HOOFT-payn","I have a headache."],
+]},
+
+{id:25, title:"Shopping — Sentences", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Waar is de supermarkt?","Vaar is duh SUU-per-markt","Where is the supermarket?"],
+  ["Ik wil groenten kopen.","Ik vil KHROON-ten KOH-pen","I want to buy vegetables."],
+  ["Hebben jullie rijst?","HEB-ben YUL-lee rayst","Do you have rice?"],
+  ["Ik betaal met kaart.","Ik buh-TAAL met kaart","I will pay by card."],
+]},
+
+{id:26, title:"Learning Dutch", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik leer Nederlands.","Ik layr NAY-der-lands","I am learning Dutch."],
+  ["Kun je dat herhalen?","Kun yuh dat her-HAA-len","Can you repeat that?"],
+  ["Wat betekent dat?","Vaht buh-TAY-khent dat","What does that mean?"],
+  ["Ik oefen elke dag.","Ik UU-fen EL-kuh dakh","I practice every day."],
+]},
+
+{id:27, title:"Confidence Building", book:"Dutch Sentences for Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik probeer Nederlands te spreken.","Ik proh-BAYR NAY-der-lands tuh SPRAY-ken","I try to speak Dutch."],
+  ["Ik maak soms fouten.","Ik maak soms FOW-ten","I sometimes make mistakes."],
+  ["Dat is geen probleem.","Dat is khayn proh-BLAYM","That is not a problem."],
+  ["Ik leer snel.","Ik layr snel","I learn quickly."],
+  ["Ik voel mij steeds beter in Nederland.","Ik fool may stays BAY-ter in NAY-der-land","I feel better and better in the Netherlands."],
+]},
+
+// ── Book 4: Dutch Vocabulary for Expats ───────────────────────────────
+{id:29, title:"Relationships", book:"Dutch Vocabulary for Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Colleague","collega","ko-LEH-kha"],
+  ["Daughter","dochter","DOKH-ter"],
+  ["Husband","echtgenoot","EKHT-khuh-noht"],
+  ["Wife","echtgenote","EKHT-khuh-noh-tuh"],
+  ["Teacher","leraar","luh-RAAR"],
+  ["Mother","moeder","MOO-der"],
+  ["Uncle","oom","ohm"],
+  ["Aunt","tante","TAN-tuh"],
+  ["Father","vader","VAH-der"],
+  ["Friend","vriend","freent"],
+  ["Son","zoon","zohn"],
+]},
+
+{id:30, title:"Home", book:"Dutch Vocabulary for Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Bathroom","badkamer","BAHT-kah-mer"],
+  ["Door","deur","dur"],
+  ["House","huis","hows"],
+  ["Rent","huur","huur"],
+  ["Kitchen","keuken","KUH-ken"],
+  ["Window","raam","raam"],
+  ["Toilet","toilet","toh-WALET"],
+  ["Heater","verwarming","fur-VAR-ming"],
+]},
+
+{id:31, title:"Fruits", book:"Dutch Vocabulary for Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Strawberry","aardbei","AART-bay"],
+  ["Apple","appel","AH-pel"],
+  ["Banana","banaan","bah-NAAN"],
+  ["Blueberry","blauwe bes","BLOW-uh bes"],
+  ["Grapes","druiven","DROY-ven"],
+  ["Pomegranate","granaatappel","khrah-NAAT-ah-pel"],
+  ["Mango","mango","MAN-go"],
+  ["Sapota","sapodilla","sah-poh-DIL-lah"],
+  ["Orange","sinaasappel","see-NAAS-ah-pel"],
+]},
+
+{id:32, title:"Vegetables", book:"Dutch Vocabulary for Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Beetroot","biet","beet"],
+  ["Cauliflower","bloemkool","BLOOM-kohl"],
+  ["Beans","bonen","BOH-nen"],
+  ["Chillies","chilipepers","KHI-lee-pay-pers"],
+  ["Curry Leaves","kerrieblaadjes","KEH-ree-blaad-yus"],
+  ["Coconut","kokosnoot","KOH-kos-noht"],
+  ["Cabbage","kool","kohl"],
+  ["Coriander","koriander","ko-ree-AN-der"],
+  ["Bell pepper","paprika","pah-PREE-kah"],
+  ["Pumpkin","pompoen","pom-POON"],
+  ["Spinach","spinazie","spi-NAH-zee"],
+  ["Onion","ui","ow-ee"],
+  ["Carrot","wortel","VOR-tel"],
+]},
+
+{id:33, title:"Grocery", book:"Dutch Vocabulary for Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Almond","amandel","AH-man-del"],
+  ["Dry Fruits","gedroogd fruit","khuh-DROOKHT froyt"],
+  ["Cheese","kaas","kaas"],
+  ["Coffee powder","koffiepoeder","KOFF-ee-poo-der"],
+  ["Milk","melk","melk"],
+  ["Nuts","noten","NOH-ten"],
+  ["Oil","olie","OH-lee"],
+  ["Peanut","pinda","PIN-dah"],
+  ["Rice","rijst","rayst"],
+  ["Spice","specerij","spay-seh-RAY"],
+  ["Sugar","suiker","SOY-ker"],
+  ["Wheat","tarwe","TAR-vuh"],
+  ["Tea powder","theepoeder","TAY-poo-der"],
+  ["Tofu","tofu","TOH-foo"],
+  ["Yoghurt","yoghurt","YOH-ghurt"],
+  ["Sunflower Seeds","zonnebloempitten","ZON-nuh-bloom-pit-ten"],
+  ["Salt","zout","zowt"],
+]},
+
+{id:34, title:"Travel & Directions — Vocabulary", book:"Dutch Vocabulary for Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Distance","afstand","AF-stant"],
+  ["Bus","bus","bus"],
+  ["Bus Stop","bushalte","BUS-hal-tuh"],
+  ["Cycle","fiets","feets"],
+  ["Ticket","kaartje","KAART-yuh"],
+  ["Location","locatie","loh-KAH-tsie"],
+  ["Walk","lopen","LOH-pen"],
+  ["Platform","perron","peh-RON"],
+  ["Schedule","schema","SKHAY-mah"],
+  ["Taxi","taxi","TAK-see"],
+  ["Tram","tram","tram"],
+  ["Train","trein","trayn"],
+  ["Train Station","treinstation","TRAYN-sta-tsyon"],
+]},
+
+{id:35, title:"Time", book:"Dutch Vocabulary for Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Date","datum","DAH-tum"],
+  ["Time","tijd","tayt"],
+  ["Day","dag","dakh"],
+  ["Sunday","zondag","ZON-dakh"],
+  ["Monday","maandag","MAAN-dakh"],
+  ["Tuesday","dinsdag","DINS-dakh"],
+  ["Wednesday","woensdag","WOONS-dakh"],
+  ["Thursday","donderdag","DON-der-dakh"],
+  ["Friday","vrijdag","VRAY-dakh"],
+  ["Saturday","zaterdag","ZAH-ter-dakh"],
+  ["Holiday","vakantie","vah-KHAN-tsie"],
+  ["Morning","ochtend","OHKH-tent"],
+  ["Evening","avond","AH-vont"],
+  ["Night","nacht","nakht"],
+  ["Tomorrow","morgen","MOR-khen"],
+  ["Today","vandaag","fan-DAKH"],
+  ["Week","week","vayk"],
+  ["Next week","volgende week","VOL-khen-duh vayk"],
+  ["Month","maand","maant"],
+  ["Year","jaar","yaar"],
+  ["Yesterday","gisteren","KHIS-tu-ren"],
+  ["Last week","vorige week","VOH-ri-khuh vayk"],
+  ["Early","vroeg","vrookh"],
+  ["Late","laat","laat"],
+  ["On time","op tijd","op tayt"],
+]},
+
+// ── Book 5: Third Set — 100 Dutch Words for Indian Expats ─────────────
+{id:36, title:"Rental & Housing Words", book:"Dutch Words for Indian Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Balcony","balkon","bal-KON"],
+  ["Storage room","berging","BER-khing"],
+  ["Deposit","borg","borkh"],
+  ["Curtains","gordijnen","khor-DAY-nen"],
+  ["Landlord","huisbaas","HOWS-baas"],
+  ["Lease agreement","huurcontract","HUUR-kon-trakt"],
+  ["Tenant","huurder","HUR-der"],
+  ["Lamp","lamp","lamp"],
+  ["Elevator","lift","lift"],
+  ["Maintenance","onderhoud","ON-der-howt"],
+  ["Repair","reparatie","reh-pah-RAH-tsie"],
+  ["Socket","stopcontact","STOP-kon-takt"],
+]},
+
+{id:37, title:"Remote Work", book:"Dutch Words for Indian Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["File","bestand","buh-STANT"],
+  ["Update","bijwerken","BAY-verk-en"],
+  ["Desk","bureau","buu-ROH"],
+  ["Headset","headset","HEAD-set"],
+  ["Folder","map","map"],
+  ["Notification","melding","MEL-ding"],
+  ["Mouse","muis","mows"],
+  ["Restart","opnieuw starten","op-NOY start-en"],
+  ["Keyboard","toetsenbord","TOOT-sen-bort"],
+  ["Connection lost","verbinding verbroken","fur-BIN-ding fur-BROH-ken"],
+  ["VPN","VPN","VEE-PAY-EN"],
+  ["Webcam","webcam","WEB-kam"],
+]},
+
+{id:38, title:"Indian Cooking", book:"Dutch Words for Indian Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Basmati rice","basmatirijst","bas-MAH-tee-rayst"],
+  ["Fenugreek","fenegriek","fay-nuh-kreek"],
+  ["Ghee","ghee","ghee"],
+  ["Semolina","griesmeel","KHREES-mayl"],
+  ["Cinnamon","kaneel","kah-NAYL"],
+  ["Cardamom","kardemom","kar-duh-MOM"],
+  ["Cloves","kruidnagel","KROYT-nah-khel"],
+  ["Mixer grinder","mixer","MIK-ser"],
+  ["Paneer","paneer","pah-NEER"],
+  ["Pressure cooker","snelkookpan","SNEL-kohk-pan"],
+  ["Cutting board","snijplank","SNAY-plank"],
+  ["Tamarind","tamarinde","tah-ma-RIN-duh"],
+]},
+
+{id:39, title:"Public Transport — Advanced Words", book:"Dutch Words for Indian Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["North","noord","noort"],
+  ["East","oost","ohst"],
+  ["Parking","parkeren","par-KAY-ren"],
+  ["Journey","reis","rays"],
+  ["Travel card","reiskaart","RAYS-kaart"],
+  ["Escalator","roltrap","ROL-trap"],
+  ["Route","route","ROO-tuh"],
+  ["Rush hour","spitsuur","SPITS-uur"],
+  ["Stairs","trap","trap"],
+  ["West","west","vest"],
+  ["Seat","zitplaats","ZIT-plaats"],
+  ["South","zuid","zowt"],
+]},
+
+{id:40, title:"Dining Out — Advanced Words", book:"Dutch Words for Indian Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Takeaway","afhalen","AF-hah-len"],
+  ["Bitter","bitter","BIT-ter"],
+  ["Buffet","buffet","buf-FAY"],
+  ["Main course","hoofdgerecht","HOOFT-khuh-rekht"],
+  ["Tap water","kraanwater","KRAAN-vah-ter"],
+  ["Mineral water","mineraalwater","mee-nuh-RAAL-vah-ter"],
+  ["Dessert","nagerecht","NAH-khuh-rekht"],
+  ["Waiter","ober","OH-ber"],
+  ["Starter","voorgerecht","FOOR-khuh-rekht"],
+  ["Sweet","zoet","zoot"],
+  ["Salty","zout","zowt"],
+  ["Sour","zuur","zuur"],
+]},
+
+{id:41, title:"Family & Child", book:"Dutch Words for Indian Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Homework diary","agenda","ah-KHEN-dah"],
+  ["Pediatrician","kinderarts","KIN-der-arts"],
+  ["Kindergarten","kleuterschool","KLOY-ter-skool"],
+  ["Parent meeting","ouderavond","OW-der-ah-vont"],
+  ["Lunch break","pauze","POW-zuh"],
+  ["Play date","speelafspraak","SPAYL-af-spraak"],
+  ["Toy","speelgoed","SPAYL-khoot"],
+  ["Drawing","tekening","TAY-kuh-ning"],
+  ["Vaccination","vaccinatie","vak-see-NAH-tsie"],
+  ["Birthday","verjaardag","fur-YAAR-dakh"],
+]},
+
+{id:42, title:"Weather & Clothing", book:"Dutch Words for Indian Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Gloves","handschoenen","HANT-skhoo-nen"],
+  ["Ice","ijs","ays"],
+  ["Jacket","jas","yas"],
+  ["Boots","laarzen","LAAR-zen"],
+  ["Fog","mist","mist"],
+  ["Wet","nat","nat"],
+  ["Scarf","sjaal","shaal"],
+  ["Storm","storm","storm"],
+  ["Sweater","trui","trowy"],
+  ["Freezing","vriezen","FREE-zen"],
+]},
+
+{id:43, title:"Medical & Health Words", book:"Dutch Words for Indian Expats",
+ cols:["English","Dutch","Pronunciation"], sc:1, rows:[
+  ["Allergy","allergie","ah-ler-KHEE"],
+  ["Blood test","bloedtest","bloot-TEST"],
+  ["Painkiller","pijnstiller","PAYN-stil-er"],
+  ["Prescription","recept","reh-SEPT"],
+  ["Syrup","siroop","see-ROOP"],
+  ["Emergency room","spoedeisende hulp","SPOO-duh-AY-sen-duh hulp"],
+  ["Tablet","tablet","tab-LET"],
+  ["Dentist","tandarts","TANT-arts"],
+  ["Bandage","verband","fur-BANT"],
+  ["Vitamin","vitamine","vee-tah-MEE-nuh"],
+]},
+
+// ── Book 6: Dutch Sentences for Indian Expats ───────────────
+{id:44, title:"Neighbors & Community", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Mijn buurman is erg vriendelijk.","Main BUUR-man is erk FREENT-likh","My neighbor is very friendly."],
+  ["Wij wonen in een rustige buurt.","Vay VOH-nen in uhn RUS-tikhuh buurt","We live in a quiet neighborhood."],
+  ["De kinderen spelen buiten.","Duh KIN-duh-ren SPAY-len BOW-ten","The children are playing outside."],
+  ["Waar is de dichtstbijzijnde speeltuin?","Vaar is duh DIKHTST-bay-zaynduh SPAYL-toyn","Where is the nearest playground?"],
+  ["Wij hebben nieuwe buren ontmoet.","Vay HEB-ben NOY-vuh BUU-ren ont-MOOT","We met new neighbors."],
+  ["De buurt is veilig voor gezinnen.","Duh buurt is VAY-likh voor khuh-ZIN-nen","The neighborhood is safe for families."],
+  ["Er is een park vlakbij ons huis.","Er is uhn park vlak-BAY ons hows","There is a park near our house."],
+  ["Mijn zoon speelt graag voetbal.","Main zohn SPAYLT khraakh FOOT-bal","My son likes to play football."],
+  ["Wij wandelen vaak in de avond.","Vay VAN-duh-len vaak in duh AH-vont","We often walk in the evening."],
+  ["De supermarkt sluit om acht uur.","Duh SUU-per-markt sloyt om akht uur","The supermarket closes at eight o'clock."],
+  ["Is er een Indiaas restaurant of supermarkt in de buurt?","Is er uhn IN-dee-aas res-toh-RANT of SOO-per-markt in duh BYRT","Is there an Indian restaurant or supermarket nearby?"],
+  ["Waar kan ik drinkwater vinden?","Vaar kan ik DRINK-va-ter VIN-den","Where can I find drinking water?"],
+]},
+
+{id:45, title:"School & Parenting", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Mijn zoon gaat naar school met de fiets.","Main zohn khaat naar skhool met duh feets","My son goes to school by bicycle."],
+  ["De school begint om half negen.","Duh skhool buh-KHINT om half NAY-khen","School starts at 8:30."],
+  ["Vandaag heeft mijn zoon huiswerk.","Fan-DAKH hayft main zohn HOWS-verk","My son has homework today."],
+  ["Morgen is er een ouderbijeenkomst.","MOR-khen is er uhn OW-der-bay-uhn-komst","There is a parent meeting tomorrow."],
+  ["Mijn zoon leert snel Nederlands.","Main zohn layrt snel NAY-der-lands","My son learns Dutch quickly."],
+  ["Is er een goede openbare school in de buurt?","Is er uhn KHOO-duh OH-pen-bar-uh skhool in duh BYRT","Is there a good public school nearby?"],
+  ["Waar kan ik mijn zoon inschrijven?","Vaar kan ik mayn zohn IN-skhray-ven","Where can I enrol my son?"],
+]},
+
+{id:46, title:"Seasons & Weather — Phrases", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Vandaag is het erg bewolkt.","Fan-DAKH is het erk buh-VOLKT","Today it is very cloudy."],
+  ["In de winter wordt het vroeg donker.","In duh VIN-ter vort het vrookh DON-ker","In winter it gets dark early."],
+  ["Ik draag een dikke jas buiten.","Ik draag uhn DIK-kuh yas BOW-ten","I wear a thick jacket outside."],
+  ["Het weer verandert snel hier.","Het vayr fur-AN-dert snel heer","The weather changes quickly here."],
+  ["In de zomer zijn de dagen langer.","In duh ZOH-mer zayn duh DAA-khen LANG-er","In summer the days are longer."],
+]},
+
+{id:47, title:"Banking & Payments", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik gebruik meestal contactloos betalen.","Ik khuh-BRAYK may-stal kon-TAKT-lohs buh-TAAL-en","I mostly use contactless payment."],
+  ["Mijn bankpas werkt niet.","Main BANK-pas verkt neet","My bank card is not working."],
+  ["Kan ik online geld overmaken?","Kan ik on-LINE khelt OH-ver-maa-ken","Can I transfer money online?"],
+  ["Mijn salaris is vandaag gestort.","Main sah-LAH-ris is fan-DAKH khuh-STORT","My salary was credited today."],
+  ["Mijn betaling is mislukt.","Main buh-TAH-ling is mis-LUKT","My payment failed."],
+  ["Is er een geldautomaat in de buurt?","Is er uhn KHELT-ow-toh-maat in duh BYRT","Is there an ATM nearby?"],
+  ["Werkt de geldautomaat?","Verkt duh KHELT-ow-toh-maat","Is the ATM working?"],
+  ["Accepteert u betaling met pin?","Ak-sep-TAYRT uu buh-TAH-ling met pin","Do you accept card payment?"],
+  ["Heeft u wisselgeld? Ik heb alleen een briefje van honderd euro.","Hayft uu VIS-sel-khelt? Ik hep al-LAYN uhn BREEF-yuh van HON-derd AY-roh","Do you have change? I only have a 100 Euro note."],
+]},
+
+{id:48, title:"Internet & Remote Work", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Mijn internet is vandaag langzaam.","Main IN-ter-net is fan-DAKH LANG-zaam","My internet is slow today."],
+  ["De vergadering begint over tien minuten.","Duh fur-KHAH-duh-ring buh-KHINT OH-ver teen mee-NU-ten","The meeting starts in ten minutes."],
+  ["Mijn collega woont in Duitsland.","Main ko-LEH-kha vohnt in DOYTS-land","My colleague lives in Germany."],
+  ["Mijn laptop moet opgeladen worden.","Main LAP-top moet OP-khuh-lah-den VOR-den","My laptop needs to be charged."],
+  ["Wij hebben een online presentatie morgen.","Vay HEB-ben uhn on-LINE preh-zen-TAH-tsie MOR-khen","We have an online presentation tomorrow."],
+]},
+
+{id:49, title:"Cooking & Grocery — Phrases", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Wij koken meestal thuis.","Vay KOH-ken may-stal thows","We usually cook at home."],
+  ["Mijn vrouw maakt heerlijke dosa.","Main vrow maakht HAYR-likhuh DOH-sa","My wife makes delicious dosa."],
+  ["Ik koop verse groenten op zaterdag.","Ik kohp FER-suh KHROON-ten op ZAH-ter-dakh","I buy fresh vegetables on Saturday."],
+  ["Wij eten graag Zuid-Indiaas eten.","Vay AY-ten khraakh ZOWT-IN-dee-ahs AY-ten","We like South Indian food."],
+  ["Mijn zoon houdt van mango's.","Main zohn howt fan MAN-gohs","My son loves mangoes."],
+]},
+
+{id:50, title:"Staying Healthy — Phrases", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik moet meer water drinken.","Ik moet mayr VAH-ter DRINK-en","I need to drink more water."],
+  ["Mijn zoon heeft een verkoudheid.","Main zohn hayft uhn fur-KHOWT-hayt","My son has a cold."],
+  ["Wij hebben een afspraak bij de tandarts.","Vay HEB-ben uhn AF-spraak bay duh TANT-arts","We have an appointment with the dentist."],
+  ["Ik wandel elke ochtend dertig minuten.","Ik VAN-del EL-kuh OHKH-tent DER-tikh mee-NU-ten","I walk thirty minutes every morning."],
+  ["Gezond eten is belangrijk voor ons.","Khuh-ZONT AY-ten is buh-LANG-rikh voor ons","Healthy food is important for us."],
+  ["Ik wil dit medicijn kopen, voorgeschreven door mijn arts in India.","Ik vil dit meh-duh-SAYN KOH-pen, FOHR-khuh-skhray-ven dohr mayn arts in IN-dee-ah","I want to buy this medicine, prescribed by my doctor in India."],
+]},
+
+{id:51, title:"Daily Commute — Phrases", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["De trein is voller in de ochtend.","Duh trayn is VOL-er in duh OHKH-tent","The train is more crowded in the morning."],
+  ["Ik controleer altijd de NS-app.","Ik kon-troh-LAYR ALT-ayt duh EN-ESS app","I always check the NS app."],
+  ["Mijn OV-kaart moet opgeladen worden.","Main OH-vay kaart moet OP-khuh-lah-den VOR-den","My OV card needs to be recharged."],
+  ["Ik miste de bus vanmorgen.","Ik MIS-tuh duh bus fan-MOR-khen","I missed the bus this morning."],
+  ["Ik fiets naar het station.","Ik feets naar het sta-TSYON","I cycle to the station."],
+]},
+
+{id:52, title:"Dutch Culture & Social Life", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Nederlanders plannen alles vroeg.","NAY-der-landers PLAN-nen AL-les vrookh","Dutch people plan everything early."],
+  ["Iedereen komt op tijd hier.","EE-duh-rayn komt op tayt heer","Everyone comes on time here."],
+  ["Nederlanders houden van directheid.","NAY-der-landers HOW-den fan dee-REKT-hayt","Dutch people like directness."],
+  ["De straten zijn erg schoon.","Duh STRAH-ten zayn erk skhoon","The streets are very clean."],
+  ["Nederland heeft veel internationale mensen.","NAY-der-land hayft fayl in-ter-nah-tsyo-NAH-luh MEN-sen","The Netherlands has many international people."],
+]},
+
+{id:53, title:"Confidence & Integration", book:"Dutch Sentences for Indian Expats",
+ cols:["Dutch","Pronunciation","English Meaning"], sc:0, rows:[
+  ["Ik probeer elke dag Nederlands te spreken.","Ik proh-BAYR EL-kuh dakh NAY-der-lands tuh SPRAY-ken","I try to speak Dutch every day."],
+  ["Mijn uitspraak wordt langzaam beter.","Main OWT-spraak vort LANG-zaam BAY-ter","My pronunciation is slowly improving."],
+  ["Mijn vrouw leert ook Nederlands.","Main vrow layrt ohk NAY-der-lands","My wife is also learning Dutch."],
+  ["Wij voelen ons welkom hier.","Vay FOO-len ons vel-KOM heer","We feel welcome here."],
+  ["Wij bouwen langzaam een nieuw leven op.","Vay BOW-wen LANG-zaam uhn noyv LAY-fen op","We are slowly building a new life."],
+  ["Ik ben Govind, softwareprofessional, woonachtig in Utrecht.","Ik ben GOH-vint, SOF-twer-pro-FES-shon-nal, VOH-nakh-tikh in OO-trekht","I am Govind, a software professional, living in Utrecht."],
+  ["Ik kom uit India en werk nu in Nederland.","Ik kom owt IN-dee-ah en verk nuu in NAY-der-lant","I come from India and work now in the Netherlands."],
+  ["Ik vind Nederland mooi en de mensen zijn erg vriendelijk.","Ik vint NAY-der-lant MOH-ee en duh MEN-sen zayn ergh FREE-en-duh-likh","I find the Netherlands beautiful and the people very friendly."],
+  ["Ik leer langzaam Nederlands om me te integreren in de samenleving.","Ik layr LANG-zaam NAY-der-lants om muh tuh in-tuh-GRAY-ren in duh SAH-men-lay-ving","I am slowly learning Dutch to integrate into society."],
+]},
+
+{id:70, title:"Classroom Conversation — Student & Teacher", book:"Dutch Sentences for Indian Expats",
+ cols:["Speaker","Dutch","Pronunciation","English"], sc:1, rows:[
+  ["Teacher","Goedemorgen! Hoe heet jij?","KHOO-duh-MOR-khen! Hoo hayt yay?","Good morning! What is your name?"],
+  ["Student","Goedemorgen. Ik heet Govind.","KHOO-duh-MOR-khen. Ik hayt GOH-vint.","Good morning. My name is Govind."],
+  ["Teacher","Waar kom jij vandaan?","Vaar kom yay fan-DAAN?","Where do you come from?"],
+  ["Student","Ik kom uit India. Ik woon nu in Utrecht.","Ik kom owt IN-dee-ah. Ik vohn nuu in OO-trekht.","I come from India. I live in Utrecht now."],
+  ["Teacher","Hoe lang leer jij al Nederlands?","Hoo lang layr yay al NAY-der-lands?","How long have you been learning Dutch?"],
+  ["Student","Ik leer al drie maanden Nederlands.","Ik layr al DREE MAAN-den NAY-der-lands.","I have been learning Dutch for three months."],
+  ["Teacher","Dat is goed! Spreek jij ook thuis Nederlands?","Dat is khoot! Sprayk yay ohk tows NAY-der-lands?","That is good! Do you also speak Dutch at home?"],
+  ["Student","Nee, thuis spreken wij Engels, maar ik probeer het.","Nay, tows SPRAY-ken vay ENG-els, maar ik proh-BAYR het.","No, at home we speak English, but I try."],
+  ["Teacher","Welk woord vind jij het moeilijkst?","Velk voort vint yay het MOO-ee-lekst?","Which word do you find the most difficult?"],
+  ["Student","Het woord 'gezellig' is heel moeilijk voor mij.","Het voort 'khuh-ZEL-ikh' is hayl MOO-ee-likh foor may.","The word 'gezellig' is very difficult for me."],
+  ["Teacher","Oefen elke dag een beetje. Dat helpt echt!","OO-fen EL-kuh dakh uhn BAY-chuh. Dat helpt ekht!","Practise a little every day. That really helps!"],
+  ["Student","Bedankt voor uw geduld, juf.","Buh-DANKT foor uw khuh-DULT, yuf.","Thank you for your patience, teacher."],
+  ["Teacher","Geen probleem. Heb je nog vragen?","Khayn proh-BLAYM. Hep yuh nokh FRAH-khen?","No problem. Do you have more questions?"],
+  ["Student","Ja, wat betekent het woord 'gezellig'?","Yah, vat buh-TAY-kent het voort 'khuh-ZEL-ikh'?","Yes, what does the word 'gezellig' mean?"],
+  ["Teacher","Het betekent: knus, samen, prettig. Een typisch Nederlands gevoel!","Het buh-TAY-kent: knus, SAH-men, PRET-tikh. Uhn TAY-pis NAY-der-lands khuh-FEEL!","It means: cosy, together, pleasant. A typical Dutch feeling!"],
+]},
+
+// ── Mastering Dutch Vocabulary ────────────────────────────────────────
+{id:58, title:"Dictionary — All Words", book:"Mastering Dutch Vocabulary", type:'dictionary', cols:[], sc:0, rows:[]},
+{id:59, title:"Flash Cards", book:"Mastering Dutch Vocabulary", type:'flashcard', cols:[], sc:0, rows:[]},
+
+// ── Conclusion ────────────────────────────────────────────────────────
+{id:60, title:"Conclusion & What's Next", book:"Conclusion", type:'conclusion', cols:[], sc:0, rows:[]},
+
+]; // end CHAPTERS
+
+// ═══════════════════════════════════════════════════════
+//  TTS
+// ═══════════════════════════════════════════════════════
+let dutchVoice = null;
+
+function loadVoices() {
+  const voices = window.speechSynthesis.getVoices();
+  dutchVoice = voices.find(v => v.lang === 'nl-NL') ||
+               voices.find(v => v.lang === 'nl-BE') ||
+               voices.find(v => v.lang.startsWith('nl'));
+  if (!dutchVoice && voices.length > 0) {
+    document.getElementById('voice-warn').style.display = 'block';
+  }
+}
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+}
+
+// ── Chapter playback ──────────────────────────────────────────────────
+let chapterPlayId = null;
+let chapterPlayBtn = null;
+let readEnglish = localStorage.getItem('nl_read_english') !== '0';
+let dictPlayActive = false;
+let dictPlayBtn = null;
+
+function getEnglishCol(ch) {
+  // Find a column whose name starts with "english" (catches English, English Meaning, English Sentence, etc.)
+  let idx = ch.cols.findIndex(c => c.toLowerCase().startsWith('english'));
+  if (idx >= 0) return idx;
+  // Fallback: "meaning" (covers Separable Verbs chapter)
+  return ch.cols.findIndex(c => c.toLowerCase() === 'meaning');
+}
+
+function playQueueItems(items, idx) {
+  if (idx >= items.length || chapterPlayId === null) { stopChapterPlay(); return; }
+  const {text, lang} = items[idx];
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang;
+  u.rate = lang === 'nl-NL' ? 0.88 : 1.0;
+  if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
+  const isAfterDutch = idx % 2 === 0; // dutch item → shorter gap before english
+  u.onend  = () => setTimeout(() => playQueueItems(items, idx + 1), isAfterDutch ? 380 : 750);
+  u.onerror = () => setTimeout(() => playQueueItems(items, idx + 1), 200);
+  window.speechSynthesis.speak(u);
+}
+
+function playChapterAudio(ch, btn) {
+  if (chapterPlayId === ch.id) { window.speechSynthesis.cancel(); stopChapterPlay(); return; }
+  if (chapterPlayId !== null) { window.speechSynthesis.cancel(); stopChapterPlay(); }
+  if (coursePlayActive) { window.speechSynthesis.cancel(); stopCoursePlay(); }
+  if (dictPlayActive) { window.speechSynthesis.cancel(); stopDictPlay(); }
+  chapterPlayId = ch.id;
+  chapterPlayBtn = btn;
+  btn.textContent = '■ Stop';
+  btn.classList.add('active');
+
+  if (ch.type === 'cheatcode') {
+    const cardEl = document.getElementById(`card-${ch.id}`);
+    const items = [...cardEl.querySelectorAll('.pbtn[data-text]')]
+      .map(b => ({ text: b.dataset.text, lang: 'nl-NL' }));
+    playQueueItems(items, 0);
+    return;
+  }
+  const engCol = getEnglishCol(ch);
+  const items = [];
+  ch.rows.forEach(row => {
+    items.push({ text: row[ch.sc], lang: 'nl-NL' });
+    if (readEnglish && engCol >= 0 && row[engCol]) items.push({ text: row[engCol], lang: 'en-US' });
+  });
+  playQueueItems(items, 0);
+}
+
+function stopChapterPlay() {
+  chapterPlayId = null;
+  if (chapterPlayBtn) {
+    chapterPlayBtn.textContent = '▶ Play Chapter';
+    chapterPlayBtn.classList.remove('active');
+    chapterPlayBtn = null;
+  }
+}
+
+// ── Course playback ────────────────────────────────────────────────────
+let coursePlayActive = false;
+let scrollLock = false;
+
+function playCourse() {
+  const btn = document.getElementById('course-btn');
+  if (coursePlayActive) {
+    window.speechSynthesis.cancel();
+    stopCoursePlay();
+    return;
+  }
+  if (chapterPlayId !== null) { window.speechSynthesis.cancel(); stopChapterPlay(); }
+  if (dictPlayActive) { window.speechSynthesis.cancel(); stopDictPlay(); }
+
+  coursePlayActive = true;
+  btn.textContent = '■ Stop Course';
+  btn.classList.add('active');
+
+  // Build full queue from every chapter
+  const items = [];
+  CHAPTERS.forEach(ch => {
+    const engCol = getEnglishCol(ch);
+    ch.rows.forEach(row => {
+      items.push({ text: row[ch.sc], lang: 'nl-NL' });
+      if (readEnglish && engCol >= 0 && row[engCol]) items.push({ text: row[engCol], lang: 'en-US' });
+    });
+  });
+  playCourseItems(items, 0);
+}
+
+function playCourseItems(items, idx) {
+  if (idx >= items.length || !coursePlayActive) { stopCoursePlay(); return; }
+  const {text, lang} = items[idx];
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang;
+  u.rate = lang === 'nl-NL' ? 0.88 : 1.0;
+  if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
+  const isAfterDutch = idx % 2 === 0;
+  u.onend  = () => setTimeout(() => playCourseItems(items, idx + 1), isAfterDutch ? 380 : 750);
+  u.onerror = () => setTimeout(() => playCourseItems(items, idx + 1), 200);
+  window.speechSynthesis.speak(u);
+}
+
+function stopCoursePlay() {
+  coursePlayActive = false;
+  const btn = document.getElementById('course-btn');
+  if (btn) { btn.textContent = '▶ Play Course'; btn.classList.remove('active'); }
+}
+
+function stopDictPlay() {
+  dictPlayActive = false;
+  if (dictPlayBtn) { dictPlayBtn.textContent = '▶ Play All'; dictPlayBtn.classList.remove('active'); dictPlayBtn = null; }
+}
+
+function playDictQueue(items, idx) {
+  if (!dictPlayActive || idx >= items.length) { stopDictPlay(); return; }
+  const {text, lang} = items[idx];
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang; u.rate = lang === 'nl-NL' ? 0.88 : 1.0;
+  if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
+  u.onend  = () => setTimeout(() => playDictQueue(items, idx + 1), lang === 'nl-NL' ? 380 : 750);
+  u.onerror = () => setTimeout(() => playDictQueue(items, idx + 1), 200);
+  window.speechSynthesis.speak(u);
+}
+
+function startDictPlay(entries, btn) {
+  if (dictPlayActive && dictPlayBtn === btn) { window.speechSynthesis.cancel(); stopDictPlay(); return; }
+  if (dictPlayActive) { window.speechSynthesis.cancel(); stopDictPlay(); }
+  if (chapterPlayId !== null) { window.speechSynthesis.cancel(); stopChapterPlay(); }
+  if (coursePlayActive) { window.speechSynthesis.cancel(); stopCoursePlay(); }
+  if (!entries.length) return;
+  dictPlayActive = true;
+  dictPlayBtn = btn;
+  btn.textContent = '■ Stop';
+  btn.classList.add('active');
+  const items = [];
+  entries.forEach(e => {
+    items.push({ text: e.dutch, lang: 'nl-NL' });
+    if (readEnglish && e.english) items.push({ text: e.english, lang: 'en-US' });
+  });
+  playDictQueue(items, 0);
+}
+
+function speak(text, btn) {
+  if (!window.speechSynthesis) return;
+  stopChapterPlay();
+  stopCoursePlay();
+  stopDictPlay();
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.pbtn.playing').forEach(b => b.classList.remove('playing'));
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'nl-NL';
+  u.rate = 0.88;
+  u.pitch = 1.0;
+  if (dutchVoice) u.voice = dutchVoice;
+  btn.classList.add('playing');
+  u.onend = () => btn.classList.remove('playing');
+  u.onerror = () => btn.classList.remove('playing');
+  window.speechSynthesis.speak(u);
+}
+
+function speakDutchEnglish(dutch, english, btn) {
+  if (!window.speechSynthesis) return;
+  stopChapterPlay();
+  stopCoursePlay();
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.pbtn.playing').forEach(b => b.classList.remove('playing'));
+  btn.classList.add('playing');
+  const u1 = new SpeechSynthesisUtterance(dutch);
+  u1.lang = 'nl-NL'; u1.rate = 0.88; u1.pitch = 1.0;
+  if (dutchVoice) u1.voice = dutchVoice;
+  const u2 = new SpeechSynthesisUtterance(english);
+  u2.lang = 'en-US'; u2.rate = 1.0;
+  u2.onend = () => btn.classList.remove('playing');
+  u2.onerror = () => btn.classList.remove('playing');
+  u1.onerror = () => btn.classList.remove('playing');
+  u1.onend = () => setTimeout(() => window.speechSynthesis.speak(u2), 380);
+  window.speechSynthesis.speak(u1);
+}
+
+// ═══════════════════════════════════════════════════════
+//  PROGRESS
+// ═══════════════════════════════════════════════════════
+const STORE = 'nl_progress_v1';
+let done = new Set(JSON.parse(localStorage.getItem(STORE) || '[]'));
+
+function saveProgress() { localStorage.setItem(STORE, JSON.stringify([...done])); }
+
+function updateBar() {
+  const total = CHAPTERS.length, n = done.size;
+  const pct = total ? Math.round(n / total * 100) : 0;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-txt').textContent = `${n} / ${total}`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Special-type HTML builders ────────────────────────────────────────
+function buildIntroHTML() {
+  return `<div class="intro-body">
+<div class="disclaimer" style="margin-top:0">
+  <strong>Disclaimer:</strong> FastrackDutch is intended for general informational and self-study purposes only. The content, translations, and pronunciations are provided as a learning aid and cannot guarantee accuracy. Use at your own discretion. The app is not affiliated with any official Dutch language certification body. For formal language learning or legal/medical translation needs, consult a qualified professional.
+</div>
+<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.0</span></h2>
+<p>This app gives you everything you need to communicate in Dutch from day one. Six curated books cover vocabulary, pronunciation, grammar, sentences, and real-life expat scenarios — all in one place, with audio for every word and sentence.</p>
+<h3>What's Inside</h3>
+<ul>
+  <li><strong>Pronunciation Guide</strong> — Master the Dutch alphabet and decode every symbol used in this app.</li>
+  <li><strong>Core Vocabulary</strong> — 500+ essential Dutch words across 25+ themed chapters (body parts, numbers, ordinal numbers, transport, food, home, health, shopping, and more).</li>
+  <li><strong>Grammar &amp; Tenses</strong> — Present, past, and future tenses; de/het rules; question forms; negatives; modal verbs; conjunctions; diminutives; comparative adjectives; reflexive verbs; indirect speech; word order.</li>
+  <li><strong>Real-Life Sentences</strong> — 200+ sentences covering 25+ expat scenarios (airport, housing, work, banking, parenting, and more).</li>
+  <li><strong>Dictionary</strong> — Every word in one searchable, alphabetical reference with audio playback.</li>
+  <li><strong>Flash Cards</strong> — Practise vocabulary by random shuffle or by theme.</li>
+  <li><strong>Global Search</strong> — Find any Dutch word or English phrase instantly using the search bar at the top.</li>
+</ul>
+<h3>How to Use This App</h3>
+<ul>
+  <li><strong>Sidebar</strong> — Click any chapter title to jump to it and expand it. Completed chapters show in green.</li>
+  <li><strong>Search bar (top)</strong> — Type any Dutch or English word to find it across all chapters. Click a result to jump directly to that chapter.</li>
+  <li><strong>▶ Play Chapter</strong> — Reads the entire chapter aloud: Dutch word then English translation for every row.</li>
+  <li><strong>▶ Row buttons</strong> — Play just that one Dutch word or sentence.</li>
+  <li><strong>✓ Mark Complete &amp; Next</strong> — Saves your progress and auto-opens the next chapter.</li>
+  <li><strong>Progress bar (top right)</strong> — Shows chapters completed out of total.</li>
+  <li><strong>▶ Play Course</strong> — Plays the entire course from start to finish in one go.</li>
+</ul>
+<h3>Indicative Study Plans</h3>
+<table class="study-tbl">
+  <thead><tr><th>Track</th><th>Chapters / Day</th><th>Duration</th><th>Approach</th></tr></thead>
+  <tbody>
+    <tr><td><strong>🐢 Slow</strong></td><td>1</td><td>~60 days</td><td>Learn alongside a busy schedule; review each chapter thoroughly before moving on.</td></tr>
+    <tr><td><strong>🚶 Medium</strong></td><td>3</td><td>~20 days</td><td>Daily focused sessions of 30–45 minutes; revisit previous chapters every few days.</td></tr>
+    <tr><td><strong>🚀 Fast Track</strong></td><td>7–8</td><td>8–10 days</td><td>Intensive immersion — listen on commute, at lunch, and in the evening. This is what the app is designed for.</td></tr>
+  </tbody>
+</table>
+<div class="study-track-wrap">
+  <label>View day-by-day plan for:</label>
+  <select class="study-track-sel">
+    <option value="">— Choose a track —</option>
+    <option value="fast">🚀 Fast Track (8 days)</option>
+    <option value="medium">🚶 Medium (20 days)</option>
+    <option value="slow">🐢 Slow (60 days)</option>
+  </select>
+</div>
+<div id="study-daily"></div>
+<h3>Tips for Best Results</h3>
+<ul>
+  <li>Use <strong>Chrome or Edge on Windows</strong> for the most accurate Dutch TTS voice.</li>
+  <li><strong>Say each word aloud</strong> before clicking Play — then compare your pronunciation.</li>
+  <li>Read <strong>Chapter 3 (Reading the Pronunciation Guide)</strong> carefully first — it will unlock every word in the app.</li>
+  <li>Use <strong>Flash Cards</strong> for 10 minutes daily to reinforce vocabulary.</li>
+  <li>Don't aim for perfection — Dutch people appreciate any attempt in their language.</li>
+</ul>
+</div>`;
+}
+
+function buildDictionaryHTML() {
+  return `<div class="dict-wrap">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+  <input class="dict-search" type="text" placeholder="Search Dutch or English…" />
+  <span class="dict-count"></span>
+  <button class="dict-play-btn dict-play-all-btn">▶ Play All</button>
+</div>
+<div class="dict-controls">
+  <label><input type="radio" name="dict-mode" value="all" checked> All (A–Z)</label>
+  <label><input type="radio" name="dict-mode" value="chapter"> By Chapter</label>
+  <label><input type="radio" name="dict-mode" value="level"> By Level</label>
+</div>
+<table class="tbl">
+  <thead><tr><th style="width:36px;text-align:center">▶</th><th>Dutch</th><th>Pronunciation</th><th>English</th></tr></thead>
+  <tbody class="dict-tbody"></tbody>
+</table>
+</div>`;
+}
+
+function buildFlashcardHTML() {
+  return `<div class="fc-wrap">
+<div class="fc-controls">
+  <label><input type="radio" name="fc-mode" value="random" checked> All (Random)</label>
+  <label><input type="radio" name="fc-mode" value="theme"> By Theme</label>
+  <label><input type="radio" name="fc-mode" value="chapter"> By Chapter</label>
+  <label style="color:#1e7a3c;font-weight:700"><input type="radio" name="fc-mode" value="level-A1"> A1</label>
+  <label style="color:#003082;font-weight:700"><input type="radio" name="fc-mode" value="level-A2"> A2</label>
+  <label style="color:#c96200;font-weight:700"><input type="radio" name="fc-mode" value="level-B1"> B1</label>
+  <div class="fc-theme-wrap" style="display:none"><select class="fc-select fc-theme-sel"></select></div>
+  <div class="fc-chapter-wrap" style="display:none"><select class="fc-select fc-chapter-sel"></select></div>
+  <button class="fc-btn fc-shuffle-btn">↺ Shuffle</button>
+</div>
+<div class="fc-card">
+  <div class="fc-front-content">
+    <div class="fc-dutch"></div>
+    <div class="fc-pron"></div>
+    <button class="fc-btn fc-play-btn" title="Hear pronunciation">▶ Play</button>
+    <div class="fc-hint">tap card to reveal English</div>
+  </div>
+  <div class="fc-back-content" style="display:none">
+    <div class="fc-english"></div>
+  </div>
+</div>
+<div class="fc-nav">
+  <button class="fc-btn fc-prev-btn">← Prev</button>
+  <span class="fc-counter">— / —</span>
+  <button class="fc-btn fc-next-btn">Next →</button>
+</div>
+<div class="fc-progress"></div>
+</div>`;
+}
+
+function buildCheatcodeHTML() {
+  return `<div style="padding:4px 0">
+<div class="cheat-section">
+  <h4>🔤 Identical Words — Same Spelling &amp; Meaning</h4>
+  <p class="cheat-intro">These Dutch words look and mean exactly the same as their English counterparts. Zero memorisation needed!</p>
+  <table class="tbl"><thead><tr><th>Dutch</th><th>Pronunciation</th><th>English</th><th>Play</th></tr></thead><tbody>
+  <tr><td class="dc">alarm</td><td class="pc">ah-LARM</td><td>alarm</td><td><button class="pbtn" data-text="alarm">▶</button></td></tr>
+  <tr><td class="dc">arm</td><td class="pc">arm</td><td>arm</td><td><button class="pbtn" data-text="arm">▶</button></td></tr>
+  <tr><td class="dc">bank</td><td class="pc">bank</td><td>bank</td><td><button class="pbtn" data-text="bank">▶</button></td></tr>
+  <tr><td class="dc">bus</td><td class="pc">bus</td><td>bus</td><td><button class="pbtn" data-text="bus">▶</button></td></tr>
+  <tr><td class="dc">computer</td><td class="pc">kom-PYOO-ter</td><td>computer</td><td><button class="pbtn" data-text="computer">▶</button></td></tr>
+  <tr><td class="dc">contact</td><td class="pc">KON-takt</td><td>contact</td><td><button class="pbtn" data-text="contact">▶</button></td></tr>
+  <tr><td class="dc">hotel</td><td class="pc">hoh-TEL</td><td>hotel</td><td><button class="pbtn" data-text="hotel">▶</button></td></tr>
+  <tr><td class="dc">internet</td><td class="pc">IN-ter-net</td><td>internet</td><td><button class="pbtn" data-text="internet">▶</button></td></tr>
+  <tr><td class="dc">lamp</td><td class="pc">lamp</td><td>lamp</td><td><button class="pbtn" data-text="lamp">▶</button></td></tr>
+  <tr><td class="dc">menu</td><td class="pc">MEH-nuu</td><td>menu</td><td><button class="pbtn" data-text="menu">▶</button></td></tr>
+  <tr><td class="dc">park</td><td class="pc">park</td><td>park</td><td><button class="pbtn" data-text="park">▶</button></td></tr>
+  <tr><td class="dc">partner</td><td class="pc">PART-ner</td><td>partner</td><td><button class="pbtn" data-text="partner">▶</button></td></tr>
+  <tr><td class="dc">plant</td><td class="pc">plant</td><td>plant</td><td><button class="pbtn" data-text="plant">▶</button></td></tr>
+  <tr><td class="dc">plastic</td><td class="pc">PLAS-tik</td><td>plastic</td><td><button class="pbtn" data-text="plastic">▶</button></td></tr>
+  <tr><td class="dc">sport</td><td class="pc">sport</td><td>sport</td><td><button class="pbtn" data-text="sport">▶</button></td></tr>
+  <tr><td class="dc">taxi</td><td class="pc">TAK-see</td><td>taxi</td><td><button class="pbtn" data-text="taxi">▶</button></td></tr>
+  <tr><td class="dc">test</td><td class="pc">test</td><td>test</td><td><button class="pbtn" data-text="test">▶</button></td></tr>
+  <tr><td class="dc">tunnel</td><td class="pc">TUN-nel</td><td>tunnel</td><td><button class="pbtn" data-text="tunnel">▶</button></td></tr>
+  <tr><td class="dc">warm</td><td class="pc">varm</td><td>warm</td><td><button class="pbtn" data-text="warm">▶</button></td></tr>
+  <tr><td class="dc">water</td><td class="pc">VAH-ter</td><td>water</td><td><button class="pbtn" data-text="water">▶</button></td></tr>
+  <tr><td class="dc">wind</td><td class="pc">vint</td><td>wind</td><td><button class="pbtn" data-text="wind">▶</button></td></tr>
+  </tbody></table>
+</div>
+
+<div class="cheat-section">
+  <h4>🔀 Letter-Swap Formulas — Predict Dutch from English</h4>
+  <p class="cheat-intro">Reliable sound shifts that let you guess many Dutch words by transforming English ones.</p>
+  <table class="tbl"><thead><tr><th>Rule</th><th>Pattern</th><th>English</th><th>Dutch</th><th>Play</th></tr></thead><tbody>
+  <tr><td colspan="5" class="rule-section-hdr">▸ Vowel Shifts</td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="2">oo → oe</td><td class="pc" rowspan="2">English "oo" maps to Dutch "oe"</td><td>foot</td><td>voet</td><td><button class="pbtn" data-text="voet">▶</button></td></tr>
+  <tr><td>food</td><td>voedsel</td><td><button class="pbtn" data-text="voedsel">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="4">ou / ow → ui</td><td class="pc" rowspan="4">Old English /uː/ diphthong became "ui" in Dutch</td><td>house</td><td>huis</td><td><button class="pbtn" data-text="huis">▶</button></td></tr>
+  <tr><td>mouse</td><td>muis</td><td><button class="pbtn" data-text="muis">▶</button></td></tr>
+  <tr><td>louse</td><td>luis</td><td><button class="pbtn" data-text="luis">▶</button></td></tr>
+  <tr><td>brown</td><td>bruin</td><td><button class="pbtn" data-text="bruin">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="3">ee / ea → ij</td><td class="pc" rowspan="3">Long /iː/ vowel became "ij" diphthong in Dutch</td><td>free</td><td>vrij</td><td><button class="pbtn" data-text="vrij">▶</button></td></tr>
+  <tr><td>wheel</td><td>wiel</td><td><button class="pbtn" data-text="wiel">▶</button></td></tr>
+  <tr><td>teeth</td><td>tijd</td><td><button class="pbtn" data-text="tijd">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="6">Double vowel = long sound</td><td class="pc" rowspan="6">Double vowel in closed syllable → long; single → short</td><td>moon (long)</td><td>maan</td><td><button class="pbtn" data-text="maan">▶</button></td></tr>
+  <tr><td>leg (long)</td><td>been</td><td><button class="pbtn" data-text="been">▶</button></td></tr>
+  <tr><td>boat (long)</td><td>boot</td><td><button class="pbtn" data-text="boot">▶</button></td></tr>
+  <tr><td>man (short)</td><td>man</td><td><button class="pbtn" data-text="man">▶</button></td></tr>
+  <tr><td>cap (short)</td><td>pet</td><td><button class="pbtn" data-text="pet">▶</button></td></tr>
+  <tr><td>bone (short)</td><td>bot</td><td><button class="pbtn" data-text="bot">▶</button></td></tr>
+  <tr><td colspan="5" class="rule-section-hdr">▸ Consonant Shifts</td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="8">th → d</td><td class="pc" rowspan="8">Dutch lost the "th" sound — uses D instead</td><td>think</td><td>denken</td><td><button class="pbtn" data-text="denken">▶</button></td></tr>
+  <tr><td>three</td><td>drie</td><td><button class="pbtn" data-text="drie">▶</button></td></tr>
+  <tr><td>that</td><td>dat</td><td><button class="pbtn" data-text="dat">▶</button></td></tr>
+  <tr><td>this</td><td>dit</td><td><button class="pbtn" data-text="dit">▶</button></td></tr>
+  <tr><td>thank</td><td>danken</td><td><button class="pbtn" data-text="danken">▶</button></td></tr>
+  <tr><td>thick</td><td>dik</td><td><button class="pbtn" data-text="dik">▶</button></td></tr>
+  <tr><td>father</td><td>vader</td><td><button class="pbtn" data-text="vader">▶</button></td></tr>
+  <tr><td>mother</td><td>moeder</td><td><button class="pbtn" data-text="moeder">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="4">f → v (word-initial)</td><td class="pc" rowspan="4">Dutch uses V where English uses F in core Germanic words</td><td>five</td><td>vijf</td><td><button class="pbtn" data-text="vijf">▶</button></td></tr>
+  <tr><td>foot</td><td>voet</td><td><button class="pbtn" data-text="voet">▶</button></td></tr>
+  <tr><td>full</td><td>vol</td><td><button class="pbtn" data-text="vol">▶</button></td></tr>
+  <tr><td>father</td><td>vader</td><td><button class="pbtn" data-text="vader">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="2">d → t (word-final)</td><td class="pc" rowspan="2">Final obstruent devoicing: D is spelled but pronounced T</td><td>hand</td><td>hand</td><td><button class="pbtn" data-text="hand">▶</button></td></tr>
+  <tr><td>good</td><td>goed</td><td><button class="pbtn" data-text="goed">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="2">ch → k</td><td class="pc" rowspan="2">Latin/Greek "ch" simplified to K in Dutch</td><td>church</td><td>kerk</td><td><button class="pbtn" data-text="kerk">▶</button></td></tr>
+  <tr><td>character</td><td>karakter</td><td><button class="pbtn" data-text="karakter">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="4">-ght → -cht</td><td class="pc" rowspan="4">Silent GH becomes CH</td><td>night</td><td>nacht</td><td><button class="pbtn" data-text="nacht">▶</button></td></tr>
+  <tr><td>right</td><td>recht</td><td><button class="pbtn" data-text="recht">▶</button></td></tr>
+  <tr><td>light</td><td>licht</td><td><button class="pbtn" data-text="licht">▶</button></td></tr>
+  <tr><td>daughter</td><td>dochter</td><td><button class="pbtn" data-text="dochter">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="4">W → V (often)</td><td class="pc" rowspan="4">Many W-words use V in Dutch</td><td>water</td><td>water</td><td><button class="pbtn" data-text="water">▶</button></td></tr>
+  <tr><td>wine</td><td>wijn</td><td><button class="pbtn" data-text="wijn">▶</button></td></tr>
+  <tr><td>work</td><td>werk</td><td><button class="pbtn" data-text="werk">▶</button></td></tr>
+  <tr><td>word</td><td>woord</td><td><button class="pbtn" data-text="woord">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="2">V stays V</td><td class="pc" rowspan="2">V sounds are shared</td><td>video</td><td>video</td><td><button class="pbtn" data-text="video">▶</button></td></tr>
+  <tr><td>visa</td><td>visum</td><td><button class="pbtn" data-text="visum">▶</button></td></tr>
+  <tr><td colspan="5" class="rule-section-hdr">▸ Ending Shifts</td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="6">-tion → -tie</td><td class="pc" rowspan="6">Latinate nouns transfer almost perfectly</td><td>station</td><td>station</td><td><button class="pbtn" data-text="station">▶</button></td></tr>
+  <tr><td>nation</td><td>natie</td><td><button class="pbtn" data-text="natie">▶</button></td></tr>
+  <tr><td>information</td><td>informatie</td><td><button class="pbtn" data-text="informatie">▶</button></td></tr>
+  <tr><td>reservation</td><td>reservatie</td><td><button class="pbtn" data-text="reservatie">▶</button></td></tr>
+  <tr><td>action</td><td>actie</td><td><button class="pbtn" data-text="actie">▶</button></td></tr>
+  <tr><td>situation</td><td>situatie</td><td><button class="pbtn" data-text="situatie">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc">-ness → -heid</td><td class="pc">Abstract noun suffix swap</td><td>friendliness</td><td>vriendelijkheid</td><td><button class="pbtn" data-text="vriendelijkheid">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="5">-ly → -lijk</td><td class="pc" rowspan="5">Both from Old Germanic -līk meaning "body/form"</td><td>friendly</td><td>vriendelijk</td><td><button class="pbtn" data-text="vriendelijk">▶</button></td></tr>
+  <tr><td>lovely</td><td>lieflijk</td><td><button class="pbtn" data-text="lieflijk">▶</button></td></tr>
+  <tr><td>motherly</td><td>moederlijk</td><td><button class="pbtn" data-text="moederlijk">▶</button></td></tr>
+  <tr><td>naturally</td><td>natuurlijk</td><td><button class="pbtn" data-text="natuurlijk">▶</button></td></tr>
+  <tr><td>probably</td><td>waarschijnlijk</td><td><button class="pbtn" data-text="waarschijnlijk">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="6">-er → -er</td><td class="pc" rowspan="6">Agent nouns and comparatives share the -er suffix</td><td>teacher</td><td>leraar</td><td><button class="pbtn" data-text="leraar">▶</button></td></tr>
+  <tr><td>driver</td><td>bestuurder</td><td><button class="pbtn" data-text="bestuurder">▶</button></td></tr>
+  <tr><td>baker</td><td>bakker</td><td><button class="pbtn" data-text="bakker">▶</button></td></tr>
+  <tr><td>worker</td><td>werker</td><td><button class="pbtn" data-text="werker">▶</button></td></tr>
+  <tr><td>colder</td><td>kouder</td><td><button class="pbtn" data-text="kouder">▶</button></td></tr>
+  <tr><td>faster</td><td>sneller</td><td><button class="pbtn" data-text="sneller">▶</button></td></tr>
+  </tbody></table>
+</div>
+
+<div class="cheat-section">
+  <h4>🧩 Compound Logic — Break Dutch Nouns Apart</h4>
+  <p class="cheat-intro">Dutch loves combining two simple words into one noun. If you know the parts, you can decode — or even invent — the whole word!</p>
+  <table class="tbl"><thead><tr><th>Dutch Word</th><th>Parts</th><th>Literal Meaning → Actual Meaning</th><th>Play</th></tr></thead><tbody>
+  <tr><td class="dc">ziekenhuis</td><td class="pc">ziek (sick) + huis (house)</td><td>sick house → hospital</td><td><button class="pbtn" data-text="ziekenhuis">▶</button></td></tr>
+  <tr><td class="dc">vliegveld</td><td class="pc">vlieg (fly) + veld (field)</td><td>fly field → airport</td><td><button class="pbtn" data-text="vliegveld">▶</button></td></tr>
+  <tr><td class="dc">tandarts</td><td class="pc">tand (tooth) + arts (doctor)</td><td>tooth doctor → dentist</td><td><button class="pbtn" data-text="tandarts">▶</button></td></tr>
+  <tr><td class="dc">snelweg</td><td class="pc">snel (fast) + weg (road)</td><td>fast road → motorway/highway</td><td><button class="pbtn" data-text="snelweg">▶</button></td></tr>
+  <tr><td class="dc">rijbewijs</td><td class="pc">rij (drive) + bewijs (proof)</td><td>drive proof → driver's licence</td><td><button class="pbtn" data-text="rijbewijs">▶</button></td></tr>
+  <tr><td class="dc">brandweer</td><td class="pc">brand (fire) + weer (resistance)</td><td>fire resistance → fire brigade</td><td><button class="pbtn" data-text="brandweer">▶</button></td></tr>
+  <tr><td class="dc">politiebureau</td><td class="pc">politie (police) + bureau (office)</td><td>police office → police station</td><td><button class="pbtn" data-text="politiebureau">▶</button></td></tr>
+  <tr><td class="dc">treinstation</td><td class="pc">trein (train) + station (station)</td><td>train station → railway station</td><td><button class="pbtn" data-text="treinstation">▶</button></td></tr>
+  <tr><td class="dc">zeehond</td><td class="pc">zee (sea) + hond (dog)</td><td>sea dog → seal</td><td><button class="pbtn" data-text="zeehond">▶</button></td></tr>
+  <tr><td class="dc">vliegtuig</td><td class="pc">vlieg (fly) + tuig (gear/rigging)</td><td>fly gear → aeroplane</td><td><button class="pbtn" data-text="vliegtuig">▶</button></td></tr>
+  <tr><td class="dc">koelkast</td><td class="pc">koel (cool) + kast (cabinet)</td><td>cool cabinet → refrigerator</td><td><button class="pbtn" data-text="koelkast">▶</button></td></tr>
+  <tr><td class="dc">slaapkamer</td><td class="pc">slaap (sleep) + kamer (room)</td><td>sleep room → bedroom</td><td><button class="pbtn" data-text="slaapkamer">▶</button></td></tr>
+  <tr><td class="dc">woonkamer</td><td class="pc">woon (live) + kamer (room)</td><td>living room → living room</td><td><button class="pbtn" data-text="woonkamer">▶</button></td></tr>
+  <tr><td class="dc">speeltuin</td><td class="pc">speel (play) + tuin (garden)</td><td>play garden → playground</td><td><button class="pbtn" data-text="speeltuin">▶</button></td></tr>
+  <tr><td class="dc">zwembad</td><td class="pc">zwem (swim) + bad (bath/pool)</td><td>swim bath → swimming pool</td><td><button class="pbtn" data-text="zwembad">▶</button></td></tr>
+  <tr><td class="dc">fietspad</td><td class="pc">fiets (bicycle) + pad (path)</td><td>bicycle path → cycle lane</td><td><button class="pbtn" data-text="fietspad">▶</button></td></tr>
+  <tr><td class="dc">voetbal</td><td class="pc">voet (foot) + bal (ball)</td><td>foot ball → football/soccer</td><td><button class="pbtn" data-text="voetbal">▶</button></td></tr>
+  <tr><td class="dc">handtas</td><td class="pc">hand (hand) + tas (bag)</td><td>hand bag → handbag</td><td><button class="pbtn" data-text="handtas">▶</button></td></tr>
+  </tbody></table>
+  <p class="cheat-intro" style="margin-top:8px">💡 Tip: When stuck on a complex Dutch noun, try splitting it in two. You will be surprised how often it works!</p>
+</div>
+</div>`;
+}
+
+function buildConclusionHTML() {
+  return `<div class="concl-wrap">
+<h2>Congratulations — You Did It!</h2>
+<p>You have completed FastrackDutch. You now have a solid foundation in Dutch vocabulary, pronunciation, grammar, and real-life communication. Here is a summary of what you have covered.</p>
+<h3>Your Dutch Journey in Numbers</h3>
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-num stat-words">…</div><div class="stat-label">Vocabulary Items</div></div>
+  <div class="stat-card"><div class="stat-num stat-allwords">…</div><div class="stat-label">Total Word Forms</div></div>
+  <div class="stat-card"><div class="stat-num stat-sentences">…</div><div class="stat-label">Example Sentences</div></div>
+  <div class="stat-card"><div class="stat-num stat-scenarios">…</div><div class="stat-label">Real-Life Themes</div></div>
+  <div class="stat-card"><div class="stat-num stat-chapters">…</div><div class="stat-label">Learning Chapters</div></div>
+</div>
+<p style="font-size:.78rem;color:var(--muted);margin-top:4px"><em>Vocabulary Items</em> = canonical forms from vocabulary chapters (infinitives, base forms). <em>Total Word Forms</em> = every unique Dutch token across all chapters, including conjugated forms (heeft, had, werkt…).</p>
+
+<h3>What You Can Do Now</h3>
+<ul class="next-steps">
+  <li>✅ Greet colleagues, neighbours, and shopkeepers in Dutch</li>
+  <li>✅ Navigate transport, housing, and healthcare in the Netherlands</li>
+  <li>✅ Discuss daily routines in present, past, and future tenses</li>
+  <li>✅ Handle airport, immigration, banking, and workplace Dutch</li>
+  <li>✅ Read and decode Dutch text using the pronunciation guide</li>
+  <li>✅ Introduce yourself and hold basic conversations with Dutch neighbours</li>
+</ul>
+
+<h3>CEFR Coverage — How Much A1, A2, and B1 Does This App Cover?</h3>
+<p style="font-size:.84rem;margin-bottom:10px">The Common European Framework of Reference (CEFR) defines A1 (basic user), A2 (elementary user), and B1 (intermediate user) of Dutch. FastrackDutch covers the majority of A1 and A2, and select B1 topics.</p>
+<div class="cefr-grid">
+  <div class="cefr-card">
+    <h4>A1 — Covered ✅</h4>
+    <ul>
+      <li>Alphabet, vowels &amp; special sounds</li>
+      <li>Greetings, farewells, introductions</li>
+      <li>Pronouns (ik, jij, hij, zij, wij…)</li>
+      <li>Numbers 1–30, 100, 1,000, 1,000,000</li>
+      <li>Basic question words (wie, wat, waar, wanneer…)</li>
+      <li>Essential daily vocabulary (food, transport, home)</li>
+      <li>Present tense — zijn &amp; hebben</li>
+      <li>Common verbs (infinitive forms)</li>
+      <li>Time vocabulary (days, months, seasons)</li>
+      <li>Basic colours (rood, blauw, groen, geel, zwart, wit…)</li>
+      <li>Family and relationships vocabulary</li>
+      <li>Cheat Code — cognates, letter-swap rules, compound logic</li>
+    </ul>
+  </div>
+  <div class="cefr-card">
+    <h4>A2 — Covered ✅</h4>
+    <ul>
+      <li>Simple past and perfect tenses</li>
+      <li>Future expressions</li>
+      <li>Modal verbs (kunnen, moeten, mogen, willen)</li>
+      <li>Separable verbs (opbellen, uitleggen…)</li>
+      <li>Negation (niet, geen)</li>
+      <li>Word order rules</li>
+      <li>De / het article rules with patterns</li>
+      <li>Conjunctions (maar, want, omdat, als, terwijl…)</li>
+      <li>Dutch diminutives — the -tje rule</li>
+      <li>Housing, work, healthcare, transport sentences</li>
+      <li>Banking, school, community scenarios</li>
+      <li>200+ expat real-life sentences</li>
+    </ul>
+  </div>
+  <div class="cefr-card">
+    <h4>B1 — Covered ✅</h4>
+    <ul>
+      <li>Comparative &amp; superlative adjectives (groter, het grootst)</li>
+      <li>Reflexive verbs (zich wassen, zich voelen…)</li>
+      <li>Indirect speech (Hij zegt dat…)</li>
+      <li>Body parts vocabulary in context</li>
+      <li>Ordinal numbers (eerste, tweede…)</li>
+      <li>Extended expat scenarios (healthcare, housing, integration)</li>
+    </ul>
+  </div>
+</div>
+<div class="cefr-gap">
+  <strong>Remaining gaps to be aware of (B1+ topics):</strong>
+  Ordinal numbers beyond 100th · Passive voice (worden + past participle) · Subjunctive mood · Complex subordinate clauses · Formal letter writing · Compound nouns in depth · Regional dialect differences
+</div>
+
+<h3>Your Next Steps</h3>
+<ul class="next-steps">
+  <li>🃏 <strong>Daily Flash Cards</strong> — 10 minutes every morning to keep vocabulary fresh.</li>
+  <li>📋 <strong>Inburgering exam</strong> — This app covers the core A1/A2 vocabulary needed for the integration exam.</li>
+  <li>🎮 <strong><a href="https://www.duolingo.com/course/nl/en/Learn-Dutch" target="_blank" rel="noopener">Duolingo Dutch</a></strong> — Free gamified daily lessons to reinforce grammar.</li>
+  <li>📱 <strong><a href="https://www.mondly.com/learn-dutch-online" target="_blank" rel="noopener">Mondly Dutch</a></strong> — Conversational Dutch with speech recognition; excellent companion to this app.</li>
+  <li>📗 <strong><a href="https://www.amazon.com/Hugo-Dutch-Three-Months/dp/1405341270" target="_blank" rel="noopener">Hugo: Dutch in Three Months</a></strong> — Structured self-study book to build deeper grammar understanding after completing this app.</li>
+  <li>🏫 <strong>NT2 classes</strong> — Enrol in a formal Dutch course (<a href="https://www.reginacaeli.nl/en/" target="_blank" rel="noopener">Regina Coeli</a>, Babel, or your local ROC) for spoken fluency and exam preparation.</li>
+  <li>📺 <strong><a href="https://nos.nl/nieuws" target="_blank" rel="noopener">NOS Journaal</a></strong> — Watch Dutch news with subtitles to train your ear.</li>
+  <li>🗣️ <strong>Talk to neighbours</strong> — Even one Dutch sentence a day makes a real difference.</li>
+</ul>
+
+<p style="margin-top:20px;font-style:italic;color:var(--muted)">Veel succes met het leren van Nederlands! — Good luck learning Dutch!</p>
+
+<div class="disclaimer">
+  <strong>Disclaimer:</strong> FastrackDutch is intended for general informational and self-study purposes only. Translations, pronunciations, and linguistic rules are provided as a learning aid and cannot guarantee accuracy. The app covers Dutch at an introductory level (A1/A2) and is not a substitute for formal language instruction, certified translation, or professional advice. Content is based on commonly accepted Dutch usage but may not reflect all regional variations. Use at your own risk. The app is not affiliated with NT2, Inburgering, CEFR, or any Dutch language authority.
+</div>
+</div>`;
+}
+
+// ── Init functions for dynamic chapters ──────────────────────────────
+const VOCAB_IDS = new Set([2,3,4,5,6,7,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,61,62]);
+const SENTENCE_IDS = new Set([9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,44,45,46,47,48,49,50,51,52,53,54,63,64,65,66,67,68,70]);
+
+// CEFR level per chapter id — drives the color badge in card header and sidebar
+const CHAPTER_LEVELS = {
+  55:'A1',56:'A1',1:'A1',69:'A1',2:'A1',61:'A1',28:'A1',3:'A1',54:'A1',
+  4:'A1',5:'A1',6:'A1',7:'A1',31:'A1',32:'A1',
+  62:'A2',8:'A2',65:'A2',9:'A2',10:'A2',11:'A2',12:'A2',13:'A2',
+  14:'A2',15:'A2',63:'A2',64:'A2',16:'A2',17:'A2',
+  18:'A2',19:'A2',20:'A2',21:'A2',22:'A2',23:'A2',24:'A2',25:'A2',
+  26:'A2',27:'A2',29:'A2',30:'A2',33:'A2',34:'A2',35:'A2',
+  66:'B1',67:'B1',68:'B1',
+  36:'B1',37:'B1',38:'B1',39:'B1',40:'B1',41:'B1',42:'B1',43:'B1',
+  44:'B1',45:'B1',46:'B1',47:'B1',48:'B1',49:'B1',50:'B1',51:'B1',
+  52:'B1',53:'B1',70:'B1'
+};
+
+// Sort chapters: Introduction first → A1 → A2 → B1 → Dictionary/Flash/Conclusion last
+;(function sortChapters() {
+  const RANK = {A1:1, A2:2, B1:3};
+  const TAIL = new Set([58,59,60]);
+  CHAPTERS.sort((a, b) => {
+    if (a.id === 57) return -1;
+    if (b.id === 57) return 1;
+    const aT = TAIL.has(a.id), bT = TAIL.has(b.id);
+    if (aT && bT) return 0;
+    if (aT) return 1;
+    if (bT) return -1;
+    const ra = RANK[CHAPTER_LEVELS[a.id]] ?? 2;
+    const rb = RANK[CHAPTER_LEVELS[b.id]] ?? 2;
+    return ra - rb;
+  });
+})();
+
+function buildDictEntries() {
+  const entries = [], seen = new Set();
+  CHAPTERS.forEach(ch => {
+    if (!VOCAB_IDS.has(ch.id)) return;
+    const engCol = getEnglishCol(ch);
+    const pronCol = ch.cols.findIndex(c => c.toLowerCase().includes('pron') || c.toLowerCase().includes('approx'));
+    ch.rows.forEach(row => {
+      const dutch = (row[ch.sc] || '').trim();
+      if (!dutch || seen.has(dutch.toLowerCase())) return;
+      seen.add(dutch.toLowerCase());
+      entries.push({
+        dutch,
+        pron:    pronCol >= 0 ? (row[pronCol] || '') : '',
+        english: engCol >= 0 ? (row[engCol] || '') : '',
+        chapterId: ch.id,
+        chapterTitle: ch.title
+      });
+    });
+  });
+  entries.sort((a,b) => a.dutch.toLowerCase().localeCompare(b.dutch.toLowerCase(), 'nl'));
+  return entries;
+}
+
+function initDictionary(card) {
+  const entries = buildDictEntries();
+  const tbody = card.querySelector('.dict-tbody');
+  const searchInput = card.querySelector('.dict-search');
+  const countEl = card.querySelector('.dict-count');
+
+  let currentList = entries;
+
+  function rowHTML(e, grpKey) {
+    return `<tr data-grp="${grpKey}">
+      <td style="text-align:center;padding:6px"><button class="pbtn" data-text="${esc(e.dutch)}" data-eng="${esc(e.english)}" title="Play">▶</button></td>
+      <td class="dc">${esc(e.dutch)}</td>
+      <td class="pc">${esc(e.pron)}</td>
+      <td>${esc(e.english)}</td>
+    </tr>`;
+  }
+  function grpHdr(label, cls, grpKey) {
+    return `<tr class="dict-group-hdr${cls?' '+cls:''}" data-grp="${grpKey}"><td colspan="4"><span>${label}</span><button class="dict-play-btn" data-grp="${grpKey}">▶ Play All</button></td></tr>`;
+  }
+
+  function renderRows(filter) {
+    const mode = card.querySelector('input[name="dict-mode"]:checked').value;
+    const list = filter
+      ? entries.filter(e => e.dutch.toLowerCase().includes(filter) || e.english.toLowerCase().includes(filter))
+      : entries;
+    currentList = list;
+    countEl.textContent = list.length + ' words';
+
+    const groupMap = new Map();
+    let html = '', gi = 0;
+
+    if (mode === 'all') {
+      let lastLetter = '', grpKey = '';
+      list.forEach(e => {
+        const letter = e.dutch[0].toUpperCase();
+        if (letter !== lastLetter) {
+          grpKey = 'g' + gi++;
+          groupMap.set(grpKey, []);
+          html += grpHdr(letter, '', grpKey);
+          lastLetter = letter;
+        }
+        groupMap.get(grpKey).push(e);
+        html += rowHTML(e, grpKey);
+      });
+    } else if (mode === 'chapter') {
+      const byChapter = new Map();
+      CHAPTERS.forEach(ch => { if (VOCAB_IDS.has(ch.id)) byChapter.set(ch.id, { title: ch.title, rows: [] }); });
+      list.forEach(e => { if (byChapter.has(e.chapterId)) byChapter.get(e.chapterId).rows.push(e); });
+      byChapter.forEach(grp => {
+        if (!grp.rows.length) return;
+        const grpKey = 'g' + gi++;
+        groupMap.set(grpKey, grp.rows);
+        html += grpHdr(grp.title, '', grpKey);
+        grp.rows.forEach(e => html += rowHTML(e, grpKey));
+      });
+    } else {
+      const byLevel = { A1: [], A2: [], B1: [], other: [] };
+      list.forEach(e => { const lvl = CHAPTER_LEVELS[e.chapterId]; (byLevel[lvl] || byLevel.other).push(e); });
+      ['A1','A2','B1'].forEach(lvl => {
+        if (!byLevel[lvl].length) return;
+        const grpKey = 'g' + gi++;
+        groupMap.set(grpKey, byLevel[lvl]);
+        html += grpHdr('▸ ' + lvl, 'dict-lvl-' + lvl.toLowerCase(), grpKey);
+        byLevel[lvl].forEach(e => html += rowHTML(e, grpKey));
+      });
+      if (byLevel.other.length) {
+        const grpKey = 'g' + gi++;
+        groupMap.set(grpKey, byLevel.other);
+        html += grpHdr('▸ Other', '', grpKey);
+        byLevel.other.forEach(e => html += rowHTML(e, grpKey));
+      }
+    }
+
+    tbody.innerHTML = html;
+    tbody.querySelectorAll('.pbtn').forEach(btn =>
+      btn.addEventListener('click', ev => {
+        ev.stopPropagation();
+        if (readEnglish && btn.dataset.eng) speakDutchEnglish(btn.dataset.text, btn.dataset.eng, btn);
+        else speak(btn.dataset.text, btn);
+      })
+    );
+    tbody.querySelectorAll('.dict-play-btn').forEach(btn =>
+      btn.addEventListener('click', ev => {
+        ev.stopPropagation();
+        startDictPlay(groupMap.get(btn.dataset.grp) || [], btn);
+      })
+    );
+  }
+
+  card.querySelector('.dict-play-all-btn').addEventListener('click', () => {
+    startDictPlay(currentList, card.querySelector('.dict-play-all-btn'));
+  });
+  renderRows('');
+  searchInput.addEventListener('input', () => renderRows(searchInput.value.toLowerCase().trim()));
+  card.querySelectorAll('input[name="dict-mode"]').forEach(r =>
+    r.addEventListener('change', () => renderRows(searchInput.value.toLowerCase().trim()))
+  );
+}
+
+function initFlashcard(card) {
+  const themes = {}, chapterDecks = {}, levelDecks = {A1:[], A2:[], B1:[]};
+
+  CHAPTERS.forEach(ch => {
+    if (!VOCAB_IDS.has(ch.id)) return;
+    const engCol = getEnglishCol(ch);
+    const pronCol = ch.cols.findIndex(c => c.toLowerCase().includes('pron') || c.toLowerCase().includes('approx'));
+    const cards = ch.rows.map(row => {
+      const dutch = (row[ch.sc] || '').trim();
+      if (!dutch) return null;
+      return { dutch, pron: pronCol >= 0 ? (row[pronCol] || '') : '', english: engCol >= 0 ? (row[engCol] || '') : '' };
+    }).filter(Boolean);
+    if (!cards.length) return;
+    const book = ch.book;
+    if (!themes[book]) themes[book] = [];
+    themes[book].push(...cards);
+    chapterDecks[ch.id] = cards;
+    const lvl = CHAPTER_LEVELS[ch.id];
+    if (lvl && levelDecks[lvl]) levelDecks[lvl].push(...cards);
+  });
+
+  const themeSelect   = card.querySelector('.fc-theme-sel');
+  const chapterSelect = card.querySelector('.fc-chapter-sel');
+
+  Object.keys(themes).forEach(book => {
+    const opt = document.createElement('option');
+    opt.value = book; opt.textContent = book;
+    themeSelect.appendChild(opt);
+  });
+  CHAPTERS.forEach(ch => {
+    if (!VOCAB_IDS.has(ch.id) || !chapterDecks[ch.id]) return;
+    const opt = document.createElement('option');
+    opt.value = ch.id;
+    opt.textContent = ch.title;
+    chapterSelect.appendChild(opt);
+  });
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  }
+
+  let deck = [], idx = 0, flipped = false;
+
+  function loadDeck() {
+    const mode = card.querySelector('input[name="fc-mode"]:checked').value;
+    card.querySelector('.fc-theme-wrap').style.display   = mode === 'theme'   ? '' : 'none';
+    card.querySelector('.fc-chapter-wrap').style.display = mode === 'chapter' ? '' : 'none';
+    if (mode === 'random') {
+      deck = shuffle(Object.values(themes).flat());
+    } else if (mode === 'theme') {
+      deck = themes[themeSelect.value] || [];
+    } else if (mode === 'chapter') {
+      deck = chapterDecks[parseInt(chapterSelect.value)] || [];
+    } else if (mode.startsWith('level-')) {
+      deck = shuffle([...(levelDecks[mode.split('-')[1]] || [])]);
+    }
+    idx = 0; showCard();
+  }
+
+  function showCard() {
+    if (!deck.length) {
+      card.querySelector('.fc-dutch').textContent = '—';
+      card.querySelector('.fc-pron').textContent  = '';
+      card.querySelector('.fc-english').textContent = 'No cards in this filter';
+      card.querySelector('.fc-front-content').style.display = '';
+      card.querySelector('.fc-back-content').style.display  = 'none';
+      card.querySelector('.fc-counter').textContent = '0 / 0';
+      card.querySelector('.fc-progress').textContent = '';
+      return;
+    }
+    flipped = false;
+    const item = deck[idx];
+    card.querySelector('.fc-dutch').textContent = item.dutch;
+    card.querySelector('.fc-pron').textContent  = item.pron;
+    card.querySelector('.fc-english').textContent = item.english;
+    card.querySelector('.fc-front-content').style.display = '';
+    card.querySelector('.fc-back-content').style.display  = 'none';
+    card.querySelector('.fc-counter').textContent = `${idx+1} / ${deck.length}`;
+    card.querySelector('.fc-progress').textContent =
+      `${Math.round((idx+1)/deck.length*100)}% through this deck`;
+  }
+
+  card.querySelector('.fc-card').addEventListener('click', e => {
+    if (e.target.closest('.fc-play-btn')) return;
+    flipped = !flipped;
+    card.querySelector('.fc-front-content').style.display = flipped ? 'none' : '';
+    card.querySelector('.fc-back-content').style.display  = flipped ? '' : 'none';
+  });
+  card.querySelector('.fc-play-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    if (deck.length) speak(deck[idx].dutch, e.currentTarget);
+  });
+  card.querySelector('.fc-prev-btn').addEventListener('click', () => { if(idx>0){idx--;showCard();} });
+  card.querySelector('.fc-next-btn').addEventListener('click', () => { if(idx<deck.length-1){idx++;showCard();} });
+  card.querySelector('.fc-shuffle-btn').addEventListener('click', () => { deck=shuffle(deck);idx=0;showCard(); });
+  card.querySelectorAll('input[name="fc-mode"]').forEach(r => r.addEventListener('change', loadDeck));
+  themeSelect.addEventListener('change', loadDeck);
+  chapterSelect.addEventListener('change', loadDeck);
+  loadDeck();
+}
+
+function initConclusion(card) {
+  const seenWords = new Set();   // canonical vocabulary items (base forms)
+  const allTokens = new Set();   // every unique Dutch word token across all chapters
+  let sentenceCount = 0;
+  const seenThemes = new Set();
+
+  CHAPTERS.forEach(ch => {
+    if ([57,58,59,60].includes(ch.id)) return;
+    if (VOCAB_IDS.has(ch.id)) {
+      ch.rows.forEach(row => { const w=(row[ch.sc]||'').trim().toLowerCase(); if(w) seenWords.add(w); });
+      seenThemes.add(ch.title);
+    }
+    if (SENTENCE_IDS.has(ch.id)) {
+      sentenceCount += ch.rows.length;
+      seenThemes.add(ch.title);
+    }
+    // tokenise every Dutch column entry for total word forms
+    if (ch.rows && ch.sc !== undefined) {
+      ch.rows.forEach(row => {
+        const text = (row[ch.sc] || '').toLowerCase();
+        text.split(/[\s.,!?;:()\[\]"'\/\-–—]+/).forEach(t => { if (t.length > 1) allTokens.add(t); });
+      });
+    }
+  });
+
+  card.querySelector('.stat-words').textContent     = seenWords.size + '+';
+  card.querySelector('.stat-allwords').textContent  = allTokens.size + '+';
+  card.querySelector('.stat-sentences').textContent = sentenceCount + '+';
+  card.querySelector('.stat-scenarios').textContent = seenThemes.size;
+  const learningChapters = CHAPTERS.filter(ch => !['dictionary','flashcard','conclusion'].includes(ch.type)).length;
+  card.querySelector('.stat-chapters').textContent  = learningChapters;
+}
+
+function initIntro(card) {
+  const sel = card.querySelector('.study-track-sel');
+  const container = card.querySelector('#study-daily');
+  if (!sel || !container) return;
+
+  const PACE = { fast: 8, medium: 3, slow: 1 };
+
+  sel.addEventListener('change', () => {
+    const track = sel.value;
+    if (!track) { container.innerHTML = ''; return; }
+    const pace = PACE[track];
+    let html = `<table class="study-tbl study-daily-tbl"><thead><tr><th>Day</th><th>Ch #</th><th>Chapters to cover</th></tr></thead><tbody>`;
+    for (let i = 0, day = 1; i < CHAPTERS.length; i += pace, day++) {
+      const slice = CHAPTERS.slice(i, i + pace);
+      const nums  = slice.map((_, j) => i + j + 1).join(', ');
+      const titles = slice.map(ch => ch.title).join(' &nbsp;·&nbsp; ');
+      html += `<tr><td><strong>Day ${day}</strong></td><td style="white-space:nowrap">${nums}</td><td>${titles}</td></tr>`;
+    }
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+  });
+}
+
+function buildTable(ch) {
+  if (ch.type === 'intro')       return buildIntroHTML();
+  if (ch.type === 'cheatcode')   return buildCheatcodeHTML();
+  if (ch.type === 'dictionary')  return buildDictionaryHTML();
+  if (ch.type === 'flashcard')   return buildFlashcardHTML();
+  if (ch.type === 'conclusion')  return buildConclusionHTML();
+
+  let h = `<table class="tbl"><thead><tr>`;
+  ch.cols.forEach((c, ci) => {
+    h += `<th>${esc(c)}</th>`;
+    if (ch.alphPlay !== undefined && ci === 1) h += `<th></th>`;
+  });
+  h += `<th>Play</th></tr></thead><tbody>`;
+  ch.rows.forEach(row => {
+    h += `<tr>`;
+    row.forEach((cell, ci) => {
+      let cls = '';
+      if (ci === ch.sc) cls = ' class="dc"';
+      else if (ch.cols[ci] && (ch.cols[ci].toLowerCase().includes('pron') || ch.cols[ci].toLowerCase().includes('approx'))) cls = ' class="pc"';
+      h += `<td${cls}>${esc(cell)}</td>`;
+      if (ch.alphPlay !== undefined && ci === 1)
+        h += `<td><button class="pbtn" data-text="${esc(row[ch.alphPlay])}" title="Play letter sound">▶</button></td>`;
+    });
+    h += `<td><button class="pbtn" data-text="${esc(row[ch.sc])}" title="Play Dutch">▶</button></td>`;
+    h += `</tr>`;
+  });
+  h += `</tbody></table>`;
+  return h;
+}
+
+function render() {
+  const container = document.getElementById('chapters');
+  const sbList = document.getElementById('sb-list');
+  let lastBook = '';
+
+  CHAPTERS.forEach((ch, i) => {
+    const isDone = done.has(ch.id);
+    const isFirst = i === 0;
+
+    // Sidebar book label
+    if (ch.book !== lastBook) {
+      const lbl = document.createElement('div');
+      lbl.className = 'sb-section';
+      lbl.textContent = ch.book;
+      sbList.appendChild(lbl);
+      lastBook = ch.book;
+    }
+    // Sidebar item
+    const sItem = document.createElement('a');
+    sItem.className = 'sb-item' + (isDone ? ' done' : '');
+    sItem.id = `sb-${ch.id}`;
+    sItem.href = `#card-${ch.id}`;
+    const lvl = CHAPTER_LEVELS[ch.id];
+    const lvlBadge = lvl ? `<span class="sb-level level-${lvl.toLowerCase()}">${lvl}</span>` : '';
+    sItem.innerHTML = `<div class="sb-num">${isDone ? '✓' : i+1}</div><span class="sb-ch-title">${ch.title}</span>${lvlBadge}${isDone ? '<span class="sb-chk">✓</span>' : ''}`;
+    sbList.appendChild(sItem);
+    sItem.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.card-body.open').forEach(b => {
+        b.classList.remove('open');
+        b.closest('.card').querySelector('.card-hdr').classList.remove('open');
+      });
+      const targetCard = document.getElementById(`card-${ch.id}`);
+      if (targetCard) {
+        targetCard.querySelector('.card-body').classList.add('open');
+        targetCard.querySelector('.card-hdr').classList.add('open');
+        scrollLock = true;
+        setTimeout(() => {
+          targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setTimeout(() => { scrollLock = false; }, 900);
+        }, 30);
+      }
+      document.querySelectorAll('.sb-item.active').forEach(el => el.classList.remove('active'));
+      sItem.classList.add('active');
+    });
+
+    // Card
+    const card = document.createElement('div');
+    card.className = 'card' + (isDone ? ' done' : '');
+    card.id = `card-${ch.id}`;
+
+    const headerOpen = isFirst ? ' open' : '';
+    const bodyOpen = isFirst ? ' open' : '';
+
+    card.innerHTML = `
+      <div class="card-hdr${headerOpen}">
+        <div class="ch-num">${isDone ? '✓' : i+1}</div>
+        <div class="ch-meta">
+          <div class="ch-title">${esc(ch.title)}</div>
+          <div class="ch-book">${esc(ch.book)}</div>
+        </div>
+        ${lvl ? `<span class="level-badge level-${lvl.toLowerCase()}">${lvl}</span>` : ''}
+        <span class="ch-count">${ch.rows.length > 0 ? ch.rows.length + ' items' : ''}</span>
+        ${(!ch.type || ch.type === 'cheatcode') ? '<button class="pc-btn" title="Read chapter aloud">▶ Play Chapter</button>' : ''}
+        <span class="ch-arrow">▼</span>
+      </div>
+      <div class="card-body${bodyOpen}">
+        ${buildTable(ch)}
+        <div class="card-foot">
+          <button class="done-btn" ${isDone ? 'disabled' : ''}>
+            ${isDone ? '✓ Completed' : '✓ Mark Complete &amp; Next'}
+          </button>
+        </div>
+      </div>`;
+
+    // Toggle
+    const hdr = card.querySelector('.card-hdr');
+    hdr.addEventListener('click', () => {
+      const body = card.querySelector('.card-body');
+      const open = body.classList.toggle('open');
+      hdr.classList.toggle('open', open);
+    });
+
+    // Play Chapter button
+    const pcBtn = card.querySelector('.pc-btn');
+    if (pcBtn) pcBtn.addEventListener('click', e => { e.stopPropagation(); playChapterAudio(ch, pcBtn); });
+
+    // Row play buttons
+    card.querySelectorAll('.pbtn').forEach(btn => {
+      btn.addEventListener('click', e => { e.stopPropagation(); speak(btn.dataset.text, btn); });
+    });
+
+    // Complete
+    const doneBtn = card.querySelector('.done-btn');
+    if (!isDone) {
+      doneBtn.addEventListener('click', () => markDone(ch.id, i, card));
+    }
+
+    container.appendChild(card);
+    if (ch.type === 'intro')       initIntro(card);
+    else if (ch.type === 'dictionary') initDictionary(card);
+    else if (ch.type === 'flashcard') initFlashcard(card);
+    else if (ch.type === 'conclusion') initConclusion(card);
+  });
+
+  updateBar();
+
+  // Scroll-spy
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!scrollLock && e.isIntersecting) {
+        const id = e.target.id.replace('card-', '');
+        document.querySelectorAll('.sb-item.active').forEach(el => el.classList.remove('active'));
+        const s = document.getElementById(`sb-${id}`);
+        if (s) { s.classList.add('active'); s.scrollIntoView({block:'nearest'}); }
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.card').forEach(c => observer.observe(c));
+}
+
+function markDone(id, idx, card) {
+  done.add(id); saveProgress();
+  card.classList.add('done');
+  card.querySelector('.ch-num').textContent = '✓';
+  const doneBtn = card.querySelector('.done-btn');
+  doneBtn.textContent = '✓ Completed';
+  doneBtn.disabled = true;
+
+  // Sidebar update
+  const sItem = document.getElementById(`sb-${id}`);
+  if (sItem) {
+    sItem.classList.add('done');
+    const num = sItem.querySelector('.sb-num');
+    if (num) num.textContent = '✓';
+    if (!sItem.querySelector('.sb-chk')) {
+      const chk = document.createElement('span'); chk.className = 'sb-chk'; chk.textContent = '✓';
+      sItem.appendChild(chk);
+    }
+  }
+  updateBar();
+
+  // Collapse current
+  const body = card.querySelector('.card-body');
+  const hdr = card.querySelector('.card-hdr');
+  body.classList.remove('open'); hdr.classList.remove('open');
+
+  // Open next
+  const next = CHAPTERS[idx + 1];
+  if (next) {
+    const nextCard = document.getElementById(`card-${next.id}`);
+    if (nextCard) {
+      nextCard.querySelector('.card-body').classList.add('open');
+      nextCard.querySelector('.card-hdr').classList.add('open');
+      setTimeout(() => nextCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+    }
+  }
+}
+
+render();
+document.getElementById('course-btn').addEventListener('click', playCourse);
+document.querySelector('.app-logo').style.cursor = 'pointer';
+document.querySelector('.app-logo').addEventListener('click', () => {
+  const introSb = document.getElementById('sb-57');
+  if (introSb) introSb.click();
+});
+
+// ── Global search ────────────────────────────────────────────────────
+(function() {
+  const input   = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+  if (!input || !results) return;
+
+  function getEnglishColLocal(ch) {
+    return ch.cols.findIndex(c => /english|meaning|translation/i.test(c));
+  }
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q || q.length < 2) { results.style.display = 'none'; return; }
+
+    const hits = [];
+    outer: for (const ch of CHAPTERS) {
+      if (!ch.rows || !ch.rows.length) continue;
+      const engCol = getEnglishColLocal(ch);
+      const pronCol = ch.cols.findIndex(c => /pron|approx/i.test(c));
+      for (const row of ch.rows) {
+        const dutch = (row[ch.sc] || '').toLowerCase();
+        const eng   = engCol >= 0 ? (row[engCol] || '').toLowerCase() : '';
+        const pron  = pronCol >= 0 ? (row[pronCol] || '').toLowerCase() : '';
+        if (dutch.includes(q) || eng.includes(q) || pron.includes(q)) {
+          hits.push({ ch, dutch: row[ch.sc], eng: engCol >= 0 ? row[engCol] : '', pron: pronCol >= 0 ? row[pronCol] : '' });
+          if (hits.length >= 25) break outer;
+        }
+      }
+    }
+
+    if (!hits.length) {
+      results.innerHTML = '<div class="sr-none">No results found</div>';
+    } else {
+      results.innerHTML = hits.map((h, idx) =>
+        `<div class="sr-item" data-idx="${idx}">
+          <span class="sr-dutch">${esc(h.dutch)}</span>
+          <span class="sr-eng">${esc(h.eng)}</span>
+          <span class="sr-ch">${esc(h.ch.title)}</span>
+        </div>`
+      ).join('');
+      results.querySelectorAll('.sr-item').forEach((el, idx) => {
+        el.addEventListener('click', () => {
+          const sbItem = document.getElementById(`sb-${hits[idx].ch.id}`);
+          if (sbItem) sbItem.click();
+          input.value = '';
+          results.style.display = 'none';
+        });
+      });
+    }
+    results.style.display = 'block';
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#search-wrap')) results.style.display = 'none';
+  });
+  input.addEventListener('keydown', e => { if (e.key === 'Escape') { results.style.display = 'none'; input.blur(); } });
+})();
+
+// ── English toggle ───────────────────────────────────────────────────
+(function() {
+  const chk = document.getElementById('eng-toggle');
+  chk.checked = readEnglish;
+  chk.addEventListener('change', () => {
+    readEnglish = chk.checked;
+    localStorage.setItem('nl_read_english', readEnglish ? '1' : '0');
+  });
+})();
+
+// ── Theme toggle ─────────────────────────────────────────────────────
+(function() {
+  const btn = document.getElementById('theme-btn');
+  const root = document.documentElement;
+  const saved = localStorage.getItem('nl_theme') || 'light';
+  function applyTheme(t) {
+    if (t === 'dark') {
+      root.classList.add('dark');
+      btn.textContent = '🌙 Dark';
+    } else {
+      root.classList.remove('dark');
+      btn.textContent = '☀ Light';
+    }
+    localStorage.setItem('nl_theme', t);
+  }
+  applyTheme(saved);
+  btn.addEventListener('click', () => {
+    applyTheme(root.classList.contains('dark') ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>
