@@ -313,7 +313,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <div id="layout">
   <nav id="sidebar"><div id="sb-list"></div></nav>
   <main id="main">
-    <div id="voice-warn">⚠️ No Dutch (nl-NL) voice detected. Play uses default voice. For accurate Dutch TTS install Dutch language in your OS or use Chrome/Edge.</div>
+    <div id="voice-warn">⚠️ No Dutch (nl-NL) voice detected — audio will use your device's default voice. <strong>Android:</strong> Settings → General Management → Language → Text-to-Speech → Google TTS → Install Dutch. <strong>Desktop:</strong> Install Dutch language in OS settings.</div>
     <div id="chapters"></div>
   </main>
 </div>
@@ -1324,19 +1324,41 @@ const CHAPTERS = [
 //  TTS
 // ═══════════════════════════════════════════════════════
 let dutchVoice = null;
+let ttsResumeTimer = null;
 
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return;
   dutchVoice = voices.find(v => v.lang === 'nl-NL') ||
                voices.find(v => v.lang === 'nl-BE') ||
                voices.find(v => v.lang.startsWith('nl'));
-  if (!dutchVoice && voices.length > 0) {
+  if (!dutchVoice) {
     document.getElementById('voice-warn').style.display = 'block';
   }
 }
 if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = loadVoices;
   loadVoices();
+  // Android: onvoiceschanged may not fire reliably — poll until voice is found
+  if (/Android/i.test(navigator.userAgent) && !dutchVoice) {
+    let n = 0;
+    const poll = setInterval(() => { loadVoices(); if (dutchVoice || ++n > 20) clearInterval(poll); }, 250);
+  }
+}
+
+// Android Chrome pauses speech synthesis after ~14s; keep it alive with periodic resume
+function startTTSResume() {
+  if (!/Android/i.test(navigator.userAgent)) return;
+  stopTTSResume();
+  ttsResumeTimer = setInterval(() => {
+    if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+      window.speechSynthesis.pause();
+      window.speechSynthesis.resume();
+    }
+  }, 14000);
+}
+function stopTTSResume() {
+  if (ttsResumeTimer) { clearInterval(ttsResumeTimer); ttsResumeTimer = null; }
 }
 
 // ── Chapter playback ──────────────────────────────────────────────────
@@ -1376,6 +1398,7 @@ function playChapterAudio(ch, btn) {
   chapterPlayBtn = btn;
   btn.textContent = '■ Stop';
   btn.classList.add('active');
+  startTTSResume();
 
   if (ch.type === 'cheatcode') {
     const cardEl = document.getElementById(`card-${ch.id}`);
@@ -1394,6 +1417,7 @@ function playChapterAudio(ch, btn) {
 }
 
 function stopChapterPlay() {
+  stopTTSResume();
   chapterPlayId = null;
   if (chapterPlayBtn) {
     chapterPlayBtn.textContent = '▶ Play Chapter';
@@ -1419,6 +1443,7 @@ function playCourse() {
   coursePlayActive = true;
   btn.textContent = '■ Stop Course';
   btn.classList.add('active');
+  startTTSResume();
 
   // Build full queue from every chapter
   const items = [];
@@ -1446,12 +1471,14 @@ function playCourseItems(items, idx) {
 }
 
 function stopCoursePlay() {
+  stopTTSResume();
   coursePlayActive = false;
   const btn = document.getElementById('course-btn');
   if (btn) { btn.textContent = '▶ Play Course'; btn.classList.remove('active'); }
 }
 
 function stopDictPlay() {
+  stopTTSResume();
   dictPlayActive = false;
   if (dictPlayBtn) { dictPlayBtn.textContent = '▶ Play All'; dictPlayBtn.classList.remove('active'); dictPlayBtn = null; }
 }
@@ -1477,6 +1504,7 @@ function startDictPlay(entries, btn) {
   dictPlayBtn = btn;
   btn.textContent = '■ Stop';
   btn.classList.add('active');
+  startTTSResume();
   const items = [];
   entries.forEach(e => {
     items.push({ text: e.dutch, lang: 'nl-NL' });
@@ -1491,6 +1519,7 @@ function speak(text, btn) {
   stopCoursePlay();
   stopDictPlay();
   window.speechSynthesis.cancel();
+  window.speechSynthesis.resume(); // Android: ensure not left paused from prior playback
   document.querySelectorAll('.pbtn.playing').forEach(b => b.classList.remove('playing'));
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'nl-NL';
@@ -1507,7 +1536,9 @@ function speakDutchEnglish(dutch, english, btn) {
   if (!window.speechSynthesis) return;
   stopChapterPlay();
   stopCoursePlay();
+  stopDictPlay();
   window.speechSynthesis.cancel();
+  window.speechSynthesis.resume(); // Android: ensure not left paused from prior playback
   document.querySelectorAll('.pbtn.playing').forEach(b => b.classList.remove('playing'));
   btn.classList.add('playing');
   const u1 = new SpeechSynthesisUtterance(dutch);
