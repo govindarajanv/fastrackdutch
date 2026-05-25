@@ -210,6 +210,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 /* ── THEME TOGGLE BTN ── */
 #theme-btn{background:transparent;border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:18px;padding:4px 12px;font-size:.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
 #theme-btn:hover{background:rgba(255,255,255,.15)}
+#mode-sel{background:transparent;border:1.5px solid rgba(255,255,255,.4);color:#fff;border-radius:18px;padding:4px 10px;font-size:.75rem;font-weight:600;cursor:pointer;flex-shrink:0;outline:none;white-space:nowrap;max-width:160px;-webkit-appearance:none;appearance:none}
+#mode-sel option{background:#003082;color:#fff}
 
 /* ── ENGLISH TOGGLE ── */
 #eng-toggle-wrap{display:flex;align-items:center;gap:5px;cursor:pointer;flex-shrink:0;color:#fff;font-size:.75rem;font-weight:600;user-select:none}
@@ -276,6 +278,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   #search-wrap{max-width:140px;margin:0 8px}
   #prog-bar{width:80px}
   #course-btn{font-size:.7rem;padding:4px 10px}
+  #mode-sel{font-size:.68rem;padding:3px 6px;max-width:110px}
   .tbl{font-size:.8rem}
   .tbl td,.tbl th{padding:7px 9px}
   .cefr-grid{grid-template-columns:1fr}
@@ -314,7 +317,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       <text x="19" y="26" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Segoe UI,sans-serif">FD</text>
     </svg>
     <div>
-      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.7</span></div>
+      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.8</span></div>
       <span class="logo-sub">Fast-Track Dutch for Expats</span>
     </div>
   </div>
@@ -328,6 +331,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     <span class="eng-slider"></span>
   </label>
   <button id="theme-btn" title="Toggle light / dark theme">☀ Light</button>
+  <select id="mode-sel" title="Active study mode">
+    <option value="">All Chapters</option>
+    <option value="multitask">🎧 Multi-tasking</option>
+    <option value="fast">🚀 Fast Track</option>
+    <option value="medium">🚶 Medium</option>
+    <option value="steady">🌱 Steady</option>
+    <option value="weekend">📅 Weekend</option>
+    <option value="slow">🐢 Slow</option>
+  </select>
   <button id="course-btn" title="Play the entire course from start to finish">▶ Play Course</button>
   <div id="prog-wrap">
     <div id="prog-bar"><div id="prog-fill"></div></div>
@@ -1682,6 +1694,22 @@ function stopChapterPlay() {
 let coursePlayActive = false;
 let scrollLock = false;
 
+function getTodayDayType() {
+  const d = new Date();
+  if (d.getDay() === 0) return 'sunday';
+  return d.getDate() % 2 === 1 ? 'odd' : 'even';
+}
+
+function updateCourseBtnLabel() {
+  const btn = document.getElementById('course-btn');
+  if (!btn || coursePlayActive) return;
+  const mode = document.getElementById('mode-sel')?.value || '';
+  if (mode !== 'multitask') { btn.textContent = '▶ Play Course'; return; }
+  const type = getTodayDayType();
+  if (type === 'sunday') btn.textContent = '▶ Play Sunday';
+  else btn.textContent = type === 'odd' ? '▶ Play Odd Day' : '▶ Play Even Day';
+}
+
 function playCourse() {
   const btn = document.getElementById('course-btn');
   if (coursePlayActive) {
@@ -1697,9 +1725,16 @@ function playCourse() {
   btn.classList.add('active');
   startTTSResume();
 
-  // Build full queue from every chapter
+  // Build queue — filter by study mode for Multi-tasking
+  const activeMode = document.getElementById('mode-sel')?.value || '';
+  let chapSet = CHAPTERS;
+  if (activeMode === 'multitask') {
+    const dayType = getTodayDayType();
+    if (dayType !== 'sunday')
+      chapSet = CHAPTERS.filter((_, idx) => dayType === 'odd' ? (idx+1)%2===1 : (idx+1)%2===0);
+  }
   const items = [];
-  CHAPTERS.forEach(ch => {
+  chapSet.forEach(ch => {
     const engCol = getEnglishCol(ch);
     ch.rows.forEach(row => {
       items.push({ text: row[ch.sc], lang: 'nl-NL' });
@@ -1726,7 +1761,8 @@ function stopCoursePlay() {
   stopTTSResume();
   coursePlayActive = false;
   const btn = document.getElementById('course-btn');
-  if (btn) { btn.textContent = '▶ Play Course'; btn.classList.remove('active'); }
+  if (btn) btn.classList.remove('active');
+  updateCourseBtnLabel();
 }
 
 function stopDictPlay() {
@@ -1833,7 +1869,7 @@ function buildIntroHTML() {
 <div class="disclaimer" style="margin-top:0">
   <strong>Disclaimer:</strong> FastrackDutch is intended for general informational and self-study purposes only. The content, translations, and pronunciations are provided as a learning aid and cannot guarantee accuracy. Use at your own discretion. The app is not affiliated with any official Dutch language certification body. For formal language learning or legal/medical translation needs, consult a qualified professional.
 </div>
-<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.7</span></h2>
+<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.8</span></h2>
 <p>This app gives you everything you need to communicate in Dutch from day one. Six curated books cover vocabulary, pronunciation, grammar, sentences, and real-life expat scenarios — all in one place, with audio for every word and sentence.</p>
 <h3>What's Inside</h3>
 <ul>
@@ -2744,6 +2780,19 @@ render();
 })();
 
 document.getElementById('course-btn').addEventListener('click', playCourse);
+
+// ── Mode selector ─────────────────────────────────────────────────────
+(function() {
+  const modeSel = document.getElementById('mode-sel');
+  if (!modeSel) return;
+  modeSel.value = localStorage.getItem('nl_study_mode') || '';
+  updateCourseBtnLabel();
+  modeSel.addEventListener('change', () => {
+    localStorage.setItem('nl_study_mode', modeSel.value);
+    updateCourseBtnLabel();
+  });
+})();
+
 document.querySelector('.app-logo').style.cursor = 'pointer';
 document.querySelector('.app-logo').addEventListener('click', () => {
   const introSb = document.getElementById('sb-57');
