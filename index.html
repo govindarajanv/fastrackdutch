@@ -70,6 +70,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .sb-level{font-size:.58rem;font-weight:700;padding:1px 5px;border-radius:7px;flex-shrink:0}
 .oe-badge{font-size:.52rem;font-weight:700;color:#888;opacity:.35;padding:1px 4px;border-radius:5px;border:1px solid #aaa;flex-shrink:0;letter-spacing:.2px}
 .dark .oe-badge{color:#bbb;border-color:#666}
+tr.row-playing > td{background:rgba(231,117,0,.18)!important;transition:background .2s}
+.dark tr.row-playing > td{background:rgba(251,146,60,.22)!important}
+#speed-wrap{display:flex;align-items:center;gap:4px;flex-shrink:0}
+#speed-lbl{color:#fff;font-size:.72rem;font-weight:600;white-space:nowrap;min-width:32px;text-align:right}
+#speed-range{width:60px;cursor:pointer;accent-color:var(--orange)}
 
 /* ── CHEAT CODE CHAPTER ── */
 .tbl tr.rule-start td{border-top:2px solid var(--border)}
@@ -279,6 +284,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   #prog-bar{width:80px}
   #course-btn{font-size:.7rem;padding:4px 10px}
   #mode-sel{font-size:.68rem;padding:3px 6px;max-width:110px}
+  #speed-wrap{gap:3px}
+  #speed-range{width:44px}
+  #speed-lbl{font-size:.66rem}
   .tbl{font-size:.8rem}
   .tbl td,.tbl th{padding:7px 9px}
   .cefr-grid{grid-template-columns:1fr}
@@ -317,7 +325,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       <text x="19" y="26" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Segoe UI,sans-serif">FD</text>
     </svg>
     <div>
-      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.8</span></div>
+      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.9</span></div>
       <span class="logo-sub">Fast-Track Dutch for Expats</span>
     </div>
   </div>
@@ -340,6 +348,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     <option value="weekend">📅 Weekend</option>
     <option value="slow">🐢 Slow</option>
   </select>
+  <div id="speed-wrap" title="Playback speed">
+    <span id="speed-lbl">1.0×</span>
+    <input id="speed-range" type="range" min="0.5" max="1.5" step="0.1" value="1.0">
+  </div>
   <button id="course-btn" title="Play the entire course from start to finish">▶ Play Course</button>
   <div id="prog-wrap">
     <div id="prog-bar"><div id="prog-fill"></div></div>
@@ -1629,8 +1641,27 @@ function stopTTSResume() {
 let chapterPlayId = null;
 let chapterPlayBtn = null;
 let readEnglish = localStorage.getItem('nl_read_english') !== '0';
+let ttsSpeed = parseFloat(localStorage.getItem('nl_speed') || '1');
 let dictPlayActive = false;
 let dictPlayBtn = null;
+
+function nlRate() { return Math.min(2, 0.88 * ttsSpeed); }
+function enRate() { return Math.min(2, 1.0  * ttsSpeed); }
+
+function setRowHighlight(trEl) {
+  document.querySelectorAll('tr.row-playing').forEach(r => r.classList.remove('row-playing'));
+  if (!trEl) return;
+  trEl.classList.add('row-playing');
+  const cb = trEl.closest('.card-body');
+  if (cb && !cb.classList.contains('open')) {
+    cb.classList.add('open');
+    cb.closest('.card')?.querySelector('.card-hdr')?.classList.add('open');
+  }
+  trEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function clearRowHighlight() {
+  document.querySelectorAll('tr.row-playing').forEach(r => r.classList.remove('row-playing'));
+}
 
 function getEnglishCol(ch) {
   // Find a column whose name starts with "english" (catches English, English Meaning, English Sentence, etc.)
@@ -1641,13 +1672,14 @@ function getEnglishCol(ch) {
 }
 
 function playQueueItems(items, idx) {
-  if (idx >= items.length || chapterPlayId === null) { stopChapterPlay(); return; }
-  const {text, lang} = items[idx];
+  if (idx >= items.length || chapterPlayId === null) { clearRowHighlight(); stopChapterPlay(); return; }
+  const {text, lang, rowEl} = items[idx];
+  if (lang === 'nl-NL') setRowHighlight(rowEl);
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang;
-  u.rate = lang === 'nl-NL' ? 0.88 : 1.0;
+  u.rate = lang === 'nl-NL' ? nlRate() : enRate();
   if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
-  const isAfterDutch = idx % 2 === 0; // dutch item → shorter gap before english
+  const isAfterDutch = idx % 2 === 0;
   u.onend  = () => setTimeout(() => playQueueItems(items, idx + 1), isAfterDutch ? 380 : 750);
   u.onerror = () => setTimeout(() => playQueueItems(items, idx + 1), 200);
   window.speechSynthesis.speak(u);
@@ -1672,16 +1704,20 @@ function playChapterAudio(ch, btn) {
     return;
   }
   const engCol = getEnglishCol(ch);
+  const cardEl = document.getElementById(`card-${ch.id}`);
+  const trEls = cardEl ? [...cardEl.querySelectorAll('.tbl tbody tr')] : [];
   const items = [];
-  ch.rows.forEach(row => {
-    items.push({ text: row[ch.sc], lang: 'nl-NL' });
-    if (readEnglish && engCol >= 0 && row[engCol]) items.push({ text: row[engCol], lang: 'en-US' });
+  ch.rows.forEach((row, j) => {
+    const rowEl = trEls[j] || null;
+    items.push({ text: row[ch.sc], lang: 'nl-NL', rowEl });
+    if (readEnglish && engCol >= 0 && row[engCol]) items.push({ text: row[engCol], lang: 'en-US', rowEl });
   });
   playQueueItems(items, 0);
 }
 
 function stopChapterPlay() {
   stopTTSResume();
+  clearRowHighlight();
   chapterPlayId = null;
   if (chapterPlayBtn) {
     chapterPlayBtn.textContent = '▶ Play Chapter';
@@ -1736,20 +1772,24 @@ function playCourse() {
   const items = [];
   chapSet.forEach(ch => {
     const engCol = getEnglishCol(ch);
-    ch.rows.forEach(row => {
-      items.push({ text: row[ch.sc], lang: 'nl-NL' });
-      if (readEnglish && engCol >= 0 && row[engCol]) items.push({ text: row[engCol], lang: 'en-US' });
+    const cEl = document.getElementById(`card-${ch.id}`);
+    const trEls = cEl ? [...cEl.querySelectorAll('.tbl tbody tr')] : [];
+    ch.rows.forEach((row, j) => {
+      const rowEl = trEls[j] || null;
+      items.push({ text: row[ch.sc], lang: 'nl-NL', rowEl });
+      if (readEnglish && engCol >= 0 && row[engCol]) items.push({ text: row[engCol], lang: 'en-US', rowEl });
     });
   });
   playCourseItems(items, 0);
 }
 
 function playCourseItems(items, idx) {
-  if (idx >= items.length || !coursePlayActive) { stopCoursePlay(); return; }
-  const {text, lang} = items[idx];
+  if (idx >= items.length || !coursePlayActive) { clearRowHighlight(); stopCoursePlay(); return; }
+  const {text, lang, rowEl} = items[idx];
+  if (lang === 'nl-NL') setRowHighlight(rowEl);
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang;
-  u.rate = lang === 'nl-NL' ? 0.88 : 1.0;
+  u.rate = lang === 'nl-NL' ? nlRate() : enRate();
   if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
   const isAfterDutch = idx % 2 === 0;
   u.onend  = () => setTimeout(() => playCourseItems(items, idx + 1), isAfterDutch ? 380 : 750);
@@ -1759,6 +1799,7 @@ function playCourseItems(items, idx) {
 
 function stopCoursePlay() {
   stopTTSResume();
+  clearRowHighlight();
   coursePlayActive = false;
   const btn = document.getElementById('course-btn');
   if (btn) btn.classList.remove('active');
@@ -1775,7 +1816,7 @@ function playDictQueue(items, idx) {
   if (!dictPlayActive || idx >= items.length) { stopDictPlay(); return; }
   const {text, lang} = items[idx];
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = lang; u.rate = lang === 'nl-NL' ? 0.88 : 1.0;
+  u.lang = lang; u.rate = lang === 'nl-NL' ? nlRate() : enRate();
   if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
   u.onend  = () => setTimeout(() => playDictQueue(items, idx + 1), lang === 'nl-NL' ? 380 : 750);
   u.onerror = () => setTimeout(() => playDictQueue(items, idx + 1), 200);
@@ -1811,7 +1852,7 @@ function speak(text, btn) {
   document.querySelectorAll('.pbtn.playing').forEach(b => b.classList.remove('playing'));
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'nl-NL';
-  u.rate = 0.88;
+  u.rate = nlRate();
   u.pitch = 1.0;
   if (dutchVoice) u.voice = dutchVoice;
   btn.classList.add('playing');
@@ -1830,10 +1871,10 @@ function speakDutchEnglish(dutch, english, btn) {
   document.querySelectorAll('.pbtn.playing').forEach(b => b.classList.remove('playing'));
   btn.classList.add('playing');
   const u1 = new SpeechSynthesisUtterance(dutch);
-  u1.lang = 'nl-NL'; u1.rate = 0.88; u1.pitch = 1.0;
+  u1.lang = 'nl-NL'; u1.rate = nlRate(); u1.pitch = 1.0;
   if (dutchVoice) u1.voice = dutchVoice;
   const u2 = new SpeechSynthesisUtterance(english);
-  u2.lang = 'en-US'; u2.rate = 1.0;
+  u2.lang = 'en-US'; u2.rate = enRate();
   u2.onend = () => btn.classList.remove('playing');
   u2.onerror = () => btn.classList.remove('playing');
   u1.onerror = () => btn.classList.remove('playing');
@@ -1869,7 +1910,7 @@ function buildIntroHTML() {
 <div class="disclaimer" style="margin-top:0">
   <strong>Disclaimer:</strong> FastrackDutch is intended for general informational and self-study purposes only. The content, translations, and pronunciations are provided as a learning aid and cannot guarantee accuracy. Use at your own discretion. The app is not affiliated with any official Dutch language certification body. For formal language learning or legal/medical translation needs, consult a qualified professional.
 </div>
-<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.8</span></h2>
+<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.9</span></h2>
 <p>This app gives you everything you need to communicate in Dutch from day one. Six curated books cover vocabulary, pronunciation, grammar, sentences, and real-life expat scenarios — all in one place, with audio for every word and sentence.</p>
 <h3>What's Inside</h3>
 <ul>
@@ -2780,6 +2821,20 @@ render();
 })();
 
 document.getElementById('course-btn').addEventListener('click', playCourse);
+
+// ── Speed slider ─────────────────────────────────────────────────────
+(function() {
+  const range = document.getElementById('speed-range');
+  const lbl   = document.getElementById('speed-lbl');
+  if (!range || !lbl) return;
+  range.value = ttsSpeed.toFixed(1);
+  lbl.textContent = ttsSpeed.toFixed(1) + '×';
+  range.addEventListener('input', () => {
+    ttsSpeed = parseFloat(range.value);
+    lbl.textContent = ttsSpeed.toFixed(1) + '×';
+    localStorage.setItem('nl_speed', ttsSpeed.toFixed(1));
+  });
+})();
 
 // ── Mode selector ─────────────────────────────────────────────────────
 (function() {
