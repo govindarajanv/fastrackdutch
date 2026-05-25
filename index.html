@@ -301,6 +301,20 @@ tr.row-playing > td{background:rgba(231,117,0,.18)!important;transition:backgrou
 #browser-modal-close:hover{opacity:.85}
 .browser-rec-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;margin:14px 0;font-size:.88rem;color:#1e3a5f}
 .dark .browser-rec-box{background:#1e3a5f;border-color:#3b82f6;color:#bfdbfe}
+#play-confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:center;justify-content:center}
+#play-confirm-modal{background:var(--white);border-radius:12px;padding:24px 28px;max-width:340px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.28)}
+#pc-title{margin:0 0 16px;color:var(--blue);font-size:1rem;font-weight:700}
+.pc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.pc-stat{background:var(--bg);border-radius:8px;padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.pc-stat span{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.pc-stat strong{font-size:.92rem;color:var(--text)}
+.pc-est-box{background:#fff3e0;border-left:3px solid var(--orange);border-radius:0 6px 6px 0;padding:10px 14px;font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:18px}
+.dark .pc-est-box{background:#2d1f0f}
+.pc-btns{display:flex;gap:10px}
+#pc-start-btn{flex:1;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:10px;font-size:.88rem;font-weight:700;cursor:pointer}
+#pc-start-btn:hover{background:#c96200}
+#pc-cancel-btn{flex:1;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px;font-size:.88rem;font-weight:600;cursor:pointer}
+#pc-cancel-btn:hover{background:var(--border)}
 </style>
 </head>
 <body>
@@ -318,6 +332,23 @@ tr.row-playing > td{background:rgba(231,117,0,.18)!important;transition:backgrou
   </div>
 </div>
 
+<div id="play-confirm-overlay">
+  <div id="play-confirm-modal">
+    <h3 id="pc-title">Play Queue</h3>
+    <div class="pc-stats">
+      <div class="pc-stat"><span>Chapters</span><strong id="pc-chapters">-</strong></div>
+      <div class="pc-stat"><span>Audio items</span><strong id="pc-items">-</strong></div>
+      <div class="pc-stat"><span>Speed</span><strong id="pc-speed">-</strong></div>
+      <div class="pc-stat"><span>Language</span><strong id="pc-lang">-</strong></div>
+    </div>
+    <div id="pc-est" class="pc-est-box"></div>
+    <div class="pc-btns">
+      <button id="pc-start-btn">▶ Start Playing</button>
+      <button id="pc-cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <header id="hdr">
   <div class="app-logo">
     <svg viewBox="0 0 38 38" width="38" height="38" xmlns="http://www.w3.org/2000/svg">
@@ -325,7 +356,7 @@ tr.row-playing > td{background:rgba(231,117,0,.18)!important;transition:backgrou
       <text x="19" y="26" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Segoe UI,sans-serif">FD</text>
     </svg>
     <div>
-      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.9</span></div>
+      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.5.0</span></div>
       <span class="logo-sub">Fast-Track Dutch for Expats</span>
     </div>
   </div>
@@ -1729,6 +1760,21 @@ function stopChapterPlay() {
 // ── Course playback ────────────────────────────────────────────────────
 let coursePlayActive = false;
 let scrollLock = false;
+let pendingPlayFn = null;
+
+function showPlayConfirm(chapSet, label, onConfirm) {
+  let totalRows = 0;
+  chapSet.forEach(ch => { totalRows += ch.rows.length; });
+  const estMin = Math.max(1, Math.round(totalRows * (readEnglish ? 4 : 2) / ttsSpeed / 60));
+  document.getElementById('pc-title').textContent = '▶ ' + label;
+  document.getElementById('pc-chapters').textContent = chapSet.length;
+  document.getElementById('pc-items').textContent = totalRows;
+  document.getElementById('pc-speed').textContent = ttsSpeed.toFixed(1) + '×';
+  document.getElementById('pc-lang').textContent = readEnglish ? 'Dutch + English' : 'Dutch only';
+  document.getElementById('pc-est').textContent = '⏱  Estimated playing time: ~' + estMin + ' min';
+  pendingPlayFn = onConfirm;
+  document.getElementById('play-confirm-overlay').style.display = 'flex';
+}
 
 function getTodayDayType() {
   const d = new Date();
@@ -1756,12 +1802,6 @@ function playCourse() {
   if (chapterPlayId !== null) { window.speechSynthesis.cancel(); stopChapterPlay(); }
   if (dictPlayActive) { window.speechSynthesis.cancel(); stopDictPlay(); }
 
-  coursePlayActive = true;
-  btn.textContent = '■ Stop Course';
-  btn.classList.add('active');
-  startTTSResume();
-
-  // Build queue — filter by study mode for Multi-tasking
   const activeMode = document.getElementById('mode-sel')?.value || '';
   let chapSet = CHAPTERS;
   if (activeMode === 'multitask') {
@@ -1769,6 +1809,15 @@ function playCourse() {
     if (dayType !== 'sunday')
       chapSet = CHAPTERS.filter((_, idx) => dayType === 'odd' ? (idx+1)%2===1 : (idx+1)%2===0);
   }
+  showPlayConfirm(chapSet, btn.textContent.replace('▶ ', ''), () => startCoursePlay(chapSet));
+}
+
+function startCoursePlay(chapSet) {
+  const btn = document.getElementById('course-btn');
+  coursePlayActive = true;
+  btn.textContent = '■ Stop Course';
+  btn.classList.add('active');
+  startTTSResume();
   const items = [];
   chapSet.forEach(ch => {
     const engCol = getEnglishCol(ch);
@@ -1910,7 +1959,7 @@ function buildIntroHTML() {
 <div class="disclaimer" style="margin-top:0">
   <strong>Disclaimer:</strong> FastrackDutch is intended for general informational and self-study purposes only. The content, translations, and pronunciations are provided as a learning aid and cannot guarantee accuracy. Use at your own discretion. The app is not affiliated with any official Dutch language certification body. For formal language learning or legal/medical translation needs, consult a qualified professional.
 </div>
-<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.9</span></h2>
+<h2>Welcome to FastrackDutch <span class="version-badge">v2.5.0</span></h2>
 <p>This app gives you everything you need to communicate in Dutch from day one. Six curated books cover vocabulary, pronunciation, grammar, sentences, and real-life expat scenarios — all in one place, with audio for every word and sentence.</p>
 <h3>What's Inside</h3>
 <ul>
@@ -2821,6 +2870,22 @@ render();
 })();
 
 document.getElementById('course-btn').addEventListener('click', playCourse);
+
+// ── Play confirm modal ────────────────────────────────────────────────
+document.getElementById('pc-start-btn').addEventListener('click', () => {
+  document.getElementById('play-confirm-overlay').style.display = 'none';
+  if (pendingPlayFn) { pendingPlayFn(); pendingPlayFn = null; }
+});
+document.getElementById('pc-cancel-btn').addEventListener('click', () => {
+  document.getElementById('play-confirm-overlay').style.display = 'none';
+  pendingPlayFn = null;
+});
+document.getElementById('play-confirm-overlay').addEventListener('click', e => {
+  if (e.target.id === 'play-confirm-overlay') {
+    document.getElementById('play-confirm-overlay').style.display = 'none';
+    pendingPlayFn = null;
+  }
+});
 
 // ── Speed slider ─────────────────────────────────────────────────────
 (function() {
