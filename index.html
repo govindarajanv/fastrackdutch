@@ -312,7 +312,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       <text x="19" y="26" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Segoe UI,sans-serif">FD</text>
     </svg>
     <div>
-      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.4</span></div>
+      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.5</span></div>
       <span class="logo-sub">Fast-Track Dutch for Expats</span>
     </div>
   </div>
@@ -1831,7 +1831,7 @@ function buildIntroHTML() {
 <div class="disclaimer" style="margin-top:0">
   <strong>Disclaimer:</strong> FastrackDutch is intended for general informational and self-study purposes only. The content, translations, and pronunciations are provided as a learning aid and cannot guarantee accuracy. Use at your own discretion. The app is not affiliated with any official Dutch language certification body. For formal language learning or legal/medical translation needs, consult a qualified professional.
 </div>
-<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.4</span></h2>
+<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.5</span></h2>
 <p>This app gives you everything you need to communicate in Dutch from day one. Six curated books cover vocabulary, pronunciation, grammar, sentences, and real-life expat scenarios — all in one place, with audio for every word and sentence.</p>
 <h3>What's Inside</h3>
 <ul>
@@ -1858,20 +1858,24 @@ function buildIntroHTML() {
 </div>
 <h3>Indicative Study Plans</h3>
 <table class="study-tbl">
-  <thead><tr><th>Track</th><th>Chapters / Day</th><th>Duration</th><th>Approach</th></tr></thead>
+  <thead><tr><th>Track</th><th>Chapters / Day</th><th>Duration</th><th>Hours / Day</th><th>Approach</th></tr></thead>
   <tbody>
-    <tr><td><strong>🐢 Slow</strong></td><td>1</td><td>~60 days</td><td>Learn alongside a busy schedule; review each chapter thoroughly before moving on.</td></tr>
-    <tr><td><strong>🚶 Medium</strong></td><td>3</td><td>~20 days</td><td>Daily focused sessions of 30–45 minutes; revisit previous chapters every few days.</td></tr>
-    <tr><td><strong>🚀 Fast Track</strong></td><td>7–8</td><td>8–10 days</td><td>Intensive immersion — listen on commute, at lunch, and in the evening. This is what the app is designed for.</td></tr>
+    <tr><td><strong>🐢 Slow</strong></td><td>1</td><td>~70 days</td><td>~20 min</td><td>Learn alongside a busy schedule; review each chapter thoroughly before moving on.</td></tr>
+    <tr><td><strong>🌱 Steady</strong></td><td>2</td><td>~35 days</td><td>~30 min</td><td>Two chapters a day — sustainable pace for working adults who want steady progress.</td></tr>
+    <tr><td><strong>🚶 Medium</strong></td><td>3</td><td>~24 days</td><td>~45 min</td><td>Daily focused sessions; revisit previous chapters every few days.</td></tr>
+    <tr><td><strong>📅 Weekend</strong></td><td>5 (weekends)</td><td>~7 weeks</td><td>~1.5 hrs</td><td>Five chapters each Saturday and Sunday — keep weekdays free, do a full sprint on weekends.</td></tr>
+    <tr><td><strong>🚀 Fast Track</strong></td><td>8</td><td>~9 days</td><td>~2 hrs</td><td>Intensive immersion — listen on commute, at lunch, and in the evening. This is what the app is designed for.</td></tr>
   </tbody>
 </table>
 <div class="study-track-wrap">
   <label>View day-by-day plan for:</label>
   <select class="study-track-sel">
     <option value="">— Choose a track —</option>
-    <option value="fast">🚀 Fast Track (8 days)</option>
-    <option value="medium">🚶 Medium (20 days)</option>
-    <option value="slow">🐢 Slow (60 days)</option>
+    <option value="fast">🚀 Fast Track (~9 days)</option>
+    <option value="medium">🚶 Medium (~24 days)</option>
+    <option value="steady">🌱 Steady (~35 days)</option>
+    <option value="weekend">📅 Weekend (~7 weeks)</option>
+    <option value="slow">🐢 Slow (~70 days)</option>
   </select>
 </div>
 <div id="study-daily"></div>
@@ -2464,7 +2468,7 @@ function initIntro(card) {
   const container = card.querySelector('#study-daily');
   if (!sel || !container) return;
 
-  const PACE = { fast: 8, medium: 3, slow: 1 };
+  const PACE = { fast: 8, medium: 3, steady: 2, weekend: 5, slow: 1 };
 
   sel.addEventListener('change', () => {
     const track = sel.value;
