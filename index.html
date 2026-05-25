@@ -278,9 +278,32 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   .tbl td,.tbl th{padding:7px 9px}
   .cefr-grid{grid-template-columns:1fr}
 }
+#browser-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center}
+#browser-modal{background:var(--white);border-radius:12px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.28);text-align:center}
+#browser-modal h3{margin:0 0 10px;color:var(--text);font-size:1.05rem}
+#browser-modal p{margin:0 0 14px;color:var(--muted);font-size:.88rem;line-height:1.6}
+#browser-modal .bm-list{background:var(--bg);border-radius:8px;padding:10px 16px;margin:0 0 18px;text-align:left;font-size:.88rem;list-style:none}
+#browser-modal .bm-list li{margin:5px 0;color:var(--text)}
+#browser-modal-close{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:9px 28px;font-size:.88rem;font-weight:600;cursor:pointer}
+#browser-modal-close:hover{opacity:.85}
+.browser-rec-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 14px;margin:14px 0;font-size:.88rem;color:#1e3a5f}
+.dark .browser-rec-box{background:#1e3a5f;border-color:#3b82f6;color:#bfdbfe}
 </style>
 </head>
 <body>
+
+<div id="browser-modal-overlay" style="display:none">
+  <div id="browser-modal">
+    <h3>Audio Quality Notice</h3>
+    <p>You are using <strong id="bm-browser"></strong> on <strong id="bm-platform"></strong>. For the best Dutch and English pronunciation quality, we recommend:</p>
+    <ul class="bm-list">
+      <li>🪟 &nbsp;<strong>Microsoft Edge</strong> on Windows</li>
+      <li>🍎 &nbsp;<strong>Safari</strong> on macOS</li>
+    </ul>
+    <p>On other browsers, audio quality may be reduced.</p>
+    <button id="browser-modal-close">Got it</button>
+  </div>
+</div>
 
 <header id="hdr">
   <div class="app-logo">
@@ -289,7 +312,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       <text x="19" y="26" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Segoe UI,sans-serif">FD</text>
     </svg>
     <div>
-      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.2</span></div>
+      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.3</span></div>
       <span class="logo-sub">Fast-Track Dutch for Expats</span>
     </div>
   </div>
@@ -396,11 +419,24 @@ const CHAPTERS = [
   ["Goedemorgen","KHOO-duh-MOR-khen","Good morning"],
   ["Goedemiddag","KHOO-duh-mi-DAGH","Good afternoon"],
   ["Goedenavond","KHOO-duh-NAH-vont","Good evening"],
+  ["Goedenacht","KHOO-duh-NAKHT","Good night"],
+  ["Aangenaam","AHN-khuh-NAHM","Nice to meet you"],
   ["Doei","Doo-ey","Bye"],
+  ["Tot ziens","Tot ZEENS","Goodbye / See you"],
   ["Dank u","Dank uu","Thank you (formal)"],
   ["Bedankt","Buh-DANKT","Thanks"],
-  ["Alstublieft","ALS-tu-bleeft","Please"],
   ["Graag gedaan","Khraakh khuh-DAAN","You're welcome"],
+  ["Alstublieft","ALS-tu-bleeft","Please"],
+  ["Hoe gaat het met je?","Hoo khaht het met yuh?","How are you? (informal)"],
+  ["Heel goed","Hayl khoot","Very good"],
+  ["Hoe heet je?","Hoo HAYT yuh?","What is your name? (informal)"],
+  ["Ik heet Govind. En jij?","Ik HAYT Govind. En yay?","My name is Govind. And you?"],
+  ["Pardon","pahr-DON","Excuse me"],
+  ["Spreekt u Engels?","SPRAYKT oo ENG-uhls?","Do you speak English?"],
+  ["Waar is het toilet?","Vaar is ut twa-LET?","Where is the restroom?"],
+  ["Hoeveel kost het?","HOO-vayl kost ut?","How much does it cost?"],
+  ["Help!","help!","Help!"],
+  ["Ik begrijp het niet","ik buh-KHRAYP ut neet","I don't understand"],
 ]},
 
 {id:69, title:"Cheat Code — Dutch for English Speakers", book:"Core Dutch Words for Expats",
@@ -888,6 +924,8 @@ const CHAPTERS = [
   ["Heeft u vegan eten?","Hayft uu vay-KHAHN AY-ten","Do you have vegan food?"],
   ["De rekening alstublieft.","Duh REK-uh-ning ALS-tu-bleeft","The bill please."],
   ["Ik eet geen vlees, ei of kip. Zuivel is wel oké.","Ik ayt khayn flayz, ay of kip. ZOY-vel is vel oh-KAY","I don't eat meat, egg or chicken. Dairy is ok."],
+  ["Een broodje, alstublieft","ayn BROHT-yuh ALS-tuu-bleeft","A sandwich, please"],
+  ["Mag ik de rekening, alstublieft?","makh ik duh RAY-kuh-ning ALS-tuu-bleeft?","May I have the bill, please?"],
 ]},
 
 {id:23, title:"Getting Around — Sentences", book:"Dutch Sentences for Expats",
@@ -900,6 +938,7 @@ const CHAPTERS = [
   ["Waar is de bushalte?","Vaar is duh BUS-hal-tuh","Where is the bus stop?"],
   ["Hoe ver is het treinstation?","Hoo fer is het TRAYN-sta-shon","How far is the train station?"],
   ["Ik wil een retourticket kopen.","Ik vil uhn ruh-TOOR-ti-ket KOH-pen","I want to buy a return ticket."],
+  ["Kun je me helpen, alsjeblieft?","kun yuh muh HEL-pen ALS-yuh-bleeft?","Can you help me, please?"],
 ]},
 
 {id:24, title:"At the Doctor — Sentences", book:"Dutch Sentences for Expats",
@@ -1581,7 +1620,7 @@ function buildIntroHTML() {
 <div class="disclaimer" style="margin-top:0">
   <strong>Disclaimer:</strong> FastrackDutch is intended for general informational and self-study purposes only. The content, translations, and pronunciations are provided as a learning aid and cannot guarantee accuracy. Use at your own discretion. The app is not affiliated with any official Dutch language certification body. For formal language learning or legal/medical translation needs, consult a qualified professional.
 </div>
-<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.2</span></h2>
+<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.3</span></h2>
 <p>This app gives you everything you need to communicate in Dutch from day one. Six curated books cover vocabulary, pronunciation, grammar, sentences, and real-life expat scenarios — all in one place, with audio for every word and sentence.</p>
 <h3>What's Inside</h3>
 <ul>
@@ -1603,6 +1642,9 @@ function buildIntroHTML() {
   <li><strong>Progress bar (top right)</strong> — Shows chapters completed out of total.</li>
   <li><strong>▶ Play Course</strong> — Plays the entire course from start to finish in one go.</li>
 </ul>
+<div class="browser-rec-box">
+  🔊 <strong>Best Audio Experience:</strong> Use <strong>Microsoft Edge on Windows</strong> or <strong>Safari on macOS</strong> for the highest quality Dutch and English pronunciation. Other browsers may produce reduced audio quality.
+</div>
 <h3>Indicative Study Plans</h3>
 <table class="study-tbl">
   <thead><tr><th>Track</th><th>Chapters / Day</th><th>Duration</th><th>Approach</th></tr></thead>
@@ -1624,7 +1666,7 @@ function buildIntroHTML() {
 <div id="study-daily"></div>
 <h3>Tips for Best Results</h3>
 <ul>
-  <li>Use <strong>Chrome or Edge on Windows</strong> for the most accurate Dutch TTS voice.</li>
+  <li>Use <strong>Edge on Windows</strong> or <strong>Safari on macOS</strong> for the best audio quality — these browsers use high-quality neural voices for both Dutch and English.</li>
   <li><strong>Say each word aloud</strong> before clicking Play — then compare your pronunciation.</li>
   <li>Read <strong>Chapter 3 (Reading the Pronunciation Guide)</strong> carefully first — it will unlock every word in the app.</li>
   <li>Use <strong>Flash Cards</strong> for 10 minutes daily to reinforce vocabulary.</li>
@@ -2236,6 +2278,7 @@ function buildTable(ch) {
   if (ch.type === 'flashcard')   return buildFlashcardHTML();
   if (ch.type === 'conclusion')  return buildConclusionHTML();
 
+  const engCol = getEnglishCol(ch);
   let h = `<table class="tbl"><thead><tr>`;
   ch.cols.forEach((c, ci) => {
     h += `<th>${esc(c)}</th>`;
@@ -2252,7 +2295,8 @@ function buildTable(ch) {
       if (ch.alphPlay !== undefined && ci === 1)
         h += `<td><button class="pbtn" data-text="${esc(row[ch.alphPlay])}" title="Play letter sound">▶</button></td>`;
     });
-    h += `<td><button class="pbtn" data-text="${esc(row[ch.sc])}" title="Play Dutch">▶</button></td>`;
+    const engAttr = engCol >= 0 && row[engCol] ? ` data-eng="${esc(row[engCol])}"` : '';
+    h += `<td><button class="pbtn" data-text="${esc(row[ch.sc])}"${engAttr} title="Play Dutch">▶</button></td>`;
     h += `</tr>`;
   });
   h += `</tbody></table>`;
@@ -2348,7 +2392,11 @@ function render() {
 
     // Row play buttons
     card.querySelectorAll('.pbtn').forEach(btn => {
-      btn.addEventListener('click', e => { e.stopPropagation(); speak(btn.dataset.text, btn); });
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        if (readEnglish && btn.dataset.eng) speakDutchEnglish(btn.dataset.text, btn.dataset.eng, btn);
+        else speak(btn.dataset.text, btn);
+      });
     });
 
     // Complete
@@ -2419,6 +2467,39 @@ function markDone(id, idx, card) {
 }
 
 render();
+
+// ── Browser recommendation ─────────────────────────────────────────────
+(function() {
+  if (localStorage.getItem('nl_browser_ok')) return;
+  const ua = navigator.userAgent;
+  const isWindows = /Windows/i.test(ua);
+  const isMac     = /Macintosh|Mac OS X/i.test(ua);
+  const isEdge    = /Edg\//i.test(ua);
+  const isSafari  = /Safari/i.test(ua) && !/Chrome|Chromium|Edg/i.test(ua);
+  const isRecommended = (isWindows && isEdge) || (isMac && isSafari);
+  if (isRecommended) { localStorage.setItem('nl_browser_ok', '1'); return; }
+
+  let browser = 'your browser';
+  if (isEdge) browser = 'Microsoft Edge';
+  else if (/Firefox/i.test(ua)) browser = 'Firefox';
+  else if (/Chrome/i.test(ua)) browser = 'Chrome';
+  else if (isSafari) browser = 'Safari';
+
+  let platform = 'your device';
+  if (isWindows) platform = 'Windows';
+  else if (isMac) platform = 'macOS';
+  else if (/Android/i.test(ua)) platform = 'Android';
+  else if (/iPhone|iPad/i.test(ua)) platform = 'iOS';
+
+  document.getElementById('bm-browser').textContent = browser;
+  document.getElementById('bm-platform').textContent = platform;
+  document.getElementById('browser-modal-overlay').style.display = 'flex';
+  document.getElementById('browser-modal-close').addEventListener('click', () => {
+    document.getElementById('browser-modal-overlay').style.display = 'none';
+    localStorage.setItem('nl_browser_ok', '1');
+  });
+})();
+
 document.getElementById('course-btn').addEventListener('click', playCourse);
 document.querySelector('.app-logo').style.cursor = 'pointer';
 document.querySelector('.app-logo').addEventListener('click', () => {
