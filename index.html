@@ -68,6 +68,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .level-b1{background:#fff0e0;color:#c96200;border:1px solid #ffd6a0}
 .sb-ch-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sb-level{font-size:.58rem;font-weight:700;padding:1px 5px;border-radius:7px;flex-shrink:0}
+.oe-badge{font-size:.52rem;font-weight:700;color:#888;opacity:.35;padding:1px 4px;border-radius:5px;border:1px solid #aaa;flex-shrink:0;letter-spacing:.2px}
+.dark .oe-badge{color:#bbb;border-color:#666}
 
 /* ── CHEAT CODE CHAPTER ── */
 .tbl tr.rule-start td{border-top:2px solid var(--border)}
@@ -312,7 +314,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       <text x="19" y="26" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Segoe UI,sans-serif">FD</text>
     </svg>
     <div>
-      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.6</span></div>
+      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.4.7</span></div>
       <span class="logo-sub">Fast-Track Dutch for Expats</span>
     </div>
   </div>
@@ -1831,7 +1833,7 @@ function buildIntroHTML() {
 <div class="disclaimer" style="margin-top:0">
   <strong>Disclaimer:</strong> FastrackDutch is intended for general informational and self-study purposes only. The content, translations, and pronunciations are provided as a learning aid and cannot guarantee accuracy. Use at your own discretion. The app is not affiliated with any official Dutch language certification body. For formal language learning or legal/medical translation needs, consult a qualified professional.
 </div>
-<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.6</span></h2>
+<h2>Welcome to FastrackDutch <span class="version-badge">v2.4.7</span></h2>
 <p>This app gives you everything you need to communicate in Dutch from day one. Six curated books cover vocabulary, pronunciation, grammar, sentences, and real-life expat scenarios — all in one place, with audio for every word and sentence.</p>
 <h3>What's Inside</h3>
 <ul>
@@ -1865,6 +1867,7 @@ function buildIntroHTML() {
     <tr><td><strong>🚶 Medium</strong></td><td>3</td><td>~24 days</td><td>~45 min</td><td>Daily focused sessions; revisit previous chapters every few days.</td></tr>
     <tr><td><strong>📅 Weekend</strong></td><td>5 (weekends)</td><td>~7 weeks</td><td>~1.5 hrs</td><td>Five chapters each Saturday and Sunday — keep weekdays free, do a full sprint on weekends.</td></tr>
     <tr><td><strong>🚀 Fast Track</strong></td><td>8</td><td>~9 days</td><td>~2 hrs</td><td>Intensive immersion — listen on commute, at lunch, and in the evening. This is what the app is designed for.</td></tr>
+    <tr><td><strong>🎧 Multi-tasking</strong></td><td>~33 (O or E)</td><td>Repeating cycle</td><td>~33 min / ~66 min (Sun)</td><td>Play while exercising, cooking, or doing chores. <strong>Odd day</strong> = grammar &amp; mixed chapters, <strong>Even day</strong> = vocabulary &amp; situational. <strong>Sunday</strong> = replay all. Each weekday session fits under 45 min; look for the <span class="oe-badge" style="opacity:1">O</span> / <span class="oe-badge" style="opacity:1">E</span> labels on chapter titles.</td></tr>
   </tbody>
 </table>
 <div class="study-track-wrap">
@@ -1876,6 +1879,7 @@ function buildIntroHTML() {
     <option value="steady">🌱 Steady (~35 days)</option>
     <option value="weekend">📅 Weekend (~7 weeks)</option>
     <option value="slow">🐢 Slow (~70 days)</option>
+    <option value="multitask">🎧 Multi-tasking (odd/even/Sunday)</option>
   </select>
 </div>
 <div id="study-daily"></div>
@@ -2473,15 +2477,37 @@ function initIntro(card) {
   sel.addEventListener('change', () => {
     const track = sel.value;
     if (!track) { container.innerHTML = ''; return; }
+
+    if (track === 'multitask') {
+      const oddChs = [], oddNums = [], evenChs = [], evenNums = [];
+      CHAPTERS.forEach((ch, j) => {
+        if ((j + 1) % 2 === 1) { oddChs.push(ch);  oddNums.push(j + 1); }
+        else                   { evenChs.push(ch); evenNums.push(j + 1); }
+      });
+      const buildSection = (label, note, chs, nums) => {
+        let h = `<h4 style="margin:18px 0 4px;color:var(--blue)">${esc(label)}</h4>`;
+        h += `<p style="font-size:.78rem;color:var(--muted);margin:0 0 6px">${esc(note)}</p>`;
+        h += `<table class="study-tbl study-daily-tbl"><thead><tr><th>Ch #</th><th>Chapter</th></tr></thead><tbody>`;
+        chs.forEach((ch, k) => { h += `<tr><td>${nums[k]}</td><td>${esc(ch.title)}</td></tr>`; });
+        h += '</tbody></table>';
+        return h;
+      };
+      container.innerHTML =
+        buildSection('🎧 Odd Day — Grammar & mixed focus', '~33 chapters · estimated ~32 min', oddChs, oddNums) +
+        buildSection('🎧 Even Day — Vocabulary & situational', '~33 chapters · estimated ~34 min', evenChs, evenNums) +
+        buildSection('☀️ Sunday — All chapters', '65 content chapters · estimated ~66 min', CHAPTERS, CHAPTERS.map((_, j) => j + 1));
+      return;
+    }
+
     const pace = PACE[track];
     let html = `<table class="study-tbl study-daily-tbl"><thead><tr><th>Day</th><th>Ch #</th><th>Chapters to cover</th></tr></thead><tbody>`;
     for (let i = 0, day = 1; i < CHAPTERS.length; i += pace, day++) {
       const slice = CHAPTERS.slice(i, i + pace);
       const nums  = slice.map((_, j) => i + j + 1).join(', ');
-      const titles = slice.map(ch => ch.title).join(' &nbsp;·&nbsp; ');
+      const titles = slice.map(ch => esc(ch.title)).join(' &nbsp;&middot;&nbsp; ');
       html += `<tr><td><strong>Day ${day}</strong></td><td style="white-space:nowrap">${nums}</td><td>${titles}</td></tr>`;
     }
-    html += `</tbody></table>`;
+    html += '</tbody></table>';
     container.innerHTML = html;
   });
 }
@@ -2542,7 +2568,8 @@ function render() {
     sItem.href = `#card-${ch.id}`;
     const lvl = CHAPTER_LEVELS[ch.id];
     const lvlBadge = lvl ? `<span class="sb-level level-${lvl.toLowerCase()}">${lvl}</span>` : '';
-    sItem.innerHTML = `<div class="sb-num">${isDone ? '✓' : i+1}</div><span class="sb-ch-title">${ch.title}</span>${lvlBadge}${isDone ? '<span class="sb-chk">✓</span>' : ''}`;
+    const oeBadgeSB = `<span class="oe-badge">${(i + 1) % 2 === 1 ? 'O' : 'E'}</span>`;
+    sItem.innerHTML = `<div class="sb-num">${isDone ? '✓' : i+1}</div><span class="sb-ch-title">${esc(ch.title)}</span>${lvlBadge}${oeBadgeSB}${isDone ? '<span class="sb-chk">✓</span>' : ''}`;
     sbList.appendChild(sItem);
     sItem.addEventListener('click', e => {
       e.preventDefault();
@@ -2580,6 +2607,7 @@ function render() {
           <div class="ch-book">${esc(ch.book)}</div>
         </div>
         ${lvl ? `<span class="level-badge level-${lvl.toLowerCase()}">${lvl}</span>` : ''}
+        <span class="oe-badge">${(i + 1) % 2 === 1 ? 'O' : 'E'}</span>
         <span class="ch-count">${ch.rows.length > 0 ? ch.rows.length + ' items' : ''}</span>
         ${(!ch.type || ch.type === 'cheatcode') ? '<button class="pc-btn" title="Read chapter aloud">▶ Play Chapter</button>' : ''}
         <span class="ch-arrow">▼</span>
