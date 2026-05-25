@@ -356,7 +356,7 @@ tr.row-playing > td{background:rgba(231,117,0,.18)!important;transition:backgrou
       <text x="19" y="26" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Segoe UI,sans-serif">FD</text>
     </svg>
     <div>
-      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.5.0</span></div>
+      <div class="logo-text">Fastrack<em>Dutch</em> <span class="version-badge">v2.5.3</span></div>
       <span class="logo-sub">Fast-Track Dutch for Expats</span>
     </div>
   </div>
@@ -372,6 +372,8 @@ tr.row-playing > td{background:rgba(231,117,0,.18)!important;transition:backgrou
   <button id="theme-btn" title="Toggle light / dark theme">☀ Light</button>
   <select id="mode-sel" title="Active study mode">
     <option value="">All Chapters</option>
+    <option value="a1">📚 A1</option>
+    <option value="a2">📚 A2</option>
     <option value="multitask">🎧 Multi-tasking</option>
     <option value="fast">🚀 Fast Track</option>
     <option value="medium">🚶 Medium</option>
@@ -1729,8 +1731,12 @@ function playChapterAudio(ch, btn) {
 
   if (ch.type === 'cheatcode') {
     const cardEl = document.getElementById(`card-${ch.id}`);
-    const items = [...cardEl.querySelectorAll('.pbtn[data-text]')]
-      .map(b => ({ text: b.dataset.text, lang: 'nl-NL' }));
+    const items = [];
+    [...cardEl.querySelectorAll('.pbtn[data-text]')].forEach(b => {
+      const rowEl = b.closest('tr');
+      items.push({ text: b.dataset.text, lang: 'nl-NL', rowEl });
+      if (readEnglish && b.dataset.eng) items.push({ text: b.dataset.eng, lang: 'en-US', rowEl });
+    });
     playQueueItems(items, 0);
     return;
   }
@@ -1786,10 +1792,17 @@ function updateCourseBtnLabel() {
   const btn = document.getElementById('course-btn');
   if (!btn || coursePlayActive) return;
   const mode = document.getElementById('mode-sel')?.value || '';
-  if (mode !== 'multitask') { btn.textContent = '▶ Play Course'; return; }
-  const type = getTodayDayType();
-  if (type === 'sunday') btn.textContent = '▶ Play Sunday';
-  else btn.textContent = type === 'odd' ? '▶ Play Odd Day' : '▶ Play Even Day';
+  if (mode === 'multitask') {
+    const type = getTodayDayType();
+    if (type === 'sunday') btn.textContent = '▶ Play Sunday';
+    else btn.textContent = type === 'odd' ? '▶ Play Odd Day' : '▶ Play Even Day';
+  } else if (mode === 'a1') {
+    btn.textContent = '▶ Play A1';
+  } else if (mode === 'a2') {
+    btn.textContent = '▶ Play A2';
+  } else {
+    btn.textContent = '▶ Play Course';
+  }
 }
 
 function playCourse() {
@@ -1808,7 +1821,12 @@ function playCourse() {
     const dayType = getTodayDayType();
     if (dayType !== 'sunday')
       chapSet = CHAPTERS.filter((_, idx) => dayType === 'odd' ? (idx+1)%2===1 : (idx+1)%2===0);
+  } else if (activeMode === 'a1') {
+    chapSet = CHAPTERS.filter(ch => CHAPTER_LEVELS[ch.id] === 'A1');
+  } else if (activeMode === 'a2') {
+    chapSet = CHAPTERS.filter(ch => CHAPTER_LEVELS[ch.id] === 'A2');
   }
+  chapSet = chapSet.filter(ch => (ch.rows && ch.rows.length > 0) || ch.type === 'cheatcode');
   showPlayConfirm(chapSet, btn.textContent.replace('▶ ', ''), () => startCoursePlay(chapSet));
 }
 
@@ -1820,14 +1838,21 @@ function startCoursePlay(chapSet) {
   startTTSResume();
   const items = [];
   chapSet.forEach(ch => {
-    const engCol = getEnglishCol(ch);
     const cEl = document.getElementById(`card-${ch.id}`);
-    const trEls = cEl ? [...cEl.querySelectorAll('.tbl tbody tr')] : [];
-    ch.rows.forEach((row, j) => {
-      const rowEl = trEls[j] || null;
-      items.push({ text: row[ch.sc], lang: 'nl-NL', rowEl });
-      if (readEnglish && engCol >= 0 && row[engCol]) items.push({ text: row[engCol], lang: 'en-US', rowEl });
-    });
+    if (ch.type === 'cheatcode' && cEl) {
+      cEl.querySelectorAll('.pbtn[data-text]').forEach(btn => {
+        items.push({ text: btn.dataset.text, lang: 'nl-NL', rowEl: btn.closest('tr') });
+        if (readEnglish && btn.dataset.eng) items.push({ text: btn.dataset.eng, lang: 'en-US', rowEl: btn.closest('tr') });
+      });
+    } else {
+      const engCol = getEnglishCol(ch);
+      const trEls = cEl ? [...cEl.querySelectorAll('.tbl tbody tr')] : [];
+      ch.rows.forEach((row, j) => {
+        const rowEl = trEls[j] || null;
+        items.push({ text: row[ch.sc], lang: 'nl-NL', rowEl });
+        if (readEnglish && engCol >= 0 && row[engCol]) items.push({ text: row[engCol], lang: 'en-US', rowEl });
+      });
+    }
   });
   playCourseItems(items, 0);
 }
@@ -1857,13 +1882,15 @@ function stopCoursePlay() {
 
 function stopDictPlay() {
   stopTTSResume();
+  clearRowHighlight();
   dictPlayActive = false;
   if (dictPlayBtn) { dictPlayBtn.textContent = '▶ Play All'; dictPlayBtn.classList.remove('active'); dictPlayBtn = null; }
 }
 
 function playDictQueue(items, idx) {
-  if (!dictPlayActive || idx >= items.length) { stopDictPlay(); return; }
-  const {text, lang} = items[idx];
+  if (!dictPlayActive || idx >= items.length) { clearRowHighlight(); stopDictPlay(); return; }
+  const {text, lang, rowEl} = items[idx];
+  if (lang === 'nl-NL') setRowHighlight(rowEl);
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang; u.rate = lang === 'nl-NL' ? nlRate() : enRate();
   if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
@@ -1883,10 +1910,19 @@ function startDictPlay(entries, btn) {
   btn.textContent = '■ Stop';
   btn.classList.add('active');
   startTTSResume();
+  const tbody = btn.closest('.card')?.querySelector('.dict-tbody');
+  const rowMap = new Map();
+  if (tbody) {
+    tbody.querySelectorAll('tr:not(.dict-group-hdr)').forEach(tr => {
+      const dc = tr.querySelector('.dc');
+      if (dc) rowMap.set(dc.textContent.trim().toLowerCase(), tr);
+    });
+  }
   const items = [];
   entries.forEach(e => {
-    items.push({ text: e.dutch, lang: 'nl-NL' });
-    if (readEnglish && e.english) items.push({ text: e.english, lang: 'en-US' });
+    const rowEl = rowMap.get(e.dutch.toLowerCase()) || null;
+    items.push({ text: e.dutch, lang: 'nl-NL', rowEl });
+    if (readEnglish && e.english) items.push({ text: e.english, lang: 'en-US', rowEl });
   });
   playDictQueue(items, 0);
 }
@@ -1959,7 +1995,7 @@ function buildIntroHTML() {
 <div class="disclaimer" style="margin-top:0">
   <strong>Disclaimer:</strong> FastrackDutch is intended for general informational and self-study purposes only. The content, translations, and pronunciations are provided as a learning aid and cannot guarantee accuracy. Use at your own discretion. The app is not affiliated with any official Dutch language certification body. For formal language learning or legal/medical translation needs, consult a qualified professional.
 </div>
-<h2>Welcome to FastrackDutch <span class="version-badge">v2.5.0</span></h2>
+<h2>Welcome to FastrackDutch <span class="version-badge">v2.5.3</span></h2>
 <p>This app gives you everything you need to communicate in Dutch from day one. Six curated books cover vocabulary, pronunciation, grammar, sentences, and real-life expat scenarios — all in one place, with audio for every word and sentence.</p>
 <h3>What's Inside</h3>
 <ul>
@@ -1994,6 +2030,8 @@ function buildIntroHTML() {
     <tr><td><strong>📅 Weekend</strong></td><td>5 (weekends)</td><td>~7 weeks</td><td>~1.5 hrs</td><td>Five chapters each Saturday and Sunday — keep weekdays free, do a full sprint on weekends.</td></tr>
     <tr><td><strong>🚀 Fast Track</strong></td><td>8</td><td>~9 days</td><td>~2 hrs</td><td>Intensive immersion — listen on commute, at lunch, and in the evening. This is what the app is designed for.</td></tr>
     <tr><td><strong>🎧 Multi-tasking</strong></td><td>~33 (O or E)</td><td>Repeating cycle</td><td>~33 min / ~66 min (Sun)</td><td>Play while exercising, cooking, or doing chores. <strong>Odd day</strong> = grammar &amp; mixed chapters, <strong>Even day</strong> = vocabulary &amp; situational. <strong>Sunday</strong> = replay all. Each weekday session fits under 45 min; look for the <span class="oe-badge" style="opacity:1">O</span> / <span class="oe-badge" style="opacity:1">E</span> labels on chapter titles.</td></tr>
+    <tr><td><strong>📚 A1 Review</strong></td><td>15 (all at once)</td><td>Single review session</td><td>~10–20 min*</td><td>Play all A1 chapters in one go — greetings, core vocabulary, pronouns, verbs, and pronunciation basics. Select <em>📚 A1</em> in the mode dropdown and click <strong>▶ Play A1</strong>. The popup shows the exact time based on your speed setting.</td></tr>
+    <tr><td><strong>📚 A2 Review</strong></td><td>29 (all at once)</td><td>Single review session</td><td>~15–30 min*</td><td>Play all A2 chapters in one go — grammar, tenses, sentence patterns, and situational vocabulary. Select <em>📚 A2</em> in the mode dropdown and click <strong>▶ Play A2</strong>. (*Dutch only at 1× speed; doubles with Read EN on.)</td></tr>
   </tbody>
 </table>
 <div class="study-track-wrap">
@@ -2078,121 +2116,121 @@ function buildCheatcodeHTML() {
   <h4>🔤 Identical Words — Same Spelling &amp; Meaning</h4>
   <p class="cheat-intro">These Dutch words look and mean exactly the same as their English counterparts. Zero memorisation needed!</p>
   <table class="tbl"><thead><tr><th>Dutch</th><th>Pronunciation</th><th>English</th><th>Play</th></tr></thead><tbody>
-  <tr><td class="dc">alarm</td><td class="pc">ah-LARM</td><td>alarm</td><td><button class="pbtn" data-text="alarm">▶</button></td></tr>
-  <tr><td class="dc">arm</td><td class="pc">arm</td><td>arm</td><td><button class="pbtn" data-text="arm">▶</button></td></tr>
-  <tr><td class="dc">bank</td><td class="pc">bank</td><td>bank</td><td><button class="pbtn" data-text="bank">▶</button></td></tr>
-  <tr><td class="dc">bus</td><td class="pc">bus</td><td>bus</td><td><button class="pbtn" data-text="bus">▶</button></td></tr>
-  <tr><td class="dc">computer</td><td class="pc">kom-PYOO-ter</td><td>computer</td><td><button class="pbtn" data-text="computer">▶</button></td></tr>
-  <tr><td class="dc">contact</td><td class="pc">KON-takt</td><td>contact</td><td><button class="pbtn" data-text="contact">▶</button></td></tr>
-  <tr><td class="dc">hotel</td><td class="pc">hoh-TEL</td><td>hotel</td><td><button class="pbtn" data-text="hotel">▶</button></td></tr>
-  <tr><td class="dc">internet</td><td class="pc">IN-ter-net</td><td>internet</td><td><button class="pbtn" data-text="internet">▶</button></td></tr>
-  <tr><td class="dc">lamp</td><td class="pc">lamp</td><td>lamp</td><td><button class="pbtn" data-text="lamp">▶</button></td></tr>
-  <tr><td class="dc">menu</td><td class="pc">MEH-nuu</td><td>menu</td><td><button class="pbtn" data-text="menu">▶</button></td></tr>
-  <tr><td class="dc">park</td><td class="pc">park</td><td>park</td><td><button class="pbtn" data-text="park">▶</button></td></tr>
-  <tr><td class="dc">partner</td><td class="pc">PART-ner</td><td>partner</td><td><button class="pbtn" data-text="partner">▶</button></td></tr>
-  <tr><td class="dc">plant</td><td class="pc">plant</td><td>plant</td><td><button class="pbtn" data-text="plant">▶</button></td></tr>
-  <tr><td class="dc">plastic</td><td class="pc">PLAS-tik</td><td>plastic</td><td><button class="pbtn" data-text="plastic">▶</button></td></tr>
-  <tr><td class="dc">sport</td><td class="pc">sport</td><td>sport</td><td><button class="pbtn" data-text="sport">▶</button></td></tr>
-  <tr><td class="dc">taxi</td><td class="pc">TAK-see</td><td>taxi</td><td><button class="pbtn" data-text="taxi">▶</button></td></tr>
-  <tr><td class="dc">test</td><td class="pc">test</td><td>test</td><td><button class="pbtn" data-text="test">▶</button></td></tr>
-  <tr><td class="dc">tunnel</td><td class="pc">TUN-nel</td><td>tunnel</td><td><button class="pbtn" data-text="tunnel">▶</button></td></tr>
-  <tr><td class="dc">warm</td><td class="pc">varm</td><td>warm</td><td><button class="pbtn" data-text="warm">▶</button></td></tr>
-  <tr><td class="dc">water</td><td class="pc">VAH-ter</td><td>water</td><td><button class="pbtn" data-text="water">▶</button></td></tr>
-  <tr><td class="dc">wind</td><td class="pc">vint</td><td>wind</td><td><button class="pbtn" data-text="wind">▶</button></td></tr>
+  <tr><td class="dc">alarm</td><td class="pc">ah-LARM</td><td>alarm</td><td><button class="pbtn" data-text="alarm" data-eng="alarm">▶</button></td></tr>
+  <tr><td class="dc">arm</td><td class="pc">arm</td><td>arm</td><td><button class="pbtn" data-text="arm" data-eng="arm">▶</button></td></tr>
+  <tr><td class="dc">bank</td><td class="pc">bank</td><td>bank</td><td><button class="pbtn" data-text="bank" data-eng="bank">▶</button></td></tr>
+  <tr><td class="dc">bus</td><td class="pc">bus</td><td>bus</td><td><button class="pbtn" data-text="bus" data-eng="bus">▶</button></td></tr>
+  <tr><td class="dc">computer</td><td class="pc">kom-PYOO-ter</td><td>computer</td><td><button class="pbtn" data-text="computer" data-eng="computer">▶</button></td></tr>
+  <tr><td class="dc">contact</td><td class="pc">KON-takt</td><td>contact</td><td><button class="pbtn" data-text="contact" data-eng="contact">▶</button></td></tr>
+  <tr><td class="dc">hotel</td><td class="pc">hoh-TEL</td><td>hotel</td><td><button class="pbtn" data-text="hotel" data-eng="hotel">▶</button></td></tr>
+  <tr><td class="dc">internet</td><td class="pc">IN-ter-net</td><td>internet</td><td><button class="pbtn" data-text="internet" data-eng="internet">▶</button></td></tr>
+  <tr><td class="dc">lamp</td><td class="pc">lamp</td><td>lamp</td><td><button class="pbtn" data-text="lamp" data-eng="lamp">▶</button></td></tr>
+  <tr><td class="dc">menu</td><td class="pc">MEH-nuu</td><td>menu</td><td><button class="pbtn" data-text="menu" data-eng="menu">▶</button></td></tr>
+  <tr><td class="dc">park</td><td class="pc">park</td><td>park</td><td><button class="pbtn" data-text="park" data-eng="park">▶</button></td></tr>
+  <tr><td class="dc">partner</td><td class="pc">PART-ner</td><td>partner</td><td><button class="pbtn" data-text="partner" data-eng="partner">▶</button></td></tr>
+  <tr><td class="dc">plant</td><td class="pc">plant</td><td>plant</td><td><button class="pbtn" data-text="plant" data-eng="plant">▶</button></td></tr>
+  <tr><td class="dc">plastic</td><td class="pc">PLAS-tik</td><td>plastic</td><td><button class="pbtn" data-text="plastic" data-eng="plastic">▶</button></td></tr>
+  <tr><td class="dc">sport</td><td class="pc">sport</td><td>sport</td><td><button class="pbtn" data-text="sport" data-eng="sport">▶</button></td></tr>
+  <tr><td class="dc">taxi</td><td class="pc">TAK-see</td><td>taxi</td><td><button class="pbtn" data-text="taxi" data-eng="taxi">▶</button></td></tr>
+  <tr><td class="dc">test</td><td class="pc">test</td><td>test</td><td><button class="pbtn" data-text="test" data-eng="test">▶</button></td></tr>
+  <tr><td class="dc">tunnel</td><td class="pc">TUN-nel</td><td>tunnel</td><td><button class="pbtn" data-text="tunnel" data-eng="tunnel">▶</button></td></tr>
+  <tr><td class="dc">warm</td><td class="pc">varm</td><td>warm</td><td><button class="pbtn" data-text="warm" data-eng="warm">▶</button></td></tr>
+  <tr><td class="dc">water</td><td class="pc">VAH-ter</td><td>water</td><td><button class="pbtn" data-text="water" data-eng="water">▶</button></td></tr>
+  <tr><td class="dc">wind</td><td class="pc">vint</td><td>wind</td><td><button class="pbtn" data-text="wind" data-eng="wind">▶</button></td></tr>
   </tbody></table>
 </div>
 
 <div class="cheat-section">
   <h4>🔀 Letter-Swap Formulas — Predict Dutch from English</h4>
   <p class="cheat-intro">Reliable sound shifts that let you guess many Dutch words by transforming English ones.</p>
-  <table class="tbl"><thead><tr><th>Rule</th><th>Pattern</th><th>English</th><th>Dutch</th><th>Play</th></tr></thead><tbody>
-  <tr><td colspan="5" class="rule-section-hdr">▸ Vowel Shifts</td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="2">oo → oe</td><td class="pc" rowspan="2">English "oo" maps to Dutch "oe"</td><td>foot</td><td>voet</td><td><button class="pbtn" data-text="voet">▶</button></td></tr>
-  <tr><td>food</td><td>voedsel</td><td><button class="pbtn" data-text="voedsel">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="4">ou / ow → ui</td><td class="pc" rowspan="4">Old English /uː/ diphthong became "ui" in Dutch</td><td>house</td><td>huis</td><td><button class="pbtn" data-text="huis">▶</button></td></tr>
-  <tr><td>mouse</td><td>muis</td><td><button class="pbtn" data-text="muis">▶</button></td></tr>
-  <tr><td>louse</td><td>luis</td><td><button class="pbtn" data-text="luis">▶</button></td></tr>
-  <tr><td>brown</td><td>bruin</td><td><button class="pbtn" data-text="bruin">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="3">ee / ea → ij</td><td class="pc" rowspan="3">Long /iː/ vowel became "ij" diphthong in Dutch</td><td>free</td><td>vrij</td><td><button class="pbtn" data-text="vrij">▶</button></td></tr>
-  <tr><td>wheel</td><td>wiel</td><td><button class="pbtn" data-text="wiel">▶</button></td></tr>
-  <tr><td>teeth</td><td>tijd</td><td><button class="pbtn" data-text="tijd">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="6">Double vowel = long sound</td><td class="pc" rowspan="6">Double vowel in closed syllable → long; single → short</td><td>moon (long)</td><td>maan</td><td><button class="pbtn" data-text="maan">▶</button></td></tr>
-  <tr><td>leg (long)</td><td>been</td><td><button class="pbtn" data-text="been">▶</button></td></tr>
-  <tr><td>boat (long)</td><td>boot</td><td><button class="pbtn" data-text="boot">▶</button></td></tr>
-  <tr><td>man (short)</td><td>man</td><td><button class="pbtn" data-text="man">▶</button></td></tr>
-  <tr><td>cap (short)</td><td>pet</td><td><button class="pbtn" data-text="pet">▶</button></td></tr>
-  <tr><td>bone (short)</td><td>bot</td><td><button class="pbtn" data-text="bot">▶</button></td></tr>
-  <tr><td colspan="5" class="rule-section-hdr">▸ Consonant Shifts</td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="8">th → d</td><td class="pc" rowspan="8">Dutch lost the "th" sound — uses D instead</td><td>think</td><td>denken</td><td><button class="pbtn" data-text="denken">▶</button></td></tr>
-  <tr><td>three</td><td>drie</td><td><button class="pbtn" data-text="drie">▶</button></td></tr>
-  <tr><td>that</td><td>dat</td><td><button class="pbtn" data-text="dat">▶</button></td></tr>
-  <tr><td>this</td><td>dit</td><td><button class="pbtn" data-text="dit">▶</button></td></tr>
-  <tr><td>thank</td><td>danken</td><td><button class="pbtn" data-text="danken">▶</button></td></tr>
-  <tr><td>thick</td><td>dik</td><td><button class="pbtn" data-text="dik">▶</button></td></tr>
-  <tr><td>father</td><td>vader</td><td><button class="pbtn" data-text="vader">▶</button></td></tr>
-  <tr><td>mother</td><td>moeder</td><td><button class="pbtn" data-text="moeder">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="4">f → v (word-initial)</td><td class="pc" rowspan="4">Dutch uses V where English uses F in core Germanic words</td><td>five</td><td>vijf</td><td><button class="pbtn" data-text="vijf">▶</button></td></tr>
-  <tr><td>foot</td><td>voet</td><td><button class="pbtn" data-text="voet">▶</button></td></tr>
-  <tr><td>full</td><td>vol</td><td><button class="pbtn" data-text="vol">▶</button></td></tr>
-  <tr><td>father</td><td>vader</td><td><button class="pbtn" data-text="vader">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="2">d → t (word-final)</td><td class="pc" rowspan="2">Final obstruent devoicing: D is spelled but pronounced T</td><td>hand</td><td>hand</td><td><button class="pbtn" data-text="hand">▶</button></td></tr>
-  <tr><td>good</td><td>goed</td><td><button class="pbtn" data-text="goed">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="2">ch → k</td><td class="pc" rowspan="2">Latin/Greek "ch" simplified to K in Dutch</td><td>church</td><td>kerk</td><td><button class="pbtn" data-text="kerk">▶</button></td></tr>
-  <tr><td>character</td><td>karakter</td><td><button class="pbtn" data-text="karakter">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="4">-ght → -cht</td><td class="pc" rowspan="4">Silent GH becomes CH</td><td>night</td><td>nacht</td><td><button class="pbtn" data-text="nacht">▶</button></td></tr>
-  <tr><td>right</td><td>recht</td><td><button class="pbtn" data-text="recht">▶</button></td></tr>
-  <tr><td>light</td><td>licht</td><td><button class="pbtn" data-text="licht">▶</button></td></tr>
-  <tr><td>daughter</td><td>dochter</td><td><button class="pbtn" data-text="dochter">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="4">W → V (often)</td><td class="pc" rowspan="4">Many W-words use V in Dutch</td><td>water</td><td>water</td><td><button class="pbtn" data-text="water">▶</button></td></tr>
-  <tr><td>wine</td><td>wijn</td><td><button class="pbtn" data-text="wijn">▶</button></td></tr>
-  <tr><td>work</td><td>werk</td><td><button class="pbtn" data-text="werk">▶</button></td></tr>
-  <tr><td>word</td><td>woord</td><td><button class="pbtn" data-text="woord">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="2">V stays V</td><td class="pc" rowspan="2">V sounds are shared</td><td>video</td><td>video</td><td><button class="pbtn" data-text="video">▶</button></td></tr>
-  <tr><td>visa</td><td>visum</td><td><button class="pbtn" data-text="visum">▶</button></td></tr>
-  <tr><td colspan="5" class="rule-section-hdr">▸ Ending Shifts</td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="6">-tion → -tie</td><td class="pc" rowspan="6">Latinate nouns transfer almost perfectly</td><td>station</td><td>station</td><td><button class="pbtn" data-text="station">▶</button></td></tr>
-  <tr><td>nation</td><td>natie</td><td><button class="pbtn" data-text="natie">▶</button></td></tr>
-  <tr><td>information</td><td>informatie</td><td><button class="pbtn" data-text="informatie">▶</button></td></tr>
-  <tr><td>reservation</td><td>reservatie</td><td><button class="pbtn" data-text="reservatie">▶</button></td></tr>
-  <tr><td>action</td><td>actie</td><td><button class="pbtn" data-text="actie">▶</button></td></tr>
-  <tr><td>situation</td><td>situatie</td><td><button class="pbtn" data-text="situatie">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc">-ness → -heid</td><td class="pc">Abstract noun suffix swap</td><td>friendliness</td><td>vriendelijkheid</td><td><button class="pbtn" data-text="vriendelijkheid">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="5">-ly → -lijk</td><td class="pc" rowspan="5">Both from Old Germanic -līk meaning "body/form"</td><td>friendly</td><td>vriendelijk</td><td><button class="pbtn" data-text="vriendelijk">▶</button></td></tr>
-  <tr><td>lovely</td><td>lieflijk</td><td><button class="pbtn" data-text="lieflijk">▶</button></td></tr>
-  <tr><td>motherly</td><td>moederlijk</td><td><button class="pbtn" data-text="moederlijk">▶</button></td></tr>
-  <tr><td>naturally</td><td>natuurlijk</td><td><button class="pbtn" data-text="natuurlijk">▶</button></td></tr>
-  <tr><td>probably</td><td>waarschijnlijk</td><td><button class="pbtn" data-text="waarschijnlijk">▶</button></td></tr>
-  <tr class="rule-start"><td class="dc" rowspan="6">-er → -er</td><td class="pc" rowspan="6">Agent nouns and comparatives share the -er suffix</td><td>teacher</td><td>leraar</td><td><button class="pbtn" data-text="leraar">▶</button></td></tr>
-  <tr><td>driver</td><td>bestuurder</td><td><button class="pbtn" data-text="bestuurder">▶</button></td></tr>
-  <tr><td>baker</td><td>bakker</td><td><button class="pbtn" data-text="bakker">▶</button></td></tr>
-  <tr><td>worker</td><td>werker</td><td><button class="pbtn" data-text="werker">▶</button></td></tr>
-  <tr><td>colder</td><td>kouder</td><td><button class="pbtn" data-text="kouder">▶</button></td></tr>
-  <tr><td>faster</td><td>sneller</td><td><button class="pbtn" data-text="sneller">▶</button></td></tr>
+  <table class="tbl"><thead><tr><th>Rule</th><th>Pattern</th><th>English</th><th>Dutch</th><th>Pronunciation</th><th>Play</th></tr></thead><tbody>
+  <tr><td colspan="6" class="rule-section-hdr">▸ Vowel Shifts</td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="2">oo → oe</td><td class="pc" rowspan="2">English "oo" maps to Dutch "oe"</td><td>foot</td><td>voet</td><td>voot</td><td><button class="pbtn" data-text="voet" data-eng="foot">▶</button></td></tr>
+  <tr><td>food</td><td>voedsel</td><td>VOOD-sel</td><td><button class="pbtn" data-text="voedsel" data-eng="food">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="4">ou / ow → ui</td><td class="pc" rowspan="4">Old English /uː/ diphthong became "ui" in Dutch</td><td>house</td><td>huis</td><td>hows</td><td><button class="pbtn" data-text="huis" data-eng="house">▶</button></td></tr>
+  <tr><td>mouse</td><td>muis</td><td>mows</td><td><button class="pbtn" data-text="muis" data-eng="mouse">▶</button></td></tr>
+  <tr><td>louse</td><td>luis</td><td>lows</td><td><button class="pbtn" data-text="luis" data-eng="louse">▶</button></td></tr>
+  <tr><td>brown</td><td>bruin</td><td>brown</td><td><button class="pbtn" data-text="bruin" data-eng="brown">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="3">ee / ea → ij</td><td class="pc" rowspan="3">Long /iː/ vowel became "ij" diphthong in Dutch</td><td>free</td><td>vrij</td><td>vray</td><td><button class="pbtn" data-text="vrij" data-eng="free">▶</button></td></tr>
+  <tr><td>wheel</td><td>wiel</td><td>veel</td><td><button class="pbtn" data-text="wiel" data-eng="wheel">▶</button></td></tr>
+  <tr><td>teeth</td><td>tijd</td><td>tayt</td><td><button class="pbtn" data-text="tijd" data-eng="teeth">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="6">Double vowel = long sound</td><td class="pc" rowspan="6">Double vowel in closed syllable → long; single → short</td><td>moon (long)</td><td>maan</td><td>mahn</td><td><button class="pbtn" data-text="maan" data-eng="moon">▶</button></td></tr>
+  <tr><td>leg (long)</td><td>been</td><td>bayn</td><td><button class="pbtn" data-text="been" data-eng="leg">▶</button></td></tr>
+  <tr><td>boat (long)</td><td>boot</td><td>boht</td><td><button class="pbtn" data-text="boot" data-eng="boat">▶</button></td></tr>
+  <tr><td>man (short)</td><td>man</td><td>man</td><td><button class="pbtn" data-text="man" data-eng="man">▶</button></td></tr>
+  <tr><td>cap (short)</td><td>pet</td><td>pet</td><td><button class="pbtn" data-text="pet" data-eng="cap">▶</button></td></tr>
+  <tr><td>bone (short)</td><td>bot</td><td>bot</td><td><button class="pbtn" data-text="bot" data-eng="bone">▶</button></td></tr>
+  <tr><td colspan="6" class="rule-section-hdr">▸ Consonant Shifts</td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="8">th → d</td><td class="pc" rowspan="8">Dutch lost the "th" sound — uses D instead</td><td>think</td><td>denken</td><td>DENK-en</td><td><button class="pbtn" data-text="denken" data-eng="think">▶</button></td></tr>
+  <tr><td>three</td><td>drie</td><td>dree</td><td><button class="pbtn" data-text="drie" data-eng="three">▶</button></td></tr>
+  <tr><td>that</td><td>dat</td><td>dat</td><td><button class="pbtn" data-text="dat" data-eng="that">▶</button></td></tr>
+  <tr><td>this</td><td>dit</td><td>dit</td><td><button class="pbtn" data-text="dit" data-eng="this">▶</button></td></tr>
+  <tr><td>thank</td><td>danken</td><td>DANK-en</td><td><button class="pbtn" data-text="danken" data-eng="thank">▶</button></td></tr>
+  <tr><td>thick</td><td>dik</td><td>dik</td><td><button class="pbtn" data-text="dik" data-eng="thick">▶</button></td></tr>
+  <tr><td>father</td><td>vader</td><td>VAH-der</td><td><button class="pbtn" data-text="vader" data-eng="father">▶</button></td></tr>
+  <tr><td>mother</td><td>moeder</td><td>MOO-der</td><td><button class="pbtn" data-text="moeder" data-eng="mother">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="4">f → v (word-initial)</td><td class="pc" rowspan="4">Dutch uses V where English uses F in core Germanic words</td><td>five</td><td>vijf</td><td>vayf</td><td><button class="pbtn" data-text="vijf" data-eng="five">▶</button></td></tr>
+  <tr><td>foot</td><td>voet</td><td>voot</td><td><button class="pbtn" data-text="voet" data-eng="foot">▶</button></td></tr>
+  <tr><td>full</td><td>vol</td><td>vol</td><td><button class="pbtn" data-text="vol" data-eng="full">▶</button></td></tr>
+  <tr><td>father</td><td>vader</td><td>VAH-der</td><td><button class="pbtn" data-text="vader" data-eng="father">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="2">d → t (word-final)</td><td class="pc" rowspan="2">Final obstruent devoicing: D is spelled but pronounced T</td><td>hand</td><td>hand</td><td>hant</td><td><button class="pbtn" data-text="hand" data-eng="hand">▶</button></td></tr>
+  <tr><td>good</td><td>goed</td><td>khoot</td><td><button class="pbtn" data-text="goed" data-eng="good">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="2">ch → k</td><td class="pc" rowspan="2">Latin/Greek "ch" simplified to K in Dutch</td><td>church</td><td>kerk</td><td>kerk</td><td><button class="pbtn" data-text="kerk" data-eng="church">▶</button></td></tr>
+  <tr><td>character</td><td>karakter</td><td>kah-RAK-ter</td><td><button class="pbtn" data-text="karakter" data-eng="character">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="4">-ght → -cht</td><td class="pc" rowspan="4">Silent GH becomes CH</td><td>night</td><td>nacht</td><td>nakht</td><td><button class="pbtn" data-text="nacht" data-eng="night">▶</button></td></tr>
+  <tr><td>right</td><td>recht</td><td>rekht</td><td><button class="pbtn" data-text="recht" data-eng="right">▶</button></td></tr>
+  <tr><td>light</td><td>licht</td><td>likht</td><td><button class="pbtn" data-text="licht" data-eng="light">▶</button></td></tr>
+  <tr><td>daughter</td><td>dochter</td><td>DOKH-ter</td><td><button class="pbtn" data-text="dochter" data-eng="daughter">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="4">W → V (often)</td><td class="pc" rowspan="4">Many W-words use V in Dutch</td><td>water</td><td>water</td><td>VAH-ter</td><td><button class="pbtn" data-text="water" data-eng="water">▶</button></td></tr>
+  <tr><td>wine</td><td>wijn</td><td>vayn</td><td><button class="pbtn" data-text="wijn" data-eng="wine">▶</button></td></tr>
+  <tr><td>work</td><td>werk</td><td>verk</td><td><button class="pbtn" data-text="werk" data-eng="work">▶</button></td></tr>
+  <tr><td>word</td><td>woord</td><td>vohrt</td><td><button class="pbtn" data-text="woord" data-eng="word">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="2">V stays V</td><td class="pc" rowspan="2">V sounds are shared</td><td>video</td><td>video</td><td>VEE-dee-oh</td><td><button class="pbtn" data-text="video" data-eng="video">▶</button></td></tr>
+  <tr><td>visa</td><td>visum</td><td>VEE-sum</td><td><button class="pbtn" data-text="visum" data-eng="visa">▶</button></td></tr>
+  <tr><td colspan="6" class="rule-section-hdr">▸ Ending Shifts</td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="6">-tion → -tie</td><td class="pc" rowspan="6">Latinate nouns transfer almost perfectly</td><td>station</td><td>station</td><td>stah-SHON</td><td><button class="pbtn" data-text="station" data-eng="station">▶</button></td></tr>
+  <tr><td>nation</td><td>natie</td><td>NAH-see</td><td><button class="pbtn" data-text="natie" data-eng="nation">▶</button></td></tr>
+  <tr><td>information</td><td>informatie</td><td>in-for-MAH-see</td><td><button class="pbtn" data-text="informatie" data-eng="information">▶</button></td></tr>
+  <tr><td>reservation</td><td>reservatie</td><td>reh-zer-VAH-see</td><td><button class="pbtn" data-text="reservatie" data-eng="reservation">▶</button></td></tr>
+  <tr><td>action</td><td>actie</td><td>AK-see</td><td><button class="pbtn" data-text="actie" data-eng="action">▶</button></td></tr>
+  <tr><td>situation</td><td>situatie</td><td>see-tyoo-AH-see</td><td><button class="pbtn" data-text="situatie" data-eng="situation">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc">-ness → -heid</td><td class="pc">Abstract noun suffix swap</td><td>friendliness</td><td>vriendelijkheid</td><td>VREEN-de-lek-hayt</td><td><button class="pbtn" data-text="vriendelijkheid" data-eng="friendliness">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="5">-ly → -lijk</td><td class="pc" rowspan="5">Both from Old Germanic -līk meaning "body/form"</td><td>friendly</td><td>vriendelijk</td><td>VREEN-de-lek</td><td><button class="pbtn" data-text="vriendelijk" data-eng="friendly">▶</button></td></tr>
+  <tr><td>lovely</td><td>lieflijk</td><td>LEEF-lek</td><td><button class="pbtn" data-text="lieflijk" data-eng="lovely">▶</button></td></tr>
+  <tr><td>motherly</td><td>moederlijk</td><td>MOO-der-lek</td><td><button class="pbtn" data-text="moederlijk" data-eng="motherly">▶</button></td></tr>
+  <tr><td>naturally</td><td>natuurlijk</td><td>nah-TYOOR-lek</td><td><button class="pbtn" data-text="natuurlijk" data-eng="naturally">▶</button></td></tr>
+  <tr><td>probably</td><td>waarschijnlijk</td><td>vahr-SHAYN-lek</td><td><button class="pbtn" data-text="waarschijnlijk" data-eng="probably">▶</button></td></tr>
+  <tr class="rule-start"><td class="dc" rowspan="6">-er → -er</td><td class="pc" rowspan="6">Agent nouns and comparatives share the -er suffix</td><td>teacher</td><td>leraar</td><td>LEH-rahr</td><td><button class="pbtn" data-text="leraar" data-eng="teacher">▶</button></td></tr>
+  <tr><td>driver</td><td>bestuurder</td><td>be-STYOOR-der</td><td><button class="pbtn" data-text="bestuurder" data-eng="driver">▶</button></td></tr>
+  <tr><td>baker</td><td>bakker</td><td>BAK-ker</td><td><button class="pbtn" data-text="bakker" data-eng="baker">▶</button></td></tr>
+  <tr><td>worker</td><td>werker</td><td>VERK-er</td><td><button class="pbtn" data-text="werker" data-eng="worker">▶</button></td></tr>
+  <tr><td>colder</td><td>kouder</td><td>KOW-der</td><td><button class="pbtn" data-text="kouder" data-eng="colder">▶</button></td></tr>
+  <tr><td>faster</td><td>sneller</td><td>SNEL-er</td><td><button class="pbtn" data-text="sneller" data-eng="faster">▶</button></td></tr>
   </tbody></table>
 </div>
 
 <div class="cheat-section">
   <h4>🧩 Compound Logic — Break Dutch Nouns Apart</h4>
   <p class="cheat-intro">Dutch loves combining two simple words into one noun. If you know the parts, you can decode — or even invent — the whole word!</p>
-  <table class="tbl"><thead><tr><th>Dutch Word</th><th>Parts</th><th>Literal Meaning → Actual Meaning</th><th>Play</th></tr></thead><tbody>
-  <tr><td class="dc">ziekenhuis</td><td class="pc">ziek (sick) + huis (house)</td><td>sick house → hospital</td><td><button class="pbtn" data-text="ziekenhuis">▶</button></td></tr>
-  <tr><td class="dc">vliegveld</td><td class="pc">vlieg (fly) + veld (field)</td><td>fly field → airport</td><td><button class="pbtn" data-text="vliegveld">▶</button></td></tr>
-  <tr><td class="dc">tandarts</td><td class="pc">tand (tooth) + arts (doctor)</td><td>tooth doctor → dentist</td><td><button class="pbtn" data-text="tandarts">▶</button></td></tr>
-  <tr><td class="dc">snelweg</td><td class="pc">snel (fast) + weg (road)</td><td>fast road → motorway/highway</td><td><button class="pbtn" data-text="snelweg">▶</button></td></tr>
-  <tr><td class="dc">rijbewijs</td><td class="pc">rij (drive) + bewijs (proof)</td><td>drive proof → driver's licence</td><td><button class="pbtn" data-text="rijbewijs">▶</button></td></tr>
-  <tr><td class="dc">brandweer</td><td class="pc">brand (fire) + weer (resistance)</td><td>fire resistance → fire brigade</td><td><button class="pbtn" data-text="brandweer">▶</button></td></tr>
-  <tr><td class="dc">politiebureau</td><td class="pc">politie (police) + bureau (office)</td><td>police office → police station</td><td><button class="pbtn" data-text="politiebureau">▶</button></td></tr>
-  <tr><td class="dc">treinstation</td><td class="pc">trein (train) + station (station)</td><td>train station → railway station</td><td><button class="pbtn" data-text="treinstation">▶</button></td></tr>
-  <tr><td class="dc">zeehond</td><td class="pc">zee (sea) + hond (dog)</td><td>sea dog → seal</td><td><button class="pbtn" data-text="zeehond">▶</button></td></tr>
-  <tr><td class="dc">vliegtuig</td><td class="pc">vlieg (fly) + tuig (gear/rigging)</td><td>fly gear → aeroplane</td><td><button class="pbtn" data-text="vliegtuig">▶</button></td></tr>
-  <tr><td class="dc">koelkast</td><td class="pc">koel (cool) + kast (cabinet)</td><td>cool cabinet → refrigerator</td><td><button class="pbtn" data-text="koelkast">▶</button></td></tr>
-  <tr><td class="dc">slaapkamer</td><td class="pc">slaap (sleep) + kamer (room)</td><td>sleep room → bedroom</td><td><button class="pbtn" data-text="slaapkamer">▶</button></td></tr>
-  <tr><td class="dc">woonkamer</td><td class="pc">woon (live) + kamer (room)</td><td>living room → living room</td><td><button class="pbtn" data-text="woonkamer">▶</button></td></tr>
-  <tr><td class="dc">speeltuin</td><td class="pc">speel (play) + tuin (garden)</td><td>play garden → playground</td><td><button class="pbtn" data-text="speeltuin">▶</button></td></tr>
-  <tr><td class="dc">zwembad</td><td class="pc">zwem (swim) + bad (bath/pool)</td><td>swim bath → swimming pool</td><td><button class="pbtn" data-text="zwembad">▶</button></td></tr>
-  <tr><td class="dc">fietspad</td><td class="pc">fiets (bicycle) + pad (path)</td><td>bicycle path → cycle lane</td><td><button class="pbtn" data-text="fietspad">▶</button></td></tr>
-  <tr><td class="dc">voetbal</td><td class="pc">voet (foot) + bal (ball)</td><td>foot ball → football/soccer</td><td><button class="pbtn" data-text="voetbal">▶</button></td></tr>
-  <tr><td class="dc">handtas</td><td class="pc">hand (hand) + tas (bag)</td><td>hand bag → handbag</td><td><button class="pbtn" data-text="handtas">▶</button></td></tr>
+  <table class="tbl"><thead><tr><th>Dutch Word</th><th>Parts</th><th>Pronunciation</th><th>English Meaning</th><th>Play</th></tr></thead><tbody>
+  <tr><td class="dc">ziekenhuis</td><td class="pc">ziek (sick) + huis (house)</td><td>ZEE-ken-hows</td><td>hospital</td><td><button class="pbtn" data-text="ziekenhuis" data-eng="hospital">▶</button></td></tr>
+  <tr><td class="dc">vliegveld</td><td class="pc">vlieg (fly) + veld (field)</td><td>VLEEKH-felt</td><td>airport</td><td><button class="pbtn" data-text="vliegveld" data-eng="airport">▶</button></td></tr>
+  <tr><td class="dc">tandarts</td><td class="pc">tand (tooth) + arts (doctor)</td><td>TANT-arts</td><td>dentist</td><td><button class="pbtn" data-text="tandarts" data-eng="dentist">▶</button></td></tr>
+  <tr><td class="dc">snelweg</td><td class="pc">snel (fast) + weg (road)</td><td>SNEL-vekh</td><td>motorway</td><td><button class="pbtn" data-text="snelweg" data-eng="motorway">▶</button></td></tr>
+  <tr><td class="dc">rijbewijs</td><td class="pc">rij (drive) + bewijs (proof)</td><td>RAY-be-vays</td><td>driver's licence</td><td><button class="pbtn" data-text="rijbewijs" data-eng="driver's licence">▶</button></td></tr>
+  <tr><td class="dc">brandweer</td><td class="pc">brand (fire) + weer (resistance)</td><td>BRANT-vayr</td><td>fire brigade</td><td><button class="pbtn" data-text="brandweer" data-eng="fire brigade">▶</button></td></tr>
+  <tr><td class="dc">politiebureau</td><td class="pc">politie (police) + bureau (office)</td><td>po-LEET-see-byoo-ROH</td><td>police station</td><td><button class="pbtn" data-text="politiebureau" data-eng="police station">▶</button></td></tr>
+  <tr><td class="dc">treinstation</td><td class="pc">trein (train) + station (station)</td><td>trayn-stah-SHON</td><td>railway station</td><td><button class="pbtn" data-text="treinstation" data-eng="railway station">▶</button></td></tr>
+  <tr><td class="dc">zeehond</td><td class="pc">zee (sea) + hond (dog)</td><td>ZAY-hont</td><td>seal</td><td><button class="pbtn" data-text="zeehond" data-eng="seal">▶</button></td></tr>
+  <tr><td class="dc">vliegtuig</td><td class="pc">vlieg (fly) + tuig (gear/rigging)</td><td>VLEEKH-towkh</td><td>aeroplane</td><td><button class="pbtn" data-text="vliegtuig" data-eng="aeroplane">▶</button></td></tr>
+  <tr><td class="dc">koelkast</td><td class="pc">koel (cool) + kast (cabinet)</td><td>KOOL-kast</td><td>refrigerator</td><td><button class="pbtn" data-text="koelkast" data-eng="refrigerator">▶</button></td></tr>
+  <tr><td class="dc">slaapkamer</td><td class="pc">slaap (sleep) + kamer (room)</td><td>SLAHP-kah-mer</td><td>bedroom</td><td><button class="pbtn" data-text="slaapkamer" data-eng="bedroom">▶</button></td></tr>
+  <tr><td class="dc">woonkamer</td><td class="pc">woon (live) + kamer (room)</td><td>VOHN-kah-mer</td><td>living room</td><td><button class="pbtn" data-text="woonkamer" data-eng="living room">▶</button></td></tr>
+  <tr><td class="dc">speeltuin</td><td class="pc">speel (play) + tuin (garden)</td><td>SPAYL-town</td><td>playground</td><td><button class="pbtn" data-text="speeltuin" data-eng="playground">▶</button></td></tr>
+  <tr><td class="dc">zwembad</td><td class="pc">zwem (swim) + bad (bath/pool)</td><td>ZVEM-bat</td><td>swimming pool</td><td><button class="pbtn" data-text="zwembad" data-eng="swimming pool">▶</button></td></tr>
+  <tr><td class="dc">fietspad</td><td class="pc">fiets (bicycle) + pad (path)</td><td>FEETS-pat</td><td>cycle lane</td><td><button class="pbtn" data-text="fietspad" data-eng="cycle lane">▶</button></td></tr>
+  <tr><td class="dc">voetbal</td><td class="pc">voet (foot) + bal (ball)</td><td>VOOT-bal</td><td>football</td><td><button class="pbtn" data-text="voetbal" data-eng="football">▶</button></td></tr>
+  <tr><td class="dc">handtas</td><td class="pc">hand (hand) + tas (bag)</td><td>HANT-tas</td><td>handbag</td><td><button class="pbtn" data-text="handtas" data-eng="handbag">▶</button></td></tr>
   </tbody></table>
   <p class="cheat-intro" style="margin-top:8px">💡 Tip: When stuck on a complex Dutch noun, try splitting it in two. You will be surprised how often it works!</p>
 </div>
