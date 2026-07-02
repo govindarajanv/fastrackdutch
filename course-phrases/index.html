@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dutch Course Phrases</title>
+<title>My Dutch Daily Course Notes v1.8.3</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -12,40 +12,62 @@
 }
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 #hdr{background:var(--blue);color:#fff;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-#hdr h1{font-size:1.1rem;font-weight:700}
-#hdr h1 em{color:var(--orange);font-style:normal}
+#hdr h1{font-size:1.05rem;font-weight:700;line-height:1.3}
+#hdr h1 .ver{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.75);margin-left:6px}
 #back-link{color:rgba(255,255,255,.85);font-size:.78rem;text-decoration:none;white-space:nowrap}
 #back-link:hover{color:#fff;text-decoration:underline}
 .wrap{max-width:900px;margin:0 auto;padding:20px 24px 48px}
+body.playback-active .wrap{padding-bottom:88px}
 #voice-warn{background:#fffbeb;border:1px solid #f59e0b;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:.83rem;display:none}
 .intro{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:16px;font-size:.88rem;line-height:1.55}
 .intro code{background:#eef2ff;padding:1px 6px;border-radius:4px;font-size:.82rem}
 .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .toolbar span{font-size:.82rem;color:var(--muted)}
+.toolbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#pause-btn{background:transparent;border:1.5px solid var(--blue);color:var(--blue);border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
+#pause-btn:hover:not(:disabled){background:var(--blue);color:#fff}
+#pause-btn:disabled{opacity:.4;cursor:default}
+#pause-btn.paused{background:var(--blue);color:#fff}
 #play-all{background:transparent;border:1.5px solid var(--orange);color:var(--orange);border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
 #play-all:hover,#play-all.active{background:var(--orange);color:#fff}
 .card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .tbl{width:100%;border-collapse:collapse;font-size:.88rem}
 .tbl th{background:var(--blue);color:#fff;padding:9px 14px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
-.tbl th:last-child{width:48px;text-align:center}
+.tbl th:last-child{width:72px;text-align:center}
 .tbl td{padding:9px 14px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tr:nth-child(even) td{background:#fafafa}
 .tbl tr:hover td{background:#fff8f0}
 .dc{font-weight:600;color:var(--blue)}
+.dc-wrap{display:flex;align-items:flex-start;gap:8px}
+.dc-text{flex:1;min-width:0}
+.spk-btn{background:var(--blue);color:#fff;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:.72rem;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;margin-top:1px}
+.spk-btn:hover{background:#0048b8;transform:scale(1.08)}
+.spk-btn.playing{background:#0048b8;animation:pulse .7s infinite}
 .pc{font-style:italic;color:#555;font-family:Consolas,monospace;font-size:.82rem}
 .tbl td:last-child{text-align:center;padding:6px}
+.play-cell{display:flex;align-items:center;justify-content:center;gap:6px}
 .pbtn{background:var(--orange);color:#fff;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.75rem;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
 .pbtn:hover{background:#c96200;transform:scale(1.1)}
 .pbtn:active{transform:scale(.95)}
 .pbtn.playing{background:#c96200;animation:pulse .7s infinite}
 .ch-hdr td{background:var(--bg)!important;font-weight:700;font-size:.8rem;color:var(--blue);padding:12px 14px;border-top:2px solid var(--border);letter-spacing:.3px}
 .ch-hdr-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ch-btns{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .pc-btn{background:transparent;border:1.5px solid var(--orange);color:var(--orange);border-radius:20px;padding:4px 11px;font-size:.73rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
 .pc-btn:hover{background:var(--orange);color:#fff}
 .pc-btn.active{background:var(--orange);color:#fff}
 .pc-btn.active:hover{background:#c96200}
 .card .ch-hdr:first-child td{border-top:none}
+.float-ctrl{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:300;display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--white);border:1px solid var(--border);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.18);transition:opacity .2s,transform .2s}
+.float-ctrl.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(12px)}
+.float-ctrl button{border-radius:20px;padding:8px 16px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+#float-pause{background:var(--blue);color:#fff;border:none;min-width:108px}
+#float-pause:hover{background:#0048b8}
+#float-pause.paused{background:#2d8a4e}
+#float-pause.paused:hover{background:#1e7a3c}
+#float-stop{background:transparent;border:1.5px solid var(--orange);color:var(--orange)}
+#float-stop:hover{background:var(--orange);color:#fff}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
 @media(max-width:640px){
   .tbl thead{display:none}
@@ -59,7 +81,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <body>
 
 <header id="hdr">
-  <h1><em>My Course</em> — Dutch Phrases</h1>
+  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.8.3</span></h1>
   <a id="back-link" href="../index.html">← FastrackDutch</a>
 </header>
 
@@ -68,12 +90,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 
   <div class="intro">
     Each row shows the <strong>Dutch phrase</strong>, an <strong>English pronunciation guide</strong> (CAPS = stressed syllable), and the <strong>English meaning</strong>.
-    Tap ▶ to hear Dutch, then English. Edit the <code>CHAPTERS</code> array in this file to add phrases from your course.
+    Tap 🔊 for Dutch only, ▶ for Dutch then English, or use <strong>Play Dutch</strong> / <strong>Play Both</strong> per chapter. A floating bar appears during playback for quick <strong>Pause</strong> / <strong>Stop</strong>.
   </div>
 
   <div class="toolbar">
     <span id="phrase-count"></span>
-    <button type="button" id="play-all">▶ Play All</button>
+    <div class="toolbar-actions">
+      <button type="button" id="pause-btn" disabled title="Pause or resume playback">⏸ Pause</button>
+      <button type="button" id="play-all">▶ Play All</button>
+    </div>
   </div>
 
   <div class="card">
@@ -91,7 +116,26 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   </div>
 </div>
 
+<div id="float-ctrl" class="float-ctrl hidden" aria-hidden="true">
+  <button type="button" id="float-pause" title="Pause or resume playback">⏸ Pause</button>
+  <button type="button" id="float-stop" title="Stop playback">■ Stop</button>
+</div>
+
 <script>
+// ── Version (semver — course-phrases only; independent of FastrackDutch) ──
+// MAJOR: breaking restructure (layout, data model, removed chapters)
+// MINOR: new features or new chapters
+// PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
+const VERSION = { major: 1, minor: 8, patch: 3 };
+const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
+
+function applyVersion() {
+  document.title = `My Dutch Daily Course Notes v${VERSION_STR}`;
+  const h1 = document.getElementById('app-title');
+  if (h1) h1.innerHTML = `My Dutch Daily Course Notes<span class="ver">v${VERSION_STR}</span>`;
+}
+applyVersion();
+
 // ── Add your course phrases here ─────────────────────────────────────
 // pron: approximate English phonetics (kh = Dutch G, ay = long A, oo/oh as in guide)
 const CHAPTERS = [
@@ -111,8 +155,10 @@ const CHAPTERS = [
       { dutch: 'wonen', pron: 'VOH-nen', english: 'to live' },
       { dutch: 'werken', pron: 'VERK-en', english: 'to work' },
       { dutch: 'Wie ben je?', pron: 'vee ben yuh', english: 'Who are you?' },
-      { dutch: 'Hallo. Mijn naam is Govind. Ik ben 44 jaar oud en ik woon in Utrecht. Ik ben Indiaas. Aangenaam.', pron: 'HAH-loh. Main naam is GOH-vint. Ik ben 44 yahr owt en ik vohn in OO-trekht. Ik ben In-dee-AHS. AHN-khuh-NAHM.', english: 'Hello. My name is Govind. I am 44 years old and I live in Utrecht. I am Indian. Nice to meet you.' },
+      { dutch: 'Hallo. Mijn naam is Govind. Ik ben vierenveertig jaar oud en ik woon in Utrecht. Ik ben Indiaas. Aangenaam.', pron: 'HAH-loh. Main naam is GOH-vint. Ik ben FEER-en-FAYR-tikh yahr owt en ik vohn in OO-trekht. Ik ben In-dee-AHS. AHN-khuh-NAHM.', english: 'Hello. My name is Govind. I am 44 years old and I live in Utrecht. I am Indian. Nice to meet you.' },
       { dutch: 'Voornaam en achternaam', pron: 'VOR-naam en AKH-ter-naam', english: 'First name and last name' },
+      { dutch: 'Leeftijd', pron: 'LAYF-tayt', english: 'Age' },
+      { dutch: 'Nationaliteit', pron: 'nah-tsyo-nah-LEE-tayt', english: 'Nationality' },
       { dutch: 'Woonplaats', pron: 'VOHN-plaits', english: 'Place of residence' },
     ],
   },
@@ -219,6 +265,97 @@ const CHAPTER_RANGES = [];
 let dutchVoice = null;
 let ttsResumeTimer = null;
 let queueState = null;
+let singleState = null;
+let isPaused = false;
+let pausePendingTimer = null;
+let pendingAdvance = null;
+let pauseSnapshot = null;
+
+function delay(ms, fn) {
+  if (isPaused) return;
+  clearPendingDelay();
+  pendingAdvance = { fn, remaining: ms, started: Date.now() };
+  pausePendingTimer = setTimeout(() => {
+    pendingAdvance = null;
+    pausePendingTimer = null;
+    if (!isPaused) fn();
+  }, ms);
+}
+
+function clearPendingDelay() {
+  if (pausePendingTimer) {
+    clearTimeout(pausePendingTimer);
+    pausePendingTimer = null;
+  }
+  pendingAdvance = null;
+}
+
+function isPlaybackActive() {
+  return !!(queueState || singleState || pauseSnapshot ||
+    pendingAdvance ||
+    (window.speechSynthesis && window.speechSynthesis.speaking));
+}
+
+function updatePauseBtn() {
+  const active = isPlaybackActive();
+  const showFloat = active || isPaused;
+  ['pause-btn', 'float-pause'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.disabled = !active && !isPaused;
+    btn.textContent = isPaused ? '▶ Resume' : '⏸ Pause';
+    btn.classList.toggle('paused', isPaused);
+  });
+  const floatCtrl = document.getElementById('float-ctrl');
+  floatCtrl.classList.toggle('hidden', !showFloat);
+  floatCtrl.setAttribute('aria-hidden', showFloat ? 'false' : 'true');
+  document.body.classList.toggle('playback-active', showFloat);
+}
+
+function pausePlayback() {
+  if ((!isPlaybackActive() && !isPaused) || isPaused) return;
+  isPaused = true;
+
+  if (pendingAdvance && pausePendingTimer) {
+    pauseSnapshot = {
+      kind: 'delay',
+      fn: pendingAdvance.fn,
+      remaining: Math.max(0, pendingAdvance.remaining - (Date.now() - pendingAdvance.started)),
+    };
+    clearTimeout(pausePendingTimer);
+    pausePendingTimer = null;
+    pendingAdvance = null;
+  } else {
+    window.speechSynthesis.cancel();
+    if (singleState) {
+      pauseSnapshot = { kind: 'single', ...singleState };
+    } else if (queueState) {
+      pauseSnapshot = {
+        kind: 'queue',
+        idx: queueState.idx,
+        phase: queueState.phase || 'dutch',
+        mode: queueState.mode,
+      };
+    }
+  }
+  updatePauseBtn();
+}
+
+function resumePlayback() {
+  if (!isPaused || !pauseSnapshot) return;
+  isPaused = false;
+  const snap = pauseSnapshot;
+  pauseSnapshot = null;
+
+  if (snap.kind === 'delay') {
+    delay(snap.remaining, snap.fn);
+  } else if (snap.kind === 'single') {
+    resumeSingle(snap);
+  } else if (snap.kind === 'queue') {
+    playQueuePhrase(snap.idx, snap.phase);
+  }
+  updatePauseBtn();
+}
 
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
@@ -241,6 +378,7 @@ function startTTSResume() {
   if (!/Android/i.test(navigator.userAgent)) return;
   stopTTSResume();
   ttsResumeTimer = setInterval(() => {
+    if (isPaused) return;
     if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
       window.speechSynthesis.pause();
       window.speechSynthesis.resume();
@@ -252,7 +390,65 @@ function stopTTSResume() {
 }
 
 function clearPlaying() {
-  document.querySelectorAll('.pbtn.playing').forEach(b => b.classList.remove('playing'));
+  document.querySelectorAll('.pbtn.playing, .spk-btn.playing').forEach(b => b.classList.remove('playing'));
+}
+
+function highlightRow(idx) {
+  clearPlaying();
+  const rowBtn = document.querySelector(`.spk-btn[data-idx="${idx}"]`);
+  if (rowBtn) rowBtn.classList.add('playing');
+}
+
+function speakText(text, lang, onDone) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang;
+  u.rate = lang === 'nl-NL' ? 0.88 : 1.0;
+  if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
+  const done = () => { if (!isPaused) onDone(); };
+  u.onend = done;
+  u.onerror = done;
+  window.speechSynthesis.speak(u);
+}
+
+function speakDutchOnly(dutch, btn) {
+  if (!window.speechSynthesis) return;
+  stopPlayback();
+  window.speechSynthesis.resume();
+  singleState = { btn, dutch, english: null, phase: 'dutch' };
+  if (btn) btn.classList.add('playing');
+  updatePauseBtn();
+  speakText(dutch, 'nl-NL', () => {
+    singleState = null;
+    if (btn) btn.classList.remove('playing');
+    updatePauseBtn();
+  });
+}
+
+function resumeSingle(snap) {
+  singleState = { btn: snap.btn, dutch: snap.dutch, english: snap.english, phase: snap.phase };
+  if (snap.btn) snap.btn.classList.add('playing');
+  updatePauseBtn();
+  if (snap.phase === 'english' && snap.english) {
+    speakText(snap.english, 'en-US', finishSingle);
+  } else if (snap.english) {
+    speakText(snap.dutch, 'nl-NL', () => {
+      if (!singleState) return;
+      singleState.phase = 'english';
+      delay(380, () => {
+        if (!singleState) return;
+        speakText(snap.english, 'en-US', finishSingle);
+      });
+    });
+  } else {
+    speakText(snap.dutch, 'nl-NL', finishSingle);
+  }
+}
+
+function finishSingle() {
+  const btn = singleState?.btn;
+  singleState = null;
+  if (btn) btn.classList.remove('playing');
+  updatePauseBtn();
 }
 
 function resetQueueBtn(btn, label) {
@@ -264,77 +460,106 @@ function resetQueueBtn(btn, label) {
 function stopPlayback() {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   stopTTSResume();
+  clearPendingDelay();
+  isPaused = false;
+  pauseSnapshot = null;
+  singleState = null;
   if (queueState) {
     resetQueueBtn(queueState.btn, queueState.label);
     queueState = null;
   }
   clearPlaying();
+  updatePauseBtn();
 }
 
 function speakDutchEnglish(dutch, english, btn) {
   if (!window.speechSynthesis) return;
   stopPlayback();
   window.speechSynthesis.resume();
+  singleState = { btn, dutch, english, phase: 'dutch' };
   if (btn) btn.classList.add('playing');
-  const u1 = new SpeechSynthesisUtterance(dutch);
-  u1.lang = 'nl-NL'; u1.rate = 0.88;
-  if (dutchVoice) u1.voice = dutchVoice;
-  const u2 = new SpeechSynthesisUtterance(english);
-  u2.lang = 'en-US'; u2.rate = 1.0;
-  const done = () => { if (btn) btn.classList.remove('playing'); };
-  u1.onerror = done;
-  u2.onend = done;
-  u2.onerror = done;
-  u1.onend = () => setTimeout(() => window.speechSynthesis.speak(u2), 380);
-  window.speechSynthesis.speak(u1);
+  updatePauseBtn();
+  speakText(dutch, 'nl-NL', () => {
+    if (!singleState) return;
+    singleState.phase = 'english';
+    delay(380, () => {
+      if (!singleState) return;
+      speakText(english, 'en-US', finishSingle);
+    });
+  });
 }
 
-function playNextInQueue() {
-  if (!queueState || queueState.next >= queueState.end) {
+function playQueuePhrase(idx, phase) {
+  if (!queueState || idx >= queueState.end) {
     stopPlayback();
     return;
   }
-  const idx = queueState.next++;
+  queueState.idx = idx;
+  queueState.phase = phase;
+  highlightRow(idx);
   const p = PHRASES[idx];
-  const rowBtn = document.querySelector(`.pbtn[data-idx="${idx}"]`);
-  clearPlaying();
-  if (rowBtn) rowBtn.classList.add('playing');
-  const u1 = new SpeechSynthesisUtterance(p.dutch);
-  u1.lang = 'nl-NL'; u1.rate = 0.88;
-  if (dutchVoice) u1.voice = dutchVoice;
-  const u2 = new SpeechSynthesisUtterance(p.english);
-  u2.lang = 'en-US'; u2.rate = 1.0;
-  const advance = () => setTimeout(() => playNextInQueue(), 600);
-  u1.onerror = () => setTimeout(() => playNextInQueue(), 200);
-  u1.onend = () => {
-    u2.onend = advance;
-    u2.onerror = () => setTimeout(() => playNextInQueue(), 200);
-    setTimeout(() => window.speechSynthesis.speak(u2), 380);
-  };
-  window.speechSynthesis.speak(u1);
+
+  if (phase === 'dutch') {
+    speakText(p.dutch, 'nl-NL', () => {
+      if (!queueState) return;
+      if (queueState.mode === 'dutch') {
+        delay(600, () => {
+          if (!queueState) return;
+          queueState.idx = idx + 1;
+          playNextInQueue();
+        });
+      } else {
+        queueState.phase = 'english';
+        delay(380, () => {
+          if (!queueState) return;
+          playQueuePhrase(idx, 'english');
+        });
+      }
+    });
+    return;
+  }
+
+  speakText(p.english, 'en-US', () => {
+    if (!queueState) return;
+    delay(600, () => {
+      if (!queueState) return;
+      queueState.idx = idx + 1;
+      playNextInQueue();
+    });
+  });
 }
 
-function startQueue(start, end, btn, label) {
+function playNextInQueue() {
+  if (!queueState || queueState.idx >= queueState.end) {
+    stopPlayback();
+    return;
+  }
+  playQueuePhrase(queueState.idx, 'dutch');
+}
+
+function startQueue(start, end, btn, label, mode) {
   if (queueState && queueState.btn === btn) {
     stopPlayback();
     return;
   }
   stopPlayback();
-  queueState = { start, end, next: start, btn, label };
+  queueState = { start, end, idx: start, btn, label, mode: mode || 'both', phase: 'dutch' };
   btn.textContent = '■ Stop';
   btn.classList.add('active');
   startTTSResume();
+  updatePauseBtn();
   playNextInQueue();
 }
 
 function togglePlayAll() {
   const btn = document.getElementById('play-all');
-  startQueue(0, PHRASES.length, btn, '▶ Play All');
+  startQueue(0, PHRASES.length, btn, '▶ Play All', 'both');
 }
 
-function togglePlayChapter(chIdx, btn) {
+function togglePlayChapter(chIdx, btn, mode) {
   const range = CHAPTER_RANGES[chIdx];
-  startQueue(range.start, range.end, btn, '▶ Play Chapter');
+  const label = mode === 'dutch' ? '▶ Play Dutch' : '▶ Play Both';
+  startQueue(range.start, range.end, btn, label, mode);
 }
 
 // ── Render ───────────────────────────────────────────────────────────
@@ -345,11 +570,16 @@ function esc(s) {
 const tbody = document.getElementById('phrase-body');
 let rowIdx = 0;
 tbody.innerHTML = CHAPTERS.map((ch, chIdx) => {
-  const hdr = `<tr class="ch-hdr"><td colspan="4"><div class="ch-hdr-inner"><span>${esc(ch.title)}</span><button type="button" class="pc-btn" data-ch="${chIdx}" title="Play all phrases in this chapter">▶ Play Chapter</button></div></td></tr>`;
+  const hdr = `<tr class="ch-hdr"><td colspan="4"><div class="ch-hdr-inner"><span>${esc(ch.title)}</span><div class="ch-btns"><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="dutch" title="Play Dutch only for this chapter">▶ Play Dutch</button><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="both" title="Play Dutch then English for this chapter">▶ Play Both</button></div></div></td></tr>`;
   const rows = ch.phrases.map(p => {
     const i = rowIdx++;
     return `<tr>
-    <td class="dc" data-label="Dutch">${esc(p.dutch)}</td>
+    <td class="dc" data-label="Dutch">
+      <div class="dc-wrap">
+        <button type="button" class="spk-btn" data-idx="${i}" data-dutch="${esc(p.dutch)}" title="Play Dutch only">🔊</button>
+        <span class="dc-text">${esc(p.dutch)}</span>
+      </div>
+    </td>
     <td class="pc" data-label="Pronunciation">${esc(p.pron)}</td>
     <td data-label="Meaning">${esc(p.english)}</td>
     <td data-label="Play">
@@ -365,7 +595,12 @@ document.getElementById('phrase-count').textContent = `${PHRASES.length} phrase$
 tbody.addEventListener('click', e => {
   const pcBtn = e.target.closest('.pc-btn');
   if (pcBtn) {
-    togglePlayChapter(Number(pcBtn.dataset.ch), pcBtn);
+    togglePlayChapter(Number(pcBtn.dataset.ch), pcBtn, pcBtn.dataset.mode);
+    return;
+  }
+  const spkBtn = e.target.closest('.spk-btn');
+  if (spkBtn) {
+    speakDutchOnly(spkBtn.dataset.dutch, spkBtn);
     return;
   }
   const btn = e.target.closest('.pbtn');
@@ -374,6 +609,14 @@ tbody.addEventListener('click', e => {
 });
 
 document.getElementById('play-all').addEventListener('click', togglePlayAll);
+function togglePauseResume() {
+  if (isPaused) resumePlayback();
+  else pausePlayback();
+}
+document.getElementById('pause-btn').addEventListener('click', togglePauseResume);
+document.getElementById('float-pause').addEventListener('click', togglePauseResume);
+document.getElementById('float-stop').addEventListener('click', stopPlayback);
+updatePauseBtn();
 </script>
 </body>
 </html>
