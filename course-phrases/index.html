@@ -37,7 +37,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .tbl td:last-child{text-align:center;padding:6px}
 .pbtn{background:var(--orange);color:#fff;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.75rem;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
 .pbtn:hover{background:#c96200;transform:scale(1.1)}
+.pbtn:active{transform:scale(.95)}
 .pbtn.playing{background:#c96200;animation:pulse .7s infinite}
+.ch-hdr td{background:var(--bg)!important;font-weight:700;font-size:.8rem;color:var(--blue);padding:12px 14px;border-top:2px solid var(--border);letter-spacing:.3px}
+.ch-hdr-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pc-btn{background:transparent;border:1.5px solid var(--orange);color:var(--orange);border-radius:20px;padding:4px 11px;font-size:.73rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.pc-btn:hover{background:var(--orange);color:#fff}
+.pc-btn.active{background:var(--orange);color:#fff}
+.pc-btn.active:hover{background:#c96200}
+.card .ch-hdr:first-child td{border-top:none}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
 @media(max-width:640px){
   .tbl thead{display:none}
@@ -60,7 +68,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 
   <div class="intro">
     Each row shows the <strong>Dutch phrase</strong>, an <strong>English pronunciation guide</strong> (CAPS = stressed syllable), and the <strong>English meaning</strong>.
-    Tap ▶ to hear Dutch, then English. Edit the <code>PHRASES</code> array in this file to add phrases from your course.
+    Tap ▶ to hear Dutch, then English. Edit the <code>CHAPTERS</code> array in this file to add phrases from your course.
   </div>
 
   <div class="toolbar">
@@ -86,18 +94,131 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <script>
 // ── Add your course phrases here ─────────────────────────────────────
 // pron: approximate English phonetics (kh = Dutch G, ay = long A, oo/oh as in guide)
-const PHRASES = [
-  { dutch: 'Ik ben Govind',              pron: 'ik ben GO-vind',              english: 'I am Govind' },
-  { dutch: 'Jij bent een persoon',       pron: 'yay bent un per-SOHN',        english: 'You are a person' },
-  { dutch: 'Hij is een man',             pron: 'hay is un man',               english: 'He is a man' },
-  { dutch: 'Wij zijn mensen',            pron: 'vay zayn MEN-sen',            english: 'We are humans' },
-  { dutch: 'Jullie zijn Nederlanders',   pron: 'YUL-lee zayn NAY-der-lahn-ders', english: 'You (plural) are Dutch' },
+const CHAPTERS = [
+  {
+    title: 'Chapter 1: Introducing Yourself',
+    phrases: [
+      { dutch: 'Hallo', pron: 'HAH-loh', english: 'Hello' },
+      { dutch: 'Hoi', pron: 'Hoy', english: 'Hi' },
+      { dutch: 'Goedendag', pron: 'KHOO-duh-dakh', english: 'Good day' },
+      { dutch: 'Goedemorgen', pron: 'KHOO-duh-MOR-khen', english: 'Good morning' },
+      { dutch: 'Goedemiddag', pron: 'KHOO-duh-mi-DAGH', english: 'Good afternoon' },
+      { dutch: 'Goedenavond', pron: 'KHOO-duh-NAH-vont', english: 'Good evening' },
+      { dutch: 'Goedenacht', pron: 'KHOO-duh-NAKHT', english: 'Good night' },
+      { dutch: 'Tot ziens', pron: 'tot SEENS', english: 'Goodbye / See you' },
+      { dutch: 'Doei', pron: 'Doo-ey', english: 'Bye' },
+      { dutch: 'Fijne dag', pron: 'FAY-nuh dakh', english: 'Have a nice day' },
+      { dutch: 'wonen', pron: 'VOH-nen', english: 'to live' },
+      { dutch: 'werken', pron: 'VERK-en', english: 'to work' },
+      { dutch: 'Wie ben je?', pron: 'vee ben yuh', english: 'Who are you?' },
+      { dutch: 'Hallo. Mijn naam is Govind. Ik ben 44 jaar oud en ik woon in Utrecht. Ik ben Indiaas. Aangenaam.', pron: 'HAH-loh. Main naam is GOH-vint. Ik ben 44 yahr owt en ik vohn in OO-trekht. Ik ben In-dee-AHS. AHN-khuh-NAHM.', english: 'Hello. My name is Govind. I am 44 years old and I live in Utrecht. I am Indian. Nice to meet you.' },
+      { dutch: 'Voornaam en achternaam', pron: 'VOR-naam en AKH-ter-naam', english: 'First name and last name' },
+      { dutch: 'Woonplaats', pron: 'VOHN-plaits', english: 'Place of residence' },
+    ],
+  },
+  {
+    title: 'Chapter 2: Family',
+    phrases: [
+      { dutch: 'Dit is mijn gezin', pron: 'dit is main khuh-ZIN', english: 'This is my (closest) family' },
+      { dutch: 'vader', pron: 'VAH-der', english: 'father' },
+      { dutch: 'moeder', pron: 'MOO-der', english: 'mother' },
+      { dutch: 'zoon', pron: 'zohn', english: 'son' },
+      { dutch: 'Dit is mijn dochter', pron: 'dit is main DOKH-ter', english: 'This is my daughter' },
+      { dutch: 'Zij is mijn zus', pron: 'zay is main ZUS', english: 'She is my sister' },
+      { dutch: 'Dat is jouw zoon', pron: 'dat is yow zohn', english: 'That is your son' },
+      { dutch: 'Hij is mijn broer', pron: 'hay is main broor', english: 'He is my brother' },
+      { dutch: 'familie', pron: 'fah-MEE-lee', english: 'family' },
+      { dutch: 'opa', pron: 'OH-pah', english: 'grandfather' },
+      { dutch: 'oma', pron: 'OH-mah', english: 'grandmother' },
+      { dutch: 'oom', pron: 'ohm', english: 'uncle' },
+      { dutch: 'tante', pron: 'TAN-tuh', english: 'aunt' },
+      { dutch: 'Zij is mijn nicht', pron: 'zay is main nikht', english: 'She is my cousin / niece (female)' },
+      { dutch: 'Hij is mijn neef', pron: 'hay is main nayf', english: 'He is my cousin / nephew (male)' },
+      { dutch: 'Onze buurman heet Arthur', pron: 'ON-zuh BUUR-man hayt AR-thur', english: 'Our neighbor is called Arthur' },
+    ],
+  },
+  {
+    title: 'Chapter 3: Describing People',
+    phrases: [
+      { dutch: 'Wat is jouw lievelingskleur?', pron: 'vaht is yow LEE-vuh-lings-kleur', english: 'What is your favorite color?' },
+      { dutch: 'Het gezicht', pron: 'het khuh-ZIKHT', english: 'The face' },
+      { dutch: 'lengte', pron: 'LENG-tuh', english: 'Height' },
+      { dutch: 'Lang', pron: 'lang', english: 'Tall / long' },
+      { dutch: 'kort', pron: 'kort', english: 'Short' },
+      { dutch: 'Man', pron: 'man', english: 'Man' },
+      { dutch: 'vrouw', pron: 'frow', english: 'Woman' },
+      { dutch: 'Jongen', pron: 'YONG-uh', english: 'Boy' },
+      { dutch: 'Meisje', pron: 'MAY-syuh', english: 'Girl' },
+      { dutch: 'Lang bruin haar', pron: 'lang BROWN haar', english: 'Long brown hair' },
+      { dutch: 'Blauwe ogen', pron: 'BLOW-uh OH-khen', english: 'Blue eyes' },
+      { dutch: 'De neus', pron: 'duh noos', english: 'The nose' },
+      { dutch: 'Oren', pron: 'OH-ren', english: 'Ears' },
+      { dutch: 'De bril', pron: 'duh bril', english: 'The glasses' },
+      { dutch: 'De baard', pron: 'duh bahrt', english: 'The beard' },
+      { dutch: 'Het haar', pron: 'het haar', english: 'The hair' },
+      { dutch: 'Het voorhoofd', pron: 'het VOR-hohft', english: 'The forehead' },
+      { dutch: 'Het oog', pron: 'het ohkh', english: 'The eye' },
+      { dutch: 'De wenkbrauw', pron: 'duh VENK-brow', english: 'The eyebrows' },
+      { dutch: 'De wang', pron: 'duh vang', english: 'The cheek' },
+      { dutch: 'De kin', pron: 'duh kin', english: 'The chin' },
+      { dutch: 'De mond', pron: 'duh mont', english: 'The mouth' },
+      { dutch: 'Huidskleur', pron: 'HOWTS-kleur', english: 'Skin color' },
+      { dutch: 'Ik heb een neus', pron: 'ik heb un noos', english: 'I have a nose' },
+      { dutch: 'Jij hebt oren', pron: 'yay hept OH-ren', english: 'You have ears' },
+      { dutch: 'Hij heeft ogen', pron: 'hay hayft OH-khen', english: 'He has eyes' },
+      { dutch: 'Ik heb blauwe ogen, en jij?', pron: 'ik heb BLOW-uh OH-khen, en yay', english: 'I have blue eyes, and you?' },
+      { dutch: 'Heel lang', pron: 'hayl lang', english: 'Very tall' },
+      { dutch: 'Heb je een baard?', pron: 'heb yuh un bahrt', english: 'Do you have a beard?' },
+      { dutch: 'Ik ben Govind. Ik ben kort. Mijn huidskleur is bruin. Ik heb kort, donker haar, bruine ogen en een donkere baard.', pron: 'Ik ben GOH-vint. Ik ben kort. Main HOWTS-kleur is BROWN. Ik heb kort, DON-ker haar, BROW-nuh OH-khen en un DON-kuh-ruh bahrt.', english: 'I am Govind. I am short. My skin color is brown. I have short, dark hair, brown eyes and a dark beard.' },
+    ],
+  },
+  {
+    title: 'Chapter 4: To Be & To Have',
+    phrases: [
+      { dutch: 'Ik ben Govind', pron: 'ik ben GOH-vint', english: 'I am Govind' },
+      { dutch: 'Jij bent een persoon', pron: 'yay bent un per-SOHN', english: 'You are a person' },
+      { dutch: 'Hij is een man', pron: 'hay is un man', english: 'He is a man' },
+      { dutch: 'Wij zijn mensen', pron: 'vay zayn MEN-sen', english: 'We are people' },
+      { dutch: 'Jullie zijn Nederlanders', pron: 'YUL-lee zayn NAY-der-lahn-ders', english: 'You (plural) are Dutch' },
+      { dutch: 'Ik heb een boek', pron: 'ik heb un book', english: 'I have a book' },
+      { dutch: 'Jij hebt een boek', pron: 'yay hept un book', english: 'You have a book' },
+      { dutch: 'Zij heeft een boek', pron: 'zay hayft un book', english: 'She has a book' },
+      { dutch: 'Wij hebben boeken', pron: 'vay HEB-ben BOOK-en', english: 'We have books' },
+      { dutch: 'Jullie hebben boeken', pron: 'YUL-lee HEB-ben BOOK-en', english: 'You (plural) have books' },
+      { dutch: 'Zij hebben boeken', pron: 'zay HEB-ben BOOK-en', english: 'They have books' },
+      { dutch: 'Dit is Emma.', pron: 'dit is EM-mah', english: 'This is Emma.' },
+      { dutch: 'Hoi, ik ben Emma.', pron: 'Hoy, ik ben EM-mah', english: 'Hi, I am Emma.' },
+      { dutch: 'Zij is een vrouw.', pron: 'zay is un frow', english: 'She is a woman.' },
+      { dutch: 'Ja, ik ben een vrouw.', pron: 'Yah, ik ben un frow', english: 'Yes, I am a woman.' },
+      { dutch: 'Zij heeft boeken.', pron: 'zay hayft BOOK-en', english: 'She has books.' },
+      { dutch: 'Ik heb boeken.', pron: 'ik heb BOOK-en', english: 'I have books.' },
+      { dutch: 'Dit zijn Emma en Leonie.', pron: 'dit zayn EM-mah en loh-NEE', english: 'These are Emma and Leonie.' },
+      { dutch: 'Wij zijn Emma en Leonie.', pron: 'vay zayn EM-mah en loh-NEE', english: 'We are Emma and Leonie.' },
+      { dutch: 'Zij zijn studenten.', pron: 'zay zayn stoo-DEN-ten', english: 'They are students.' },
+      { dutch: 'Wij zijn studenten.', pron: 'vay zayn stoo-DEN-ten', english: 'We are students.' },
+      { dutch: 'Ja, wij hebben boeken.', pron: 'Yah, vay HEB-ben BOOK-en', english: 'Yes, we have books.' },
+      { dutch: 'Emma heeft een boek.', pron: 'EM-mah hayft un book', english: 'Emma has a book.' },
+      { dutch: 'Emma en Leonie hebben boeken.', pron: 'EM-mah en loh-NEE HEB-ben BOOK-en', english: 'Emma and Leonie have books.' },
+      { dutch: 'Hoi, ik ben Jan en dit is Judith.', pron: 'Hoy, ik ben Yan en dit is YOO-dit', english: 'Hi, I am Jan and this is Judith.' },
+      { dutch: 'Wij hebben een huis in Utrecht.', pron: 'vay HEB-ben un hows in OO-trekht', english: 'We have a house in Utrecht.' },
+    ],
+  },
 ];
+
+const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);
+const CHAPTER_RANGES = [];
+(function () {
+  let start = 0;
+  CHAPTERS.forEach((ch, i) => {
+    CHAPTER_RANGES.push({ start, end: start + ch.phrases.length, chIdx: i });
+    start += ch.phrases.length;
+  });
+})();
 
 // ── TTS ──────────────────────────────────────────────────────────────
 let dutchVoice = null;
 let ttsResumeTimer = null;
-let playAllActive = false;
+let queueState = null;
 
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
@@ -134,11 +255,26 @@ function clearPlaying() {
   document.querySelectorAll('.pbtn.playing').forEach(b => b.classList.remove('playing'));
 }
 
+function resetQueueBtn(btn, label) {
+  if (!btn) return;
+  btn.textContent = label;
+  btn.classList.remove('active');
+}
+
+function stopPlayback() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  stopTTSResume();
+  if (queueState) {
+    resetQueueBtn(queueState.btn, queueState.label);
+    queueState = null;
+  }
+  clearPlaying();
+}
+
 function speakDutchEnglish(dutch, english, btn) {
   if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
+  stopPlayback();
   window.speechSynthesis.resume();
-  clearPlaying();
   if (btn) btn.classList.add('playing');
   const u1 = new SpeechSynthesisUtterance(dutch);
   u1.lang = 'nl-NL'; u1.rate = 0.88;
@@ -153,16 +289,12 @@ function speakDutchEnglish(dutch, english, btn) {
   window.speechSynthesis.speak(u1);
 }
 
-function playQueue(idx) {
-  if (!playAllActive || idx >= PHRASES.length) {
-    playAllActive = false;
-    stopTTSResume();
-    const btn = document.getElementById('play-all');
-    btn.textContent = '▶ Play All';
-    btn.classList.remove('active');
-    clearPlaying();
+function playNextInQueue() {
+  if (!queueState || queueState.next >= queueState.end) {
+    stopPlayback();
     return;
   }
+  const idx = queueState.next++;
   const p = PHRASES[idx];
   const rowBtn = document.querySelector(`.pbtn[data-idx="${idx}"]`);
   clearPlaying();
@@ -172,31 +304,37 @@ function playQueue(idx) {
   if (dutchVoice) u1.voice = dutchVoice;
   const u2 = new SpeechSynthesisUtterance(p.english);
   u2.lang = 'en-US'; u2.rate = 1.0;
-  u1.onerror = () => setTimeout(() => playQueue(idx + 1), 200);
+  const advance = () => setTimeout(() => playNextInQueue(), 600);
+  u1.onerror = () => setTimeout(() => playNextInQueue(), 200);
   u1.onend = () => {
-    u2.onend = () => setTimeout(() => playQueue(idx + 1), 600);
-    u2.onerror = () => setTimeout(() => playQueue(idx + 1), 200);
+    u2.onend = advance;
+    u2.onerror = () => setTimeout(() => playNextInQueue(), 200);
     setTimeout(() => window.speechSynthesis.speak(u2), 380);
   };
   window.speechSynthesis.speak(u1);
 }
 
-function togglePlayAll() {
-  const btn = document.getElementById('play-all');
-  if (playAllActive) {
-    window.speechSynthesis.cancel();
-    playAllActive = false;
-    stopTTSResume();
-    btn.textContent = '▶ Play All';
-    btn.classList.remove('active');
-    clearPlaying();
+function startQueue(start, end, btn, label) {
+  if (queueState && queueState.btn === btn) {
+    stopPlayback();
     return;
   }
-  playAllActive = true;
+  stopPlayback();
+  queueState = { start, end, next: start, btn, label };
   btn.textContent = '■ Stop';
   btn.classList.add('active');
   startTTSResume();
-  playQueue(0);
+  playNextInQueue();
+}
+
+function togglePlayAll() {
+  const btn = document.getElementById('play-all');
+  startQueue(0, PHRASES.length, btn, '▶ Play All');
+}
+
+function togglePlayChapter(chIdx, btn) {
+  const range = CHAPTER_RANGES[chIdx];
+  startQueue(range.start, range.end, btn, '▶ Play Chapter');
 }
 
 // ── Render ───────────────────────────────────────────────────────────
@@ -205,29 +343,33 @@ function esc(s) {
 }
 
 const tbody = document.getElementById('phrase-body');
-tbody.innerHTML = PHRASES.map((p, i) => `
-  <tr>
+let rowIdx = 0;
+tbody.innerHTML = CHAPTERS.map((ch, chIdx) => {
+  const hdr = `<tr class="ch-hdr"><td colspan="4"><div class="ch-hdr-inner"><span>${esc(ch.title)}</span><button type="button" class="pc-btn" data-ch="${chIdx}" title="Play all phrases in this chapter">▶ Play Chapter</button></div></td></tr>`;
+  const rows = ch.phrases.map(p => {
+    const i = rowIdx++;
+    return `<tr>
     <td class="dc" data-label="Dutch">${esc(p.dutch)}</td>
     <td class="pc" data-label="Pronunciation">${esc(p.pron)}</td>
     <td data-label="Meaning">${esc(p.english)}</td>
     <td data-label="Play">
       <button type="button" class="pbtn" data-idx="${i}" data-dutch="${esc(p.dutch)}" data-english="${esc(p.english)}" title="Play Dutch then English">▶</button>
     </td>
-  </tr>`).join('');
+  </tr>`;
+  }).join('');
+  return hdr + rows;
+}).join('');
 
-document.getElementById('phrase-count').textContent = `${PHRASES.length} phrase${PHRASES.length === 1 ? '' : 's'}`;
+document.getElementById('phrase-count').textContent = `${PHRASES.length} phrase${PHRASES.length === 1 ? '' : 's'} · ${CHAPTERS.length} chapter${CHAPTERS.length === 1 ? '' : 's'}`;
 
 tbody.addEventListener('click', e => {
+  const pcBtn = e.target.closest('.pc-btn');
+  if (pcBtn) {
+    togglePlayChapter(Number(pcBtn.dataset.ch), pcBtn);
+    return;
+  }
   const btn = e.target.closest('.pbtn');
   if (!btn) return;
-  if (playAllActive) {
-    window.speechSynthesis.cancel();
-    playAllActive = false;
-    stopTTSResume();
-    const allBtn = document.getElementById('play-all');
-    allBtn.textContent = '▶ Play All';
-    allBtn.classList.remove('active');
-  }
   speakDutchEnglish(btn.dataset.dutch, btn.dataset.english, btn);
 });
 
