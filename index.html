@@ -121,6 +121,8 @@ tr.row-playing > td{background:rgba(231,117,0,.18)!important;transition:backgrou
 .done-btn:disabled{background:var(--green);cursor:default}
 
 /* ── PLAY COURSE BTN ── */
+#course-phrases-link{background:transparent;border:1.5px solid rgba(255,255,255,.55);color:#fff;border-radius:20px;padding:5px 14px;font-size:.78rem;font-weight:700;text-decoration:none;transition:all .15s;white-space:nowrap;letter-spacing:.2px;flex-shrink:0}
+#course-phrases-link:hover{background:rgba(255,255,255,.12);border-color:#fff}
 #course-btn{background:transparent;border:1.5px solid rgba(255,255,255,.55);color:#fff;border-radius:20px;padding:5px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;letter-spacing:.2px;flex-shrink:0}
 #course-btn:hover{background:rgba(255,255,255,.12);border-color:#fff}
 #course-btn.active{background:var(--orange);border-color:var(--orange)}
@@ -282,7 +284,7 @@ tr.row-playing > td{background:rgba(231,117,0,.18)!important;transition:backgrou
   .logo-text{font-size:.85rem}
   #search-wrap{max-width:140px;margin:0 8px}
   #prog-bar{width:80px}
-  #course-btn{font-size:.7rem;padding:4px 10px}
+  #course-phrases-link,#course-btn{font-size:.7rem;padding:4px 10px}
   #mode-sel{font-size:.68rem;padding:3px 6px;max-width:110px}
   #speed-wrap{gap:3px}
   #speed-range{width:44px}
@@ -370,6 +372,7 @@ tr.row-playing > td{background:rgba(231,117,0,.18)!important;transition:backgrou
     <span class="eng-slider"></span>
   </label>
   <button id="theme-btn" title="Toggle light / dark theme">☀ Light</button>
+  <a id="course-phrases-link" href="course-phrases/" title="Practice and revise phrases from your current Dutch course">Course Phrases</a>
   <select id="mode-sel" title="Active study mode">
     <option value="">All Chapters</option>
     <option value="a1">📚 A1</option>

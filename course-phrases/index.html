@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dutch Course Phrases</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#003082;--orange:#E77500;
+  --bg:#f4f5f7;--white:#fff;--border:#dde1e7;--text:#1a1a1a;--muted:#6b7280;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+#hdr{background:var(--blue);color:#fff;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+#hdr h1{font-size:1.1rem;font-weight:700}
+#hdr h1 em{color:var(--orange);font-style:normal}
+#back-link{color:rgba(255,255,255,.85);font-size:.78rem;text-decoration:none;white-space:nowrap}
+#back-link:hover{color:#fff;text-decoration:underline}
+.wrap{max-width:900px;margin:0 auto;padding:20px 24px 48px}
+#voice-warn{background:#fffbeb;border:1px solid #f59e0b;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:.83rem;display:none}
+.intro{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:16px;font-size:.88rem;line-height:1.55}
+.intro code{background:#eef2ff;padding:1px 6px;border-radius:4px;font-size:.82rem}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.toolbar span{font-size:.82rem;color:var(--muted)}
+#play-all{background:transparent;border:1.5px solid var(--orange);color:var(--orange);border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
+#play-all:hover,#play-all.active{background:var(--orange);color:#fff}
+.card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem}
+.tbl th{background:var(--blue);color:#fff;padding:9px 14px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
+.tbl th:last-child{width:48px;text-align:center}
+.tbl td{padding:9px 14px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(even) td{background:#fafafa}
+.tbl tr:hover td{background:#fff8f0}
+.dc{font-weight:600;color:var(--blue)}
+.pc{font-style:italic;color:#555;font-family:Consolas,monospace;font-size:.82rem}
+.tbl td:last-child{text-align:center;padding:6px}
+.pbtn{background:var(--orange);color:#fff;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.75rem;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
+.pbtn:hover{background:#c96200;transform:scale(1.1)}
+.pbtn.playing{background:#c96200;animation:pulse .7s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+@media(max-width:640px){
+  .tbl thead{display:none}
+  .tbl tr{display:block;border-bottom:1px solid var(--border);padding:10px 14px}
+  .tbl td{display:block;border:none;padding:3px 0;background:transparent !important;text-align:left}
+  .tbl td:last-child{padding-top:8px;text-align:left}
+  .tbl td::before{content:attr(data-label);font-size:.68rem;text-transform:uppercase;color:var(--muted);letter-spacing:.4px;display:block;margin-bottom:2px}
+}
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <h1><em>My Course</em> — Dutch Phrases</h1>
+  <a id="back-link" href="../index.html">← FastrackDutch</a>
+</header>
+
+<div class="wrap">
+  <div id="voice-warn">⚠️ No Dutch (nl-NL) voice detected — audio will use your device's default voice. Install Dutch TTS in your device settings.</div>
+
+  <div class="intro">
+    Each row shows the <strong>Dutch phrase</strong>, an <strong>English pronunciation guide</strong> (CAPS = stressed syllable), and the <strong>English meaning</strong>.
+    Tap ▶ to hear Dutch, then English. Edit the <code>PHRASES</code> array in this file to add phrases from your course.
+  </div>
+
+  <div class="toolbar">
+    <span id="phrase-count"></span>
+    <button type="button" id="play-all">▶ Play All</button>
+  </div>
+
+  <div class="card">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Dutch</th>
+          <th>English Pronunciation</th>
+          <th>English Meaning</th>
+          <th>▶</th>
+        </tr>
+      </thead>
+      <tbody id="phrase-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// ── Add your course phrases here ─────────────────────────────────────
+// pron: approximate English phonetics (kh = Dutch G, ay = long A, oo/oh as in guide)
+const PHRASES = [
+  { dutch: 'Ik ben Govind',              pron: 'ik ben GO-vind',              english: 'I am Govind' },
+  { dutch: 'Jij bent een persoon',       pron: 'yay bent un per-SOHN',        english: 'You are a person' },
+  { dutch: 'Hij is een man',             pron: 'hay is un man',               english: 'He is a man' },
+  { dutch: 'Wij zijn mensen',            pron: 'vay zayn MEN-sen',            english: 'We are humans' },
+  { dutch: 'Jullie zijn Nederlanders',   pron: 'YUL-lee zayn NAY-der-lahn-ders', english: 'You (plural) are Dutch' },
+];
+
+// ── TTS ──────────────────────────────────────────────────────────────
+let dutchVoice = null;
+let ttsResumeTimer = null;
+let playAllActive = false;
+
+function loadVoices() {
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return;
+  dutchVoice = voices.find(v => v.lang === 'nl-NL') ||
+               voices.find(v => v.lang === 'nl-BE') ||
+               voices.find(v => v.lang.startsWith('nl'));
+  if (!dutchVoice) document.getElementById('voice-warn').style.display = 'block';
+}
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+  if (/Android/i.test(navigator.userAgent) && !dutchVoice) {
+    let n = 0;
+    const poll = setInterval(() => { loadVoices(); if (dutchVoice || ++n > 20) clearInterval(poll); }, 250);
+  }
+}
+
+function startTTSResume() {
+  if (!/Android/i.test(navigator.userAgent)) return;
+  stopTTSResume();
+  ttsResumeTimer = setInterval(() => {
+    if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+      window.speechSynthesis.pause();
+      window.speechSynthesis.resume();
+    }
+  }, 14000);
+}
+function stopTTSResume() {
+  if (ttsResumeTimer) { clearInterval(ttsResumeTimer); ttsResumeTimer = null; }
+}
+
+function clearPlaying() {
+  document.querySelectorAll('.pbtn.playing').forEach(b => b.classList.remove('playing'));
+}
+
+function speakDutchEnglish(dutch, english, btn) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.resume();
+  clearPlaying();
+  if (btn) btn.classList.add('playing');
+  const u1 = new SpeechSynthesisUtterance(dutch);
+  u1.lang = 'nl-NL'; u1.rate = 0.88;
+  if (dutchVoice) u1.voice = dutchVoice;
+  const u2 = new SpeechSynthesisUtterance(english);
+  u2.lang = 'en-US'; u2.rate = 1.0;
+  const done = () => { if (btn) btn.classList.remove('playing'); };
+  u1.onerror = done;
+  u2.onend = done;
+  u2.onerror = done;
+  u1.onend = () => setTimeout(() => window.speechSynthesis.speak(u2), 380);
+  window.speechSynthesis.speak(u1);
+}
+
+function playQueue(idx) {
+  if (!playAllActive || idx >= PHRASES.length) {
+    playAllActive = false;
+    stopTTSResume();
+    const btn = document.getElementById('play-all');
+    btn.textContent = '▶ Play All';
+    btn.classList.remove('active');
+    clearPlaying();
+    return;
+  }
+  const p = PHRASES[idx];
+  const rowBtn = document.querySelector(`.pbtn[data-idx="${idx}"]`);
+  clearPlaying();
+  if (rowBtn) rowBtn.classList.add('playing');
+  const u1 = new SpeechSynthesisUtterance(p.dutch);
+  u1.lang = 'nl-NL'; u1.rate = 0.88;
+  if (dutchVoice) u1.voice = dutchVoice;
+  const u2 = new SpeechSynthesisUtterance(p.english);
+  u2.lang = 'en-US'; u2.rate = 1.0;
+  u1.onerror = () => setTimeout(() => playQueue(idx + 1), 200);
+  u1.onend = () => {
+    u2.onend = () => setTimeout(() => playQueue(idx + 1), 600);
+    u2.onerror = () => setTimeout(() => playQueue(idx + 1), 200);
+    setTimeout(() => window.speechSynthesis.speak(u2), 380);
+  };
+  window.speechSynthesis.speak(u1);
+}
+
+function togglePlayAll() {
+  const btn = document.getElementById('play-all');
+  if (playAllActive) {
+    window.speechSynthesis.cancel();
+    playAllActive = false;
+    stopTTSResume();
+    btn.textContent = '▶ Play All';
+    btn.classList.remove('active');
+    clearPlaying();
+    return;
+  }
+  playAllActive = true;
+  btn.textContent = '■ Stop';
+  btn.classList.add('active');
+  startTTSResume();
+  playQueue(0);
+}
+
+// ── Render ───────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+const tbody = document.getElementById('phrase-body');
+tbody.innerHTML = PHRASES.map((p, i) => `
+  <tr>
+    <td class="dc" data-label="Dutch">${esc(p.dutch)}</td>
+    <td class="pc" data-label="Pronunciation">${esc(p.pron)}</td>
+    <td data-label="Meaning">${esc(p.english)}</td>
+    <td data-label="Play">
+      <button type="button" class="pbtn" data-idx="${i}" data-dutch="${esc(p.dutch)}" data-english="${esc(p.english)}" title="Play Dutch then English">▶</button>
+    </td>
+  </tr>`).join('');
+
+document.getElementById('phrase-count').textContent = `${PHRASES.length} phrase${PHRASES.length === 1 ? '' : 's'}`;
+
+tbody.addEventListener('click', e => {
+  const btn = e.target.closest('.pbtn');
+  if (!btn) return;
+  if (playAllActive) {
+    window.speechSynthesis.cancel();
+    playAllActive = false;
+    stopTTSResume();
+    const allBtn = document.getElementById('play-all');
+    allBtn.textContent = '▶ Play All';
+    allBtn.classList.remove('active');
+  }
+  speakDutchEnglish(btn.dataset.dutch, btn.dataset.english, btn);
+});
+
+document.getElementById('play-all').addEventListener('click', togglePlayAll);
+</script>
+</body>
+</html>
