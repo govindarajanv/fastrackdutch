@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Dutch Daily Course Notes v1.8.3</title>
+<title>My Dutch Daily Course Notes v1.9.1</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -24,6 +24,11 @@ body.playback-active .wrap{padding-bottom:88px}
 .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .toolbar span{font-size:.82rem;color:var(--muted)}
 .toolbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.settings-bar{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:.8rem}
+.settings-bar .setting{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.settings-bar select{border:1px solid var(--border);border-radius:6px;padding:3px 6px;font-size:.78rem;background:var(--white);color:var(--text);max-width:170px}
+#speed-slider{width:110px;accent-color:var(--orange)}
+#speed-val{min-width:38px;color:var(--text);font-weight:600}
 #pause-btn{background:transparent;border:1.5px solid var(--blue);color:var(--blue);border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
 #pause-btn:hover:not(:disabled){background:var(--blue);color:#fff}
 #pause-btn:disabled{opacity:.4;cursor:default}
@@ -81,7 +86,7 @@ body.playback-active .wrap{padding-bottom:88px}
 <body>
 
 <header id="hdr">
-  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.8.3</span></h1>
+  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.9.1</span></h1>
   <a id="back-link" href="../index.html">← FastrackDutch</a>
 </header>
 
@@ -91,6 +96,22 @@ body.playback-active .wrap{padding-bottom:88px}
   <div class="intro">
     Each row shows the <strong>Dutch phrase</strong>, an <strong>English pronunciation guide</strong> (CAPS = stressed syllable), and the <strong>English meaning</strong>.
     Tap 🔊 for Dutch only, ▶ for Dutch then English, or use <strong>Play Dutch</strong> / <strong>Play Both</strong> per chapter. A floating bar appears during playback for quick <strong>Pause</strong> / <strong>Stop</strong>.
+  </div>
+
+  <div class="settings-bar">
+    <label class="setting">
+      <span>Speed</span>
+      <input type="range" id="speed-slider" min="0.5" max="1.5" step="0.05" value="1">
+      <span id="speed-val">1.00×</span>
+    </label>
+    <label class="setting">
+      <span>Dutch voice</span>
+      <select id="voice-nl"><option value="">Loading…</option></select>
+    </label>
+    <label class="setting">
+      <span>English voice</span>
+      <select id="voice-en"><option value="">Loading…</option></select>
+    </label>
   </div>
 
   <div class="toolbar">
@@ -126,7 +147,7 @@ body.playback-active .wrap{padding-bottom:88px}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 8, patch: 3 };
+const VERSION = { major: 1, minor: 9, patch: 1 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -144,11 +165,11 @@ const CHAPTERS = [
     phrases: [
       { dutch: 'Hallo', pron: 'HAH-loh', english: 'Hello' },
       { dutch: 'Hoi', pron: 'Hoy', english: 'Hi' },
-      { dutch: 'Goedendag', pron: 'KHOO-duh-dakh', english: 'Good day' },
-      { dutch: 'Goedemorgen', pron: 'KHOO-duh-MOR-khen', english: 'Good morning' },
-      { dutch: 'Goedemiddag', pron: 'KHOO-duh-mi-DAGH', english: 'Good afternoon' },
-      { dutch: 'Goedenavond', pron: 'KHOO-duh-NAH-vont', english: 'Good evening' },
-      { dutch: 'Goedenacht', pron: 'KHOO-duh-NAKHT', english: 'Good night' },
+      { dutch: 'Goedendag', pron: 'khoo-duh-DAKH', english: 'Good day' },
+      { dutch: 'Goedemorgen', pron: 'khoo-duh-MOR-khen', english: 'Good morning' },
+      { dutch: 'Goedemiddag', pron: 'khoo-duh-MI-dagh', english: 'Good afternoon' },
+      { dutch: 'Goedenavond', pron: 'khoo-duh-NAH-vont', english: 'Good evening' },
+      { dutch: 'Goedenacht', pron: 'khoo-duh-NAKHT', english: 'Good night' },
       { dutch: 'Tot ziens', pron: 'tot SEENS', english: 'Goodbye / See you' },
       { dutch: 'Doei', pron: 'Doo-ey', english: 'Bye' },
       { dutch: 'Fijne dag', pron: 'FAY-nuh dakh', english: 'Have a nice day' },
@@ -158,7 +179,7 @@ const CHAPTERS = [
       { dutch: 'Hallo. Mijn naam is Govind. Ik ben vierenveertig jaar oud en ik woon in Utrecht. Ik ben Indiaas. Aangenaam.', pron: 'HAH-loh. Main naam is GOH-vint. Ik ben FEER-en-FAYR-tikh yahr owt en ik vohn in OO-trekht. Ik ben In-dee-AHS. AHN-khuh-NAHM.', english: 'Hello. My name is Govind. I am 44 years old and I live in Utrecht. I am Indian. Nice to meet you.' },
       { dutch: 'Voornaam en achternaam', pron: 'VOR-naam en AKH-ter-naam', english: 'First name and last name' },
       { dutch: 'Leeftijd', pron: 'LAYF-tayt', english: 'Age' },
-      { dutch: 'Nationaliteit', pron: 'nah-tsyo-nah-LEE-tayt', english: 'Nationality' },
+      { dutch: 'Nationaliteit', pron: 'nah-tsyo-nah-lee-TAYT', english: 'Nationality' },
       { dutch: 'Woonplaats', pron: 'VOHN-plaits', english: 'Place of residence' },
     ],
   },
@@ -180,7 +201,7 @@ const CHAPTERS = [
       { dutch: 'tante', pron: 'TAN-tuh', english: 'aunt' },
       { dutch: 'Zij is mijn nicht', pron: 'zay is main nikht', english: 'She is my cousin / niece (female)' },
       { dutch: 'Hij is mijn neef', pron: 'hay is main nayf', english: 'He is my cousin / nephew (male)' },
-      { dutch: 'Onze buurman heet Arthur', pron: 'ON-zuh BUUR-man hayt AR-thur', english: 'Our neighbor is called Arthur' },
+      { dutch: 'Onze buurman heet Arthur', pron: 'ON-zuh BUUR-man hayt AR-tur', english: 'Our neighbor is called Arthur' },
     ],
   },
   {
@@ -262,7 +283,10 @@ const CHAPTER_RANGES = [];
 })();
 
 // ── TTS ──────────────────────────────────────────────────────────────
+const GAP_MS = 700; // pause between Dutch and English within a phrase
 let dutchVoice = null;
+let englishVoice = null;
+let ttsSpeed = parseFloat(localStorage.getItem('cp_speed')) || 1;
 let ttsResumeTimer = null;
 let queueState = null;
 let singleState = null;
@@ -357,12 +381,31 @@ function resumePlayback() {
   updatePauseBtn();
 }
 
+function findVoiceByName(list, name) {
+  return (name && list.find(v => v.name === name)) || null;
+}
+
+function populateVoiceSelect(select, voices, savedName) {
+  if (!select) return;
+  select.innerHTML = '<option value="">Default</option>' +
+    voices.map(v => `<option value="${esc(v.name)}">${esc(v.name)} (${esc(v.lang)})</option>`).join('');
+  if (savedName && voices.some(v => v.name === savedName)) select.value = savedName;
+}
+
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
   if (!voices.length) return;
-  dutchVoice = voices.find(v => v.lang === 'nl-NL') ||
-               voices.find(v => v.lang === 'nl-BE') ||
-               voices.find(v => v.lang.startsWith('nl'));
+  const nlVoices = voices.filter(v => v.lang.startsWith('nl'));
+  const enVoices = voices.filter(v => v.lang.startsWith('en'));
+  populateVoiceSelect(document.getElementById('voice-nl'), nlVoices, localStorage.getItem('cp_voice_nl'));
+  populateVoiceSelect(document.getElementById('voice-en'), enVoices, localStorage.getItem('cp_voice_en'));
+  dutchVoice = findVoiceByName(nlVoices, localStorage.getItem('cp_voice_nl')) ||
+               nlVoices.find(v => v.lang === 'nl-NL') ||
+               nlVoices.find(v => v.lang === 'nl-BE') ||
+               nlVoices[0] || null;
+  englishVoice = findVoiceByName(enVoices, localStorage.getItem('cp_voice_en')) ||
+                 enVoices.find(v => v.lang === 'en-US') ||
+                 enVoices[0] || null;
   if (!dutchVoice) document.getElementById('voice-warn').style.display = 'block';
 }
 if (window.speechSynthesis) {
@@ -399,11 +442,15 @@ function highlightRow(idx) {
   if (rowBtn) rowBtn.classList.add('playing');
 }
 
+function nlRate() { return +(0.88 * ttsSpeed).toFixed(3); }
+function enRate() { return +(1.0 * ttsSpeed).toFixed(3); }
+
 function speakText(text, lang, onDone) {
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang;
-  u.rate = lang === 'nl-NL' ? 0.88 : 1.0;
+  u.rate = lang === 'nl-NL' ? nlRate() : enRate();
   if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
+  else if (lang === 'en-US' && englishVoice) u.voice = englishVoice;
   const done = () => { if (!isPaused) onDone(); };
   u.onend = done;
   u.onerror = done;
@@ -434,7 +481,7 @@ function resumeSingle(snap) {
     speakText(snap.dutch, 'nl-NL', () => {
       if (!singleState) return;
       singleState.phase = 'english';
-      delay(380, () => {
+      delay(GAP_MS, () => {
         if (!singleState) return;
         speakText(snap.english, 'en-US', finishSingle);
       });
@@ -482,7 +529,7 @@ function speakDutchEnglish(dutch, english, btn) {
   speakText(dutch, 'nl-NL', () => {
     if (!singleState) return;
     singleState.phase = 'english';
-    delay(380, () => {
+    delay(GAP_MS, () => {
       if (!singleState) return;
       speakText(english, 'en-US', finishSingle);
     });
@@ -510,7 +557,7 @@ function playQueuePhrase(idx, phase) {
         });
       } else {
         queueState.phase = 'english';
-        delay(380, () => {
+        delay(GAP_MS, () => {
           if (!queueState) return;
           playQueuePhrase(idx, 'english');
         });
@@ -609,6 +656,26 @@ tbody.addEventListener('click', e => {
 });
 
 document.getElementById('play-all').addEventListener('click', togglePlayAll);
+
+const speedSlider = document.getElementById('speed-slider');
+const speedVal = document.getElementById('speed-val');
+speedSlider.value = ttsSpeed;
+speedVal.textContent = `${ttsSpeed.toFixed(2)}×`;
+speedSlider.addEventListener('input', () => {
+  ttsSpeed = parseFloat(speedSlider.value);
+  speedVal.textContent = `${ttsSpeed.toFixed(2)}×`;
+  localStorage.setItem('cp_speed', ttsSpeed);
+});
+
+document.getElementById('voice-nl').addEventListener('change', e => {
+  localStorage.setItem('cp_voice_nl', e.target.value);
+  loadVoices();
+});
+document.getElementById('voice-en').addEventListener('change', e => {
+  localStorage.setItem('cp_voice_en', e.target.value);
+  loadVoices();
+});
+
 function togglePauseResume() {
   if (isPaused) resumePlayback();
   else pausePlayback();

@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.8.3** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.9.1** (independent semver — not tied to FastrackDutch) |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -33,7 +33,7 @@ Update `VERSION` at the top of the script block and follow semver below. `applyV
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 8, patch: 3 };
+const VERSION = { major: 1, minor: 9, patch: 1 };
 ```
 
 | Bump | When | Examples |
@@ -99,9 +99,15 @@ Same conventions as FastrackDutch:
 ### Layout
 
 - Sticky header: title + version + link back to FastrackDutch (`../index.html`)
+- Settings bar (`.settings-bar`, above the toolbar): **Speed** slider (0.5×–1.5×) and **Dutch voice** / **English voice** dropdowns
 - One table inside `.card`; chapter section headers are `.ch-hdr` rows
 - Toolbar: phrase/chapter count, **Pause**, **Play All**
 - Floating bar (`#float-ctrl`): **Pause/Resume** + **Stop** — visible during active or paused playback
+
+### Speed & voice settings
+
+- `ttsSpeed` (default `1`) multiplies both `nlRate()`/`enRate()` base rates (0.88 / 1.0); persisted in localStorage `cp_speed`. Changing the slider mid-playback only affects the next utterance (browsers can't change rate on an in-flight `SpeechSynthesisUtterance`).
+- `dutchVoice` / `englishVoice` are resolved in `loadVoices()`: explicit user pick (localStorage `cp_voice_nl` / `cp_voice_en`, matched by `voice.name`) → else first `nl-NL`/`en-US` voice → else first voice in that language family. Dropdowns are rebuilt every time `loadVoices()` runs (safe — it re-applies the saved name each time) since Android populates the voice list progressively.
 
 ### Row controls
 
@@ -129,13 +135,14 @@ Active queue button shows **■ Stop** (`.pc-btn.active`).
 
 ## TTS Notes
 
-- Web Speech API, `nl-NL`, rate `0.88` for Dutch; `en-US`, rate `1.0` for English
+- Web Speech API, `nl-NL` base rate `0.88`, `en-US` base rate `1.0` — both scaled by `ttsSpeed` (see Speed & voice settings above)
+- `GAP_MS` (`700`) — pause between Dutch and English within a phrase (was `380`; bumped because 380ms read as no gap at all)
 - Android: voice poll + 14s `pause()`/`resume()` keepalive in `startTTSResume()`
 - `#voice-warn` shown when no Dutch voice is found
 
 ---
 
-## Current Chapters (v1.8.3)
+## Current Chapters (v1.9.1)
 
 1. Introducing Yourself  
 2. Family  
