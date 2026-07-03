@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.9.1** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.10.6** (independent semver — not tied to FastrackDutch) |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -33,7 +33,7 @@ Update `VERSION` at the top of the script block and follow semver below. `applyV
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 9, patch: 1 };
+const VERSION = { major: 1, minor: 10, patch: 6 };
 ```
 
 | Bump | When | Examples |
@@ -80,9 +80,10 @@ Runtime helpers (do not edit manually):
 ### Adding content
 
 1. Add phrases to the right chapter’s `phrases` array (or add a new chapter object).
-2. Sort phrases in pedagogical order (not necessarily A–Z).
+2. Sort phrases in pedagogical order (not necessarily A–Z): **vocabulary / single words first**, then **sentences and dialogue** at the bottom of each chapter.
 3. Use correct Dutch spelling in `dutch`; keep numerals as words when teaching numbers (e.g. *vierenveertig*, not `44`).
 4. Bump **MINOR** for a new chapter; **PATCH** for phrases added to an existing chapter.
+5. **Run `node course-phrases/check-pronunciation.js` after adding/editing phrases**, before committing. It catches bare numerals, multi-syllable words with no CAPS stress marker, and the same phrase transcribed two different ways — all mechanical, zero-dependency checks (see the file header for what it does and doesn't catch). It does **not** verify phonetic accuracy or catch structural inconsistencies across parallel constructions (e.g. sibling greetings that should share a stress pattern) — that still needs an actual read-through by whoever/whatever is making the change.
 
 ### Pronunciation guide (`pron`)
 
@@ -160,12 +161,20 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.8.3**: first versioned release. Added pause/resume (`pauseSnapshot`/`pendingAdvance` state machine, survives `speechSynthesis.cancel()` races), floating control bar, split "Play Chapter" into separate **Play Dutch** / **Play Both** buttons, added per-row 🔊 Dutch-only button, added semver + this CLAUDE.md.
 - **v1.9.0**: speed slider (0.5×–1.5×, `localStorage['cp_speed']`), Dutch/English voice dropdowns (`localStorage['cp_voice_nl']`/`['cp_voice_en']`), Dutch↔English gap increased from 380ms to 700ms (`GAP_MS`) — 380ms read as no pause at all.
 - **v1.9.1**: pronunciation fixes — consistent stress across the five `goede-`+time-word greetings (Goedendag/Goedemorgen/Goedemiddag/Goedenavond/Goedenacht), `Nationaliteit` corrected to stress the final `-TAYT` syllable (Dutch `-iteit` words are end-stressed), `Arthur` corrected from `AR-thur` to `AR-tur` (Dutch has no "th" phoneme — matches how `Judith` was already handled).
+- **v1.10.0**: Chapter 5 — Food, Meals & Ordering (meals, food vocabulary, eat/drink sentences, restaurant phrases).
+- **v1.10.1**: Complete ordering templates — `Ik wil graag koffie`, `Ik neem pasta` (from chapter food vocab).
+- **v1.10.2**: Complete `Mag ik de rekening, alstublieft?` (pairs with *De rekening, alstublieft.*).
+- **v1.10.3**: Remove duplicate *De rekening, alstublieft.* — covered by *Mag ik de rekening, alstublieft?*
+- **v1.10.4**: Reorder Ch.5 restaurant dialogue; add *Ja, mag ik een koffie?* after *Weet u het al?*
+- **v1.10.5**: All chapters — vocabulary/words at top, phrases and sentences at bottom.
+- **v1.10.6**: Ch.5 — consistent `de`/`het` on meal and food vocab (*de lunch*, *het diner*, *de koffie*, *de melk*, *de thee*, *de pasta*, *de snack*, *het eten*); removed duplicate bare *brood*.
 
 ---
 
-## Current Chapters (v1.9.1)
+## Current Chapters (v1.10.6)
 
 1. Introducing Yourself  
 2. Family  
 3. Describing People  
 4. To Be & To Have  
+5. Food, Meals & Ordering  

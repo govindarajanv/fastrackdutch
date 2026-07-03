@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Dutch Daily Course Notes v1.9.1</title>
+<title>My Dutch Daily Course Notes v1.10.6</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -86,7 +86,7 @@ body.playback-active .wrap{padding-bottom:88px}
 <body>
 
 <header id="hdr">
-  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.9.1</span></h1>
+  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.10.6</span></h1>
   <a id="back-link" href="../index.html">← FastrackDutch</a>
 </header>
 
@@ -147,7 +147,7 @@ body.playback-active .wrap{padding-bottom:88px}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 9, patch: 1 };
+const VERSION = { major: 1, minor: 10, patch: 6 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -175,30 +175,30 @@ const CHAPTERS = [
       { dutch: 'Fijne dag', pron: 'FAY-nuh dakh', english: 'Have a nice day' },
       { dutch: 'wonen', pron: 'VOH-nen', english: 'to live' },
       { dutch: 'werken', pron: 'VERK-en', english: 'to work' },
-      { dutch: 'Wie ben je?', pron: 'vee ben yuh', english: 'Who are you?' },
-      { dutch: 'Hallo. Mijn naam is Govind. Ik ben vierenveertig jaar oud en ik woon in Utrecht. Ik ben Indiaas. Aangenaam.', pron: 'HAH-loh. Main naam is GOH-vint. Ik ben FEER-en-FAYR-tikh yahr owt en ik vohn in OO-trekht. Ik ben In-dee-AHS. AHN-khuh-NAHM.', english: 'Hello. My name is Govind. I am 44 years old and I live in Utrecht. I am Indian. Nice to meet you.' },
       { dutch: 'Voornaam en achternaam', pron: 'VOR-naam en AKH-ter-naam', english: 'First name and last name' },
       { dutch: 'Leeftijd', pron: 'LAYF-tayt', english: 'Age' },
       { dutch: 'Nationaliteit', pron: 'nah-tsyo-nah-lee-TAYT', english: 'Nationality' },
       { dutch: 'Woonplaats', pron: 'VOHN-plaits', english: 'Place of residence' },
+      { dutch: 'Wie ben je?', pron: 'vee ben yuh', english: 'Who are you?' },
+      { dutch: 'Hallo. Mijn naam is Govind. Ik ben vierenveertig jaar oud en ik woon in Utrecht. Ik ben Indiaas. Aangenaam.', pron: 'HAH-loh. Main naam is GOH-vint. Ik ben FEER-en-FAYR-tikh yahr owt en ik vohn in OO-trekht. Ik ben In-dee-AHS. AHN-khuh-NAHM.', english: 'Hello. My name is Govind. I am 44 years old and I live in Utrecht. I am Indian. Nice to meet you.' },
     ],
   },
   {
     title: 'Chapter 2: Family',
     phrases: [
-      { dutch: 'Dit is mijn gezin', pron: 'dit is main khuh-ZIN', english: 'This is my (closest) family' },
       { dutch: 'vader', pron: 'VAH-der', english: 'father' },
       { dutch: 'moeder', pron: 'MOO-der', english: 'mother' },
       { dutch: 'zoon', pron: 'zohn', english: 'son' },
-      { dutch: 'Dit is mijn dochter', pron: 'dit is main DOKH-ter', english: 'This is my daughter' },
-      { dutch: 'Zij is mijn zus', pron: 'zay is main ZUS', english: 'She is my sister' },
-      { dutch: 'Dat is jouw zoon', pron: 'dat is yow zohn', english: 'That is your son' },
-      { dutch: 'Hij is mijn broer', pron: 'hay is main broor', english: 'He is my brother' },
       { dutch: 'familie', pron: 'fah-MEE-lee', english: 'family' },
       { dutch: 'opa', pron: 'OH-pah', english: 'grandfather' },
       { dutch: 'oma', pron: 'OH-mah', english: 'grandmother' },
       { dutch: 'oom', pron: 'ohm', english: 'uncle' },
       { dutch: 'tante', pron: 'TAN-tuh', english: 'aunt' },
+      { dutch: 'Dit is mijn gezin', pron: 'dit is main khuh-ZIN', english: 'This is my (closest) family' },
+      { dutch: 'Dit is mijn dochter', pron: 'dit is main DOKH-ter', english: 'This is my daughter' },
+      { dutch: 'Zij is mijn zus', pron: 'zay is main ZUS', english: 'She is my sister' },
+      { dutch: 'Dat is jouw zoon', pron: 'dat is yow zohn', english: 'That is your son' },
+      { dutch: 'Hij is mijn broer', pron: 'hay is main broor', english: 'He is my brother' },
       { dutch: 'Zij is mijn nicht', pron: 'zay is main nikht', english: 'She is my cousin / niece (female)' },
       { dutch: 'Hij is mijn neef', pron: 'hay is main nayf', english: 'He is my cousin / nephew (male)' },
       { dutch: 'Onze buurman heet Arthur', pron: 'ON-zuh BUUR-man hayt AR-tur', english: 'Our neighbor is called Arthur' },
@@ -207,7 +207,6 @@ const CHAPTERS = [
   {
     title: 'Chapter 3: Describing People',
     phrases: [
-      { dutch: 'Wat is jouw lievelingskleur?', pron: 'vaht is yow LEE-vuh-lings-kleur', english: 'What is your favorite color?' },
       { dutch: 'Het gezicht', pron: 'het khuh-ZIKHT', english: 'The face' },
       { dutch: 'lengte', pron: 'LENG-tuh', english: 'Height' },
       { dutch: 'Lang', pron: 'lang', english: 'Tall / long' },
@@ -230,11 +229,12 @@ const CHAPTERS = [
       { dutch: 'De kin', pron: 'duh kin', english: 'The chin' },
       { dutch: 'De mond', pron: 'duh mont', english: 'The mouth' },
       { dutch: 'Huidskleur', pron: 'HOWTS-kleur', english: 'Skin color' },
+      { dutch: 'Heel lang', pron: 'hayl lang', english: 'Very tall' },
+      { dutch: 'Wat is jouw lievelingskleur?', pron: 'vaht is yow LEE-vuh-lings-kleur', english: 'What is your favorite color?' },
       { dutch: 'Ik heb een neus', pron: 'ik heb un noos', english: 'I have a nose' },
       { dutch: 'Jij hebt oren', pron: 'yay hept OH-ren', english: 'You have ears' },
       { dutch: 'Hij heeft ogen', pron: 'hay hayft OH-khen', english: 'He has eyes' },
       { dutch: 'Ik heb blauwe ogen, en jij?', pron: 'ik heb BLOW-uh OH-khen, en yay', english: 'I have blue eyes, and you?' },
-      { dutch: 'Heel lang', pron: 'hayl lang', english: 'Very tall' },
       { dutch: 'Heb je een baard?', pron: 'heb yuh un bahrt', english: 'Do you have a beard?' },
       { dutch: 'Ik ben Govind. Ik ben kort. Mijn huidskleur is bruin. Ik heb kort, donker haar, bruine ogen en een donkere baard.', pron: 'Ik ben GOH-vint. Ik ben kort. Main HOWTS-kleur is BROWN. Ik heb kort, DON-ker haar, BROW-nuh OH-khen en un DON-kuh-ruh bahrt.', english: 'I am Govind. I am short. My skin color is brown. I have short, dark hair, brown eyes and a dark beard.' },
     ],
@@ -268,6 +268,57 @@ const CHAPTERS = [
       { dutch: 'Emma en Leonie hebben boeken.', pron: 'EM-mah en loh-NEE HEB-ben BOOK-en', english: 'Emma and Leonie have books.' },
       { dutch: 'Hoi, ik ben Jan en dit is Judith.', pron: 'Hoy, ik ben Yan en dit is YOO-dit', english: 'Hi, I am Jan and this is Judith.' },
       { dutch: 'Wij hebben een huis in Utrecht.', pron: 'vay HEB-ben un hows in OO-trekht', english: 'We have a house in Utrecht.' },
+    ],
+  },
+  {
+    title: 'Chapter 5: Food, Meals & Ordering',
+    phrases: [
+      { dutch: 'Het ontbijt', pron: 'het ON-tbayt', english: 'Breakfast' },
+      { dutch: 'de lunch', pron: 'duh lunch', english: 'Lunch' },
+      { dutch: 'het diner', pron: 'het dee-NAYR', english: 'Dinner' },
+      { dutch: 'de snack', pron: 'duh snack', english: 'Snack' },
+      { dutch: 'de koffie', pron: 'duh KOFF-ee', english: 'Coffee' },
+      { dutch: 'Bananen', pron: 'bah-NAH-nen', english: 'Bananas' },
+      { dutch: 'de melk', pron: 'duh melk', english: 'Milk' },
+      { dutch: 'de thee', pron: 'duh tay', english: 'Tea' },
+      { dutch: 'de appel', pron: 'duh AH-pel', english: 'The apple' },
+      { dutch: 'de pasta', pron: 'duh PAHS-tah', english: 'Pasta' },
+      { dutch: 'Het water', pron: 'het VAH-ter', english: 'The water' },
+      { dutch: 'de aardappel', pron: 'duh AAR-dah-pel', english: 'The potato' },
+      { dutch: 'groenten', pron: 'KHROON-ten', english: 'Vegetables' },
+      { dutch: 'het brood', pron: 'het broht', english: 'The bread' },
+      { dutch: 'het ei', pron: 'het eye', english: 'The egg' },
+      { dutch: 'het bier', pron: 'het beer', english: 'The beer' },
+      { dutch: 'de kip', pron: 'duh kip', english: 'The chicken' },
+      { dutch: 'de kaas', pron: 'duh kaas', english: 'The cheese' },
+      { dutch: 'de rijst', pron: 'duh rayst', english: 'The rice' },
+      { dutch: 'het eten', pron: 'het AY-ten', english: 'The food' },
+      { dutch: 'Lekker', pron: 'LEK-er', english: 'It tastes good / delicious' },
+      { dutch: 'als', pron: 'als', english: 'For / as (e.g. als ontbijt = for breakfast)' },
+      { dutch: 'punt', pron: 'punt', english: 'Dot / full stop' },
+      { dutch: 'Ik eet een banaan', pron: 'ik ayt un bah-NAAN', english: 'I eat a banana' },
+      { dutch: 'Jij drinkt thee', pron: 'yay drinkt tay', english: 'You drink tea' },
+      { dutch: 'Hij eet groenten', pron: 'hay ayt KHROON-ten', english: 'He eats vegetables' },
+      { dutch: 'Ik drink water', pron: 'ik drink VAH-ter', english: 'I drink water' },
+      { dutch: 'Ik eet brood en bananen als ontbijt', pron: 'ik ayt broht en bah-NAH-nen als ON-tbayt', english: 'I eat bread and bananas for breakfast' },
+      { dutch: 'Ik drink melk en koffie als ontbijt', pron: 'ik drink melk en KOFF-ee als ON-tbayt', english: 'I drink milk and coffee for breakfast' },
+      { dutch: 'Hallo. Ik eet aardappels en kip als diner', pron: 'HAH-loh. Ik ayt AAR-dah-pels en kip als dee-NAYR', english: 'Hello. I eat potatoes and chicken for dinner' },
+      { dutch: 'Ik eet kaas als snack', pron: 'ik ayt kaas als snack', english: 'I eat cheese as a snack' },
+      { dutch: 'Hoi. Ik eet pasta en een appel als lunch', pron: 'Hoy. Ik ayt PAHS-tah en un AH-pel als lunch', english: 'Hi. I eat pasta and an apple for lunch' },
+      { dutch: 'Ik drink water en koffie. Tot ziens', pron: 'ik drink VAH-ter en KOFF-ee. Tot SEENS', english: 'I drink water and coffee. Goodbye' },
+      { dutch: 'Ik wil graag twee biertjes', pron: 'ik vil khraakh tvay BEER-tyuhs', english: 'I would like two beers' },
+      { dutch: 'Heeft u gereserveerd?', pron: 'hayft u guh-ray-zer-VAYRT', english: 'Have you made a reservation?' },
+      { dutch: 'Ik heb gereserveerd voor acht uur', pron: 'ik heb guh-ray-zer-VAYRT vor AHKHT oor', english: 'I have reserved for eight o\'clock' },
+      { dutch: 'Wat wilt u bestellen?', pron: 'vaht vilt u buh-STEL-len', english: 'What would you like to order?' },
+      { dutch: 'Ik wil graag koffie', pron: 'ik vil khraakh KOFF-ee', english: 'I would like coffee' },
+      { dutch: 'Wat mag het zijn?', pron: 'vaht makh het zayn', english: 'What will it be? / What can I get you?' },
+      { dutch: 'Ik neem pasta', pron: 'ik naym PAHS-tah', english: 'I will take pasta' },
+      { dutch: 'Weet u het al?', pron: 'vayt u het ahl', english: 'Have you decided already?' },
+      { dutch: 'Ja, mag ik een koffie?', pron: 'Yah, makh ik un KOFF-ee?', english: 'Yes, may I have a coffee?' },
+      { dutch: 'Dat wordt dan tien euro.', pron: 'dat vort dan tayn OO-roh', english: 'That will be ten euros then.' },
+      { dutch: 'Mag ik de rekening, alstublieft?', pron: 'makh ik duh REK-uh-ning, ALS-tuu-bleeft?', english: 'May I have the bill, please?' },
+      { dutch: 'Pin of contant?', pron: 'pin of kon-TANT', english: 'Card or cash?' },
+      { dutch: 'Ik wil graag contant betalen.', pron: 'ik vil khraakh kon-TANT buh-TAH-len', english: 'I would like to pay in cash.' },
     ],
   },
 ];
