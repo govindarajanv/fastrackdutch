@@ -114,7 +114,7 @@ Same conventions as FastrackDutch:
 | Control | Class / ID | Action |
 |---------|------------|--------|
 | 🔊 | `.spk-btn` | Dutch only |
-| ▶ (last column) | `.pbtn` | Dutch → 380ms → English |
+| ▶ (last column) | `.pbtn` | Dutch → `GAP_MS` (700ms) → English |
 | ▶ Play Dutch | `.pc-btn[data-mode=dutch]` | Queue chapter, Dutch only |
 | ▶ Play Both | `.pc-btn[data-mode=both]` | Queue chapter, Dutch then English per row |
 
@@ -139,6 +139,27 @@ Active queue button shows **■ Stop** (`.pc-btn.active`).
 - `GAP_MS` (`700`) — pause between Dutch and English within a phrase (was `380`; bumped because 380ms read as no gap at all)
 - Android: voice poll + 14s `pause()`/`resume()` keepalive in `startTTSResume()`
 - `#voice-warn` shown when no Dutch voice is found
+
+---
+
+## Known Issues / Technical Debt
+
+- **`.play-cell` CSS class is dead code.** Added in v1.8.3 for a play-cell wrapper that was never applied to any element in the render template. Safe to delete, or finish wiring it up — not done as of v1.9.1.
+- **Queue playback highlights the wrong button.** During Play Chapter / Play Dutch / Play All, `highlightRow()` only adds `.playing` to `.spk-btn` (the small 🔊 icon). `.pbtn.playing` (the bigger ▶ button, with its pulse animation) is now only reachable via a single-row ▶ click — before the v1.8.3 refactor, queue playback highlighted `.pbtn` instead. Cosmetic, not fixed as of v1.9.1.
+- **Version numbering starts at v1.8.3, not v1.0.0.** The very first commit to add semver (v1.8.3) was retroactive — no real v1.0–v1.7 ever existed. Don't read early version numbers as evidence of prior releases.
+
+## Verifying changes
+
+There is no dev server for this static file, and no project run-skill or `chromium-cli` exists here. To actually exercise the page (not just eyeball the diff) in a headless environment: a Chrome binary may already be cached at `~/.cache/puppeteer/chrome/win64-*/chrome-win64/chrome.exe` (a side effect of the globally-installed `@mermaid-js/mermaid-cli` npm package, which bundles `puppeteer-core` under `<npm root -g>/@mermaid-js/mermaid-cli/node_modules/puppeteer-core`). Launch it with `puppeteer.launch({ executablePath: <that chrome.exe>, headless: 'new' })`, `page.goto('file:///' + absolute path to index.html)`, then assert with `page.evaluate()` and check `page.on('pageerror'/'console')` for errors. Caveat: headless Chrome's `speechSynthesis.getVoices()` returns a stub list, not real OS TTS voices — this proves the DOM/state logic works, not that the audio itself sounds right. If this becomes a recurring need, run `/run-skill-generator` to turn it into a proper project skill.
+
+---
+
+## Version History
+
+- **Pre-1.8.3 (unversioned)**: page created as "Dutch Course Phrases" — single ▶ per row (Dutch → English), one "▶ Play Chapter" button per chapter, no pause/resume, no floating bar. Grew to 4 chapters (Introducing Yourself, Family, Describing People, To Be & To Have) before semver was introduced.
+- **v1.8.3**: first versioned release. Added pause/resume (`pauseSnapshot`/`pendingAdvance` state machine, survives `speechSynthesis.cancel()` races), floating control bar, split "Play Chapter" into separate **Play Dutch** / **Play Both** buttons, added per-row 🔊 Dutch-only button, added semver + this CLAUDE.md.
+- **v1.9.0**: speed slider (0.5×–1.5×, `localStorage['cp_speed']`), Dutch/English voice dropdowns (`localStorage['cp_voice_nl']`/`['cp_voice_en']`), Dutch↔English gap increased from 380ms to 700ms (`GAP_MS`) — 380ms read as no pause at all.
+- **v1.9.1**: pronunciation fixes — consistent stress across the five `goede-`+time-word greetings (Goedendag/Goedemorgen/Goedemiddag/Goedenavond/Goedenacht), `Nationaliteit` corrected to stress the final `-TAYT` syllable (Dutch `-iteit` words are end-stressed), `Arthur` corrected from `AR-thur` to `AR-tur` (Dutch has no "th" phoneme — matches how `Judith` was already handled).
 
 ---
 
