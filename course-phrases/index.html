@@ -7,7 +7,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#003082;--orange:#E77500;
+  --blue:#003082;--orange:#E77500;--green:#2d8a4e;
   --bg:#f4f5f7;--white:#fff;--border:#dde1e7;--text:#1a1a1a;--muted:#6b7280;
 }
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
@@ -23,6 +23,8 @@ body.playback-active .wrap{padding-bottom:88px}
 .intro code{background:#eef2ff;padding:1px 6px;border-radius:4px;font-size:.82rem}
 .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .toolbar span{font-size:.82rem;color:var(--muted)}
+#bm-status{font-size:.78rem;color:var(--green);flex:1 1 100%;min-height:1.1em}
+#bm-status.err{color:#b45309}
 .toolbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .settings-bar{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:.8rem}
 .settings-bar .setting{display:flex;align-items:center;gap:6px;color:var(--muted)}
@@ -108,7 +110,7 @@ tr.phrase-row.playing-row:hover td{background:#f0f5fc!important}
 
   <div class="intro">
     Each row shows the <strong>Dutch phrase</strong>, an <strong>English pronunciation guide</strong> (CAPS = stressed syllable), and the <strong>English meaning</strong>.
-    Tap 🔊 for Dutch only, ▶ for Dutch then English, or use <strong>Play Dutch</strong> / <strong>Play Both</strong> per chapter. Tap <strong>☆</strong> to bookmark phrases — they appear at the top for quick practice. A floating bar appears during playback for quick <strong>Pause</strong> / <strong>Stop</strong>.
+    Tap 🔊 for Dutch only, ▶ for Dutch then English, or use <strong>Play Dutch</strong> / <strong>Play Both</strong> per chapter. Tap <strong>☆</strong> to bookmark phrases — they appear at the top for quick practice. Use <strong>↓ Export</strong> / <strong>↑ Import</strong> in the Bookmarks row to back up or restore bookmarks as a JSON file. A floating bar appears during playback for quick <strong>Pause</strong> / <strong>Stop</strong>.
   </div>
 
   <div class="settings-bar">
@@ -133,7 +135,10 @@ tr.phrase-row.playing-row:hover td{background:#f0f5fc!important}
       <button type="button" id="pause-btn" disabled title="Pause or resume playback">⏸ Pause</button>
       <button type="button" id="play-all">▶ Play All</button>
     </div>
+    <span id="bm-status" aria-live="polite"></span>
   </div>
+
+  <input type="file" id="bm-import-file" accept=".json,application/json" hidden>
 
   <div class="card">
     <table class="tbl">
@@ -161,7 +166,7 @@ tr.phrase-row.playing-row:hover td{background:#f0f5fc!important}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 12, patch: 3 };
+const VERSION = { major: 1, minor: 13, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -321,8 +326,8 @@ const CHAPTERS = [
       { dutch: 'Hoi. Ik eet pasta en een appel als lunch', pron: 'Hoy. Ik ayt PAHS-tah en un AH-pel als lunch', english: 'Hi. I eat pasta and an apple for lunch' },
       { dutch: 'Ik drink water en koffie. Tot ziens', pron: 'ik drink VAH-ter en KOFF-ee. Tot SEENS', english: 'I drink water and coffee. Goodbye' },
       { dutch: 'Ik wil graag twee biertjes', pron: 'ik vil khraakh tvay BEER-tyuhs', english: 'I would like two beers' },
-      { dutch: 'Heeft u gereserveerd?', pron: 'hayft u guh-ray-zer-FAYRT', english: 'Have you made a reservation?' },
-      { dutch: 'Ik heb gereserveerd voor acht uur', pron: 'ik heb guh-ray-zer-FAYRT foor AHKHT oor', english: 'I have reserved for eight o\'clock' },
+      { dutch: 'Heeft u gereserveerd?', pron: 'hayft u khuh-ray-zer-VAYRT', english: 'Have you made a reservation?' },
+      { dutch: 'Ik heb gereserveerd voor acht uur', pron: 'ik heb khuh-ray-zer-VAYRT foor AHKHT oor', english: 'I have reserved for eight o\'clock' },
       { dutch: 'Wat wilt u bestellen?', pron: 'vaht vilt u buh-STEL-len', english: 'What would you like to order?' },
       { dutch: 'Ik wil graag koffie', pron: 'ik vil khraakh KOFF-ee', english: 'I would like coffee' },
       { dutch: 'Wat mag het zijn?', pron: 'vaht makh het zayn', english: 'What will it be? / What can I get you?' },
@@ -338,7 +343,7 @@ const CHAPTERS = [
   {
     title: 'Chapter 6: Adjectives',
     phrases: [
-      { dutch: 'Bijvoeglijke naamwoorden – adjectives', pron: 'bay-VOEG-lik-uh NOWM-voh-dren', english: 'Adjectives (bijvoeglijke naamwoorden)' },
+      { dutch: 'Bijvoeglijke naamwoorden – adjectives', pron: 'bay-VOEG-likh-uh NOWM-voh-dren', english: 'Adjectives (bijvoeglijke naamwoorden)' },
       { dutch: 'Blij', pron: 'blay', english: 'Happy' },
       { dutch: 'Trots', pron: 'trots', english: 'Proud' },
       { dutch: 'Vrolijk', pron: 'FROH-likh', english: 'Cheerful' },
@@ -347,11 +352,11 @@ const CHAPTERS = [
       { dutch: 'De auto is mooi en blauw', pron: 'duh OW-toh is MOH-ee en blaw', english: 'The car is beautiful and blue' },
       { dutch: 'De auto is klein', pron: 'duh OW-toh is klayn', english: 'The car is small' },
       { dutch: 'De mooie blauwe auto', pron: 'duh MOH-ee BLOW-uh OW-toh', english: 'The beautiful blue car' },
-      { dutch: 'Het grappige boek', pron: 'het GRAH-pik-uh book', english: 'The funny book' },
+      { dutch: 'Het grappige boek', pron: 'het KHRAH-pi-khuh book', english: 'The funny book' },
       { dutch: 'Het lekkere eten', pron: 'het LEK-kuh-ruh AY-ten', english: 'The delicious food' },
-      { dutch: 'Het goede gesprek', pron: 'het KHOO-duh guh-SPREK', english: 'The good conversation' },
+      { dutch: 'Het goede gesprek', pron: 'het KHOO-duh khuh-SPREK', english: 'The good conversation' },
       { dutch: 'De blije zoon', pron: 'duh BLAY-uh zohn', english: 'The happy son' },
-      { dutch: 'De trotse vrolijke moeder', pron: 'duh TROT-suh FROH-lik-uh MOO-der', english: 'The proud cheerful mother' },
+      { dutch: 'De trotse vrolijke moeder', pron: 'duh TROT-suh FROH-likh-uh MOO-der', english: 'The proud cheerful mother' },
       { dutch: 'Ik wil een blauwe auto', pron: 'ik vil un BLOW-uh OW-toh', english: 'I want a blue car' },
       { dutch: 'Deze is perfect voor jou', pron: 'DAY-zuh is per-FEKT foor yow', english: 'This one is perfect for you' },
       { dutch: 'Veel plezier', pron: 'fayl pleh-SEER', english: 'Have fun / Enjoy' },
@@ -779,6 +784,8 @@ function togglePlayBookmarks(btn, mode) {
 
 // ── Bookmarks ────────────────────────────────────────────────────────
 const BM_KEY = 'cp_bookmarks';
+const BM_FORMAT = 1;
+let bmStatusTimer = null;
 
 function loadBookmarks() {
   try {
@@ -794,6 +801,88 @@ let bookmarks = loadBookmarks();
 
 function saveBookmarks() {
   localStorage.setItem(BM_KEY, JSON.stringify(bookmarks));
+}
+
+function showBmStatus(msg, isErr) {
+  const el = document.getElementById('bm-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.toggle('err', !!isErr);
+  clearTimeout(bmStatusTimer);
+  bmStatusTimer = setTimeout(() => {
+    el.textContent = '';
+    el.classList.remove('err');
+  }, 4500);
+}
+
+function bookmarkExportPayload() {
+  return {
+    format: BM_FORMAT,
+    app: 'course-phrases',
+    appVersion: VERSION_STR,
+    exportedAt: new Date().toISOString(),
+    phraseCount: PHRASES.length,
+    bookmarks: bookmarks.map(i => ({ index: i, dutch: PHRASES[i].dutch })),
+  };
+}
+
+function exportBookmarks() {
+  const payload = bookmarkExportPayload();
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `course-phrases-bookmarks-v${VERSION_STR}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  showBmStatus(`Exported ${bookmarks.length} bookmark${bookmarks.length === 1 ? '' : 's'} to JSON file.`);
+}
+
+function resolveBookmarkEntry(entry) {
+  if (Number.isInteger(entry) && entry >= 0 && entry < PHRASES.length) return entry;
+  if (!entry || typeof entry !== 'object') return -1;
+  const dutch = typeof entry.dutch === 'string' ? entry.dutch.trim() : '';
+  if (Number.isInteger(entry.index) && entry.index >= 0 && entry.index < PHRASES.length) {
+    if (!dutch || PHRASES[entry.index].dutch === dutch) return entry.index;
+  }
+  if (dutch) {
+    const idx = PHRASES.findIndex(p => p.dutch === dutch);
+    if (idx >= 0) return idx;
+  }
+  return -1;
+}
+
+function normalizeBookmarkImport(data) {
+  let raw = [];
+  if (Array.isArray(data)) raw = data;
+  else if (data && Array.isArray(data.bookmarks)) raw = data.bookmarks;
+  else if (data && Array.isArray(data.indices)) raw = data.indices;
+  else throw new Error('Unrecognised bookmark file — expected a JSON array or { bookmarks: [...] }.');
+  const out = [];
+  const seen = new Set();
+  raw.forEach(entry => {
+    const idx = resolveBookmarkEntry(entry);
+    if (idx >= 0 && !seen.has(idx)) {
+      seen.add(idx);
+      out.push(idx);
+    }
+  });
+  return out;
+}
+
+function applyBookmarks(next) {
+  bookmarks = next;
+  saveBookmarks();
+  if (isPlaybackActive()) stopPlayback();
+  renderTable();
+}
+
+function importBookmarksFromText(text) {
+  const data = JSON.parse(text);
+  const next = normalizeBookmarkImport(data);
+  applyBookmarks(next);
+  showBmStatus(`Imported ${next.length} bookmark${next.length === 1 ? '' : 's'}.`);
 }
 
 function toggleBookmark(idx) {
@@ -833,7 +922,9 @@ function renderPhraseRow(idx, source = 'chapter') {
 
 function renderBookmarksSection() {
   const n = bookmarks.length;
-  const hdr = `<tr class="ch-hdr bookmarks"><td colspan="5"><div class="ch-hdr-inner"><span>★ Bookmarks${n ? ` (${n})` : ''}</span><div class="ch-btns">${n ? '<button type="button" class="pc-btn bm-play" data-mode="dutch" title="Play bookmarked phrases, Dutch only">▶ Play Dutch</button><button type="button" class="pc-btn bm-play" data-mode="both" title="Play bookmarked phrases, Dutch then English">▶ Play Both</button>' : ''}</div></div></td></tr>`;
+  const playBtns = n ? '<button type="button" class="pc-btn bm-play" data-mode="dutch" title="Play bookmarked phrases, Dutch only">▶ Play Dutch</button><button type="button" class="pc-btn bm-play" data-mode="both" title="Play bookmarked phrases, Dutch then English">▶ Play Both</button>' : '';
+  const ioBtns = '<button type="button" class="pc-btn bm-export" title="Save bookmarks to a JSON file on this device">↓ Export</button><button type="button" class="pc-btn bm-import" title="Load bookmarks from a JSON file">↑ Import</button>';
+  const hdr = `<tr class="ch-hdr bookmarks"><td colspan="5"><div class="ch-hdr-inner"><span>★ Bookmarks${n ? ` (${n})` : ''}</span><div class="ch-btns">${playBtns}${ioBtns}</div></div></td></tr>`;
   if (!n) {
     return hdr + '<tr class="bm-empty"><td colspan="5">Tap ☆ on any phrase below to bookmark it for quick practice here.</td></tr>';
   }
@@ -866,6 +957,14 @@ tbody.addEventListener('click', e => {
   const bmPlay = e.target.closest('.bm-play');
   if (bmPlay) {
     togglePlayBookmarks(bmPlay, bmPlay.dataset.mode);
+    return;
+  }
+  if (e.target.closest('.bm-export')) {
+    exportBookmarks();
+    return;
+  }
+  if (e.target.closest('.bm-import')) {
+    document.getElementById('bm-import-file').click();
     return;
   }
   const pcBtn = e.target.closest('.pc-btn');
@@ -902,6 +1001,22 @@ document.getElementById('voice-nl').addEventListener('change', e => {
 document.getElementById('voice-en').addEventListener('change', e => {
   localStorage.setItem('cp_voice_en', e.target.value);
   loadVoices();
+});
+
+document.getElementById('bm-import-file').addEventListener('change', e => {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      importBookmarksFromText(reader.result);
+    } catch (err) {
+      showBmStatus(err.message || 'Could not import bookmarks.', true);
+    }
+  };
+  reader.onerror = () => showBmStatus('Could not read the selected file.', true);
+  reader.readAsText(file);
 });
 
 function togglePauseResume() {

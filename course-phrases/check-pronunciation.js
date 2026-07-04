@@ -3,8 +3,8 @@
 // Run after adding/editing phrases: node course-phrases/check-pronunciation.js
 //
 // This catches MECHANICAL issues: bare numerals, multi-syllable words with no
-// stress marker, the same phrase transcribed two different ways, and CLAUDE.md
-// phrase/chapter/unique-word count drift vs index.html. It does NOT verify
+// stress marker, the same phrase transcribed two different ways, CLAUDE.md count drift,
+// and common Dutch guttural-g mis-spellings (guh-, GRAH-, -lik-). It does NOT verify
 // phonetic accuracy, and it does NOT catch structural inconsistencies across
 // parallel constructions — that needs an actual review pass. See CLAUDE.md.
 
@@ -101,7 +101,31 @@ expect('Phrases', entries.length);
 expect('Chapters', chapterCount);
 expect('Unique words', uniqueWords);
 
-// 6. Informational only (not a failure): common grammar words that show up with more
+// 6. Guttural Dutch g/ch — common mis-transcriptions (see CLAUDE.md § Pronunciation guide)
+entries.forEach(e => {
+  const d = e.dutch.toLowerCase();
+  const p = e.pron;
+  if (/\bguh-/i.test(p)) {
+    fail(`Use khuh- not guh- for Dutch ge- prefix: "${e.dutch}" -> "${e.pron}"`);
+  }
+  if (/\bgrappig/i.test(d) && !/KHRAH-pi-kh/i.test(p)) {
+    fail(`Use KHRAH-pi-kh- for grappig/grappige: "${e.dutch}" -> "${e.pron}"`);
+  }
+  if (/\bgesprek/i.test(d) && !/khuh-SPREK/i.test(p)) {
+    fail(`Use khuh-SPREK for gesprek: "${e.dutch}" -> "${e.pron}"`);
+  }
+  if (/lijk/i.test(d) && /\blik-u/i.test(p) && !/likh/i.test(p)) {
+    fail(`Use -likh- for Dutch -lijk (not -lik-): "${e.dutch}" -> "${e.pron}"`);
+  }
+  if (/\bgoed/i.test(d) && !/khoo/i.test(p)) {
+    fail(`Use khoo- for Dutch goed/goede: "${e.dutch}" -> "${e.pron}"`);
+  }
+  if (/\bgr[a-z]/i.test(d) && /\bGRAH-/i.test(p) && !/KHRAH/i.test(p)) {
+    fail(`Use KHRAH-/KHRO- for Dutch gr- (guttural g, not English g): "${e.dutch}" -> "${e.pron}"`);
+  }
+});
+
+// 7. Informational only (not a failure): common grammar words that show up with more
 // than one spelling across different sentences. Alignment is a heuristic (whole-entry
 // token soup, not true word-for-word alignment) so treat this as a hint to eyeball,
 // not a verdict.

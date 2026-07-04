@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.12.3** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.13.0** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **160** |
 | **Chapters** | **6** |
 | **Unique words** | **194** |
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 12, patch: 3 };
+const VERSION = { major: 1, minor: 13, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -110,6 +110,21 @@ Same conventions as FastrackDutch:
 - Spell out Dutch numbers in phonetics (e.g. `FEER-en-FAYR-tikh` for *vierenveertig*) — no bare numerals in `pron`
 - **Dutch `v`** is softer than English `v`, often near **`f`** — use **`f`** in `pron` for Dutch *v* (*vader* → FAH-der, *voor* → foor, *Veel* → fayl). Word-final *v* devoices to **f** (*geef* → khayf). **Dutch `w`** is a soft blend — still written as **`v`** in the guide (*wil* → vil, *wij* → vay, *water* → VAH-ter); do not change those to `f`.
 
+**Dutch guttural g/ch — always use `kh`, never English hard `g` (`guh`, `GRAH`, `g` where Dutch has achter-R g):**
+
+| Dutch pattern | Write as | Examples |
+|---------------|----------|----------|
+| **ge-** prefix | **khuh-** | *gezin* → khuh-ZIN · *gesprek* → khuh-SPREK · *gereserveerd* → khuh-ray-zer-VAYRT |
+| **goed / goede** | **khoo-** | *goedemorgen* → khoo-duh-MOR-khen · *goede man* → KHOO-duh man |
+| **gr-** cluster | **KHRO-** / **KHRAH-** | *groen* → khroon · *grote* → KHROH-tuh · *grappige* → KHRAH-pi-khuh |
+| **-ig / -lijk** suffix | **-ikh-** / **-likh-** | *vrolijk* → FROH-likh · *vrolijke* → FROH-likh-uh · *grappige* → KHRAH-pi-khuh |
+| **graag** | **khraakh** | *Ik wil graag* → ik vil khraakh … |
+| **mag** (verb) | **makh** | *Mag ik* → makh ik … |
+
+**Not guttural:** *mooi* → **MOH-ee** (no g; long o + ee glide). *blij* / *blije* → **blay** / **BLAY-uh** (ij diphthong, not g).
+
+**Before marking any phrase-editing task complete**, re-read every changed `pron` against the table above, run `node course-phrases/check-pronunciation.js` (must exit 0), and scan the full chapter for the same Dutch word transcribed two different ways in sibling rows (e.g. all *gesprek* lines must use `khuh-SPREK`).
+
 ---
 
 ## UI Conventions
@@ -134,6 +149,7 @@ Same conventions as FastrackDutch:
 |---------|------------|--------|
 | 🔊 | `.spk-btn` | Dutch only |
 | ★ / ☆ | `.bm-btn` | Toggle bookmark (persisted in `localStorage['cp_bookmarks']` — array of phrase indices) |
+| ↓ Export / ↑ Import | `.bm-export` / `.bm-import` | Save/load bookmarks as JSON (`{ format, app, appVersion, exportedAt, phraseCount, bookmarks: [{ index, dutch }] }`). Import matches by `dutch` text if indices drift. Replaces current bookmarks. |
 | ▶ (last column) | `.pbtn` | Dutch → `GAP_MS` (700ms) → English |
 | ▶ Play Dutch | `.pc-btn[data-mode=dutch]` | Queue chapter, Dutch only |
 | ▶ Play Both | `.pc-btn[data-mode=both]` | Queue chapter, Dutch then English per row |
@@ -193,10 +209,12 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.12.1**: Stats line shows unique Dutch word count (tokenised from all `dutch` fields).
 - **v1.12.2**: Playing row highlighted + auto-scroll during queue and single-row playback.
 - **v1.12.3**: Softer row highlight (light blue wash, single left accent); no pulsing buttons during chapter playback.
+- **v1.12.4**: Pronunciation fixes — *gesprek* → khuh-SPREK, *grappige* → KHRAH-pi-khuh, *gereserveerd* → khuh-…; *-lijk* → *-likh-*; guttural-g rules + check-script guards in CLAUDE.md.
+- **v1.13.0**: Bookmark **↓ Export** / **↑ Import** — JSON file to/from local device; import resolves by Dutch phrase text if indices change.
 
 ---
 
-## Current Chapters (v1.12.3)
+## Current Chapters (v1.13.0)
 
 1. Introducing Yourself  
 2. Family  
