@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.13.0** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.13.1** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **160** |
 | **Chapters** | **6** |
-| **Unique words** | **194** |
+| **Unique words** | **193** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 13, patch: 0 };
+const VERSION = { major: 1, minor: 13, patch: 1 };
 ```
 
 | Bump | When | Examples |
@@ -211,10 +211,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.12.3**: Softer row highlight (light blue wash, single left accent); no pulsing buttons during chapter playback.
 - **v1.12.4**: Pronunciation fixes — *gesprek* → khuh-SPREK, *grappige* → KHRAH-pi-khuh, *gereserveerd* → khuh-…; *-lijk* → *-likh-*; guttural-g rules + check-script guards in CLAUDE.md.
 - **v1.13.0**: Bookmark **↓ Export** / **↑ Import** — JSON file to/from local device; import resolves by Dutch phrase text if indices change.
+- **v1.13.1**: Ch.6 heading row — *Bijvoeglijke naamwoorden* only (drop inline English).
 
 ---
 
-## Current Chapters (v1.13.0)
+## Current Chapters (v1.13.1)
 
 1. Introducing Yourself  
 2. Family  
