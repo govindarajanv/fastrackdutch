@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Dutch Daily Course Notes v1.11.0</title>
+<title>My Dutch Daily Course Notes v1.11.1</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -86,7 +86,7 @@ body.playback-active .wrap{padding-bottom:88px}
 <body>
 
 <header id="hdr">
-  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.11.0</span></h1>
+  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.11.1</span></h1>
   <a id="back-link" href="../index.html">← FastrackDutch</a>
 </header>
 
@@ -147,7 +147,7 @@ body.playback-active .wrap{padding-bottom:88px}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 11, patch: 0 };
+const VERSION = { major: 1, minor: 11, patch: 1 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -168,14 +168,14 @@ const CHAPTERS = [
       { dutch: 'Goedendag', pron: 'khoo-duh-DAKH', english: 'Good day' },
       { dutch: 'Goedemorgen', pron: 'khoo-duh-MOR-khen', english: 'Good morning' },
       { dutch: 'Goedemiddag', pron: 'khoo-duh-MI-dagh', english: 'Good afternoon' },
-      { dutch: 'Goedenavond', pron: 'khoo-duh-NAH-vont', english: 'Good evening' },
+      { dutch: 'Goedenavond', pron: 'khoo-duh-NAH-font', english: 'Good evening' },
       { dutch: 'Goedenacht', pron: 'khoo-duh-NAKHT', english: 'Good night' },
       { dutch: 'Tot ziens', pron: 'tot SEENS', english: 'Goodbye / See you' },
       { dutch: 'Doei', pron: 'Doo-ey', english: 'Bye' },
       { dutch: 'Fijne dag', pron: 'FAY-nuh dakh', english: 'Have a nice day' },
       { dutch: 'wonen', pron: 'VOH-nen', english: 'to live' },
       { dutch: 'werken', pron: 'VERK-en', english: 'to work' },
-      { dutch: 'Voornaam en achternaam', pron: 'VOR-naam en AKH-ter-naam', english: 'First name and last name' },
+      { dutch: 'Voornaam en achternaam', pron: 'FOR-naam en AKH-ter-naam', english: 'First name and last name' },
       { dutch: 'Leeftijd', pron: 'LAYF-tayt', english: 'Age' },
       { dutch: 'Nationaliteit', pron: 'nah-tsyo-nah-lee-TAYT', english: 'Nationality' },
       { dutch: 'Woonplaats', pron: 'VOHN-plaits', english: 'Place of residence' },
@@ -186,7 +186,7 @@ const CHAPTERS = [
   {
     title: 'Chapter 2: Family',
     phrases: [
-      { dutch: 'vader', pron: 'VAH-der', english: 'father' },
+      { dutch: 'vader', pron: 'FAH-der', english: 'father' },
       { dutch: 'moeder', pron: 'MOO-der', english: 'mother' },
       { dutch: 'zoon', pron: 'zohn', english: 'son' },
       { dutch: 'familie', pron: 'fah-MEE-lee', english: 'family' },
@@ -222,7 +222,7 @@ const CHAPTERS = [
       { dutch: 'De bril', pron: 'duh bril', english: 'The glasses' },
       { dutch: 'De baard', pron: 'duh bahrt', english: 'The beard' },
       { dutch: 'Het haar', pron: 'het haar', english: 'The hair' },
-      { dutch: 'Het voorhoofd', pron: 'het VOR-hohft', english: 'The forehead' },
+      { dutch: 'Het voorhoofd', pron: 'het FOR-hohft', english: 'The forehead' },
       { dutch: 'Het oog', pron: 'het ohkh', english: 'The eye' },
       { dutch: 'De wenkbrauw', pron: 'duh VENK-brow', english: 'The eyebrows' },
       { dutch: 'De wang', pron: 'duh vang', english: 'The cheek' },
@@ -230,7 +230,7 @@ const CHAPTERS = [
       { dutch: 'De mond', pron: 'duh mont', english: 'The mouth' },
       { dutch: 'Huidskleur', pron: 'HOWTS-kleur', english: 'Skin color' },
       { dutch: 'Heel lang', pron: 'hayl lang', english: 'Very tall' },
-      { dutch: 'Wat is jouw lievelingskleur?', pron: 'vaht is yow LEE-vuh-lings-kleur', english: 'What is your favorite color?' },
+      { dutch: 'Wat is jouw lievelingskleur?', pron: 'vaht is yow LEE-fuh-lings-kleur', english: 'What is your favorite color?' },
       { dutch: 'Ik heb een neus', pron: 'ik heb un noos', english: 'I have a nose' },
       { dutch: 'Jij hebt oren', pron: 'yay hept OH-ren', english: 'You have ears' },
       { dutch: 'Hij heeft ogen', pron: 'hay hayft OH-khen', english: 'He has eyes' },
@@ -307,8 +307,8 @@ const CHAPTERS = [
       { dutch: 'Hoi. Ik eet pasta en een appel als lunch', pron: 'Hoy. Ik ayt PAHS-tah en un AH-pel als lunch', english: 'Hi. I eat pasta and an apple for lunch' },
       { dutch: 'Ik drink water en koffie. Tot ziens', pron: 'ik drink VAH-ter en KOFF-ee. Tot SEENS', english: 'I drink water and coffee. Goodbye' },
       { dutch: 'Ik wil graag twee biertjes', pron: 'ik vil khraakh tvay BEER-tyuhs', english: 'I would like two beers' },
-      { dutch: 'Heeft u gereserveerd?', pron: 'hayft u guh-ray-zer-VAYRT', english: 'Have you made a reservation?' },
-      { dutch: 'Ik heb gereserveerd voor acht uur', pron: 'ik heb guh-ray-zer-VAYRT vor AHKHT oor', english: 'I have reserved for eight o\'clock' },
+      { dutch: 'Heeft u gereserveerd?', pron: 'hayft u guh-ray-zer-FAYRT', english: 'Have you made a reservation?' },
+      { dutch: 'Ik heb gereserveerd voor acht uur', pron: 'ik heb guh-ray-zer-FAYRT foor AHKHT oor', english: 'I have reserved for eight o\'clock' },
       { dutch: 'Wat wilt u bestellen?', pron: 'vaht vilt u buh-STEL-len', english: 'What would you like to order?' },
       { dutch: 'Ik wil graag koffie', pron: 'ik vil khraakh KOFF-ee', english: 'I would like coffee' },
       { dutch: 'Wat mag het zijn?', pron: 'vaht makh het zayn', english: 'What will it be? / What can I get you?' },
@@ -327,7 +327,7 @@ const CHAPTERS = [
       { dutch: 'Bijvoeglijke naamwoorden – adjectives', pron: 'bay-VOEG-lik-uh NOWM-voh-dren', english: 'Adjectives (bijvoeglijke naamwoorden)' },
       { dutch: 'Blij', pron: 'blay', english: 'Happy' },
       { dutch: 'Trots', pron: 'trots', english: 'Proud' },
-      { dutch: 'Vrolijk', pron: 'VROH-likh', english: 'Cheerful' },
+      { dutch: 'Vrolijk', pron: 'FROH-likh', english: 'Cheerful' },
       { dutch: 'Klein', pron: 'klayn', english: 'Small' },
       { dutch: 'Groen', pron: 'khroon', english: 'Green' },
       { dutch: 'De auto is mooi en blauw', pron: 'duh OW-toh is MOH-ee en blaw', english: 'The car is beautiful and blue' },
@@ -337,10 +337,10 @@ const CHAPTERS = [
       { dutch: 'Het lekkere eten', pron: 'het LEK-kuh-ruh AY-ten', english: 'The delicious food' },
       { dutch: 'Het goede gesprek', pron: 'het KHOO-duh guh-SPREK', english: 'The good conversation' },
       { dutch: 'De blije zoon', pron: 'duh BLAY-uh zohn', english: 'The happy son' },
-      { dutch: 'De trotse vrolijke moeder', pron: 'duh TROT-suh VROH-lik-uh MOO-der', english: 'The proud cheerful mother' },
+      { dutch: 'De trotse vrolijke moeder', pron: 'duh TROT-suh FROH-lik-uh MOO-der', english: 'The proud cheerful mother' },
       { dutch: 'Ik wil een blauwe auto', pron: 'ik vil un BLOW-uh OW-toh', english: 'I want a blue car' },
-      { dutch: 'Deze is perfect voor jou', pron: 'DAY-zuh is per-FEKT vor yow', english: 'This one is perfect for you' },
-      { dutch: 'Veel plezier', pron: 'vayl pleh-SEER', english: 'Have fun / Enjoy' },
+      { dutch: 'Deze is perfect voor jou', pron: 'DAY-zuh is per-FEKT foor yow', english: 'This one is perfect for you' },
+      { dutch: 'Veel plezier', pron: 'fayl pleh-SEER', english: 'Have fun / Enjoy' },
       { dutch: 'Het witte huis', pron: 'het VIT-uh hows', english: 'The white house' },
       { dutch: 'De goede man', pron: 'duh KHOO-duh man', english: 'The good man' },
       { dutch: 'Het mooie kasteel', pron: 'het MOH-ee kas-TAYL', english: 'The beautiful castle' },
@@ -528,9 +528,11 @@ function enRate() { return +(1.0 * ttsSpeed).toFixed(3); }
 function speakText(text, lang, onDone) {
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang;
-  u.rate = lang === 'nl-NL' ? nlRate() : enRate();
   if (lang === 'nl-NL' && dutchVoice) u.voice = dutchVoice;
   else if (lang === 'en-US' && englishVoice) u.voice = englishVoice;
+  // Rate must be set after voice — some browsers reset rate when voice is assigned
+  const rate = lang === 'nl-NL' ? nlRate() : enRate();
+  u.rate = Math.min(10, Math.max(0.1, rate));
   const done = () => { if (!isPaused) onDone(); };
   u.onend = done;
   u.onerror = done;
@@ -744,7 +746,7 @@ speedVal.textContent = `${ttsSpeed.toFixed(2)}×`;
 speedSlider.addEventListener('input', () => {
   ttsSpeed = parseFloat(speedSlider.value);
   speedVal.textContent = `${ttsSpeed.toFixed(2)}×`;
-  localStorage.setItem('cp_speed', ttsSpeed);
+  localStorage.setItem('cp_speed', String(ttsSpeed));
 });
 
 document.getElementById('voice-nl').addEventListener('change', e => {

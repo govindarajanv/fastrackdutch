@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.11.0** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.11.1** (independent semver — not tied to FastrackDutch) |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -33,7 +33,7 @@ Update `VERSION` at the top of the script block and follow semver below. `applyV
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 11, patch: 0 };
+const VERSION = { major: 1, minor: 11, patch: 1 };
 ```
 
 | Bump | When | Examples |
@@ -92,6 +92,7 @@ Same conventions as FastrackDutch:
 - `kh` = Dutch G/ch · `ay` = long A · `oo`/`oh` = Dutch oe/oo
 - `main` ≈ *mijn* · `un` ≈ *een* · `yay` ≈ *jij*
 - Spell out Dutch numbers in phonetics (e.g. `FEER-en-FAYR-tikh` for *vierenveertig*) — no bare numerals in `pron`
+- **Dutch `v`** is softer than English `v`, often near **`f`** — use **`f`** in `pron` for Dutch *v* (*vader* → FAH-der, *voor* → foor, *Veel* → fayl). Word-final *v* devoices to **f** (*geef* → khayf). **Dutch `w`** is a soft blend — still written as **`v`** in the guide (*wil* → vil, *wij* → vay, *water* → VAH-ter); do not change those to `f`.
 
 ---
 
@@ -107,7 +108,7 @@ Same conventions as FastrackDutch:
 
 ### Speed & voice settings
 
-- `ttsSpeed` (default `1`) multiplies both `nlRate()`/`enRate()` base rates (0.88 / 1.0); persisted in localStorage `cp_speed`. Changing the slider mid-playback only affects the next utterance (browsers can't change rate on an in-flight `SpeechSynthesisUtterance`).
+- `ttsSpeed` (default `1`) multiplies both `nlRate()`/`enRate()` base rates (0.88 / 1.0); persisted in localStorage `cp_speed`. Changing the slider mid-playback only affects the next utterance (browsers can't change rate on an in-flight `SpeechSynthesisUtterance`). **`speakText()` sets `u.rate` after `u.voice`** — assigning voice first resets rate on some browsers.
 - `dutchVoice` / `englishVoice` are resolved in `loadVoices()`: explicit user pick (localStorage `cp_voice_nl` / `cp_voice_en`, matched by `voice.name`) → else first `nl-NL`/`en-US` voice → else first voice in that language family. Dropdowns are rebuilt every time `loadVoices()` runs (safe — it re-applies the saved name each time) since Android populates the voice list progressively.
 
 ### Row controls
@@ -169,10 +170,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.10.5**: All chapters — vocabulary/words at top, phrases and sentences at bottom.
 - **v1.10.6**: Ch.5 — consistent `de`/`het` on meal and food vocab (*de lunch*, *het diner*, *de koffie*, *de melk*, *de thee*, *de pasta*, *de snack*, *het eten*); removed duplicate bare *brood*.
 - **v1.11.0**: Chapter 6 — Adjectives (base forms, inflected *de*/*het* phrases, stacked adjectives).
+- **v1.11.1**: Dutch *v* → *f* in pronunciation guide where appropriate; fix speed slider (set utterance rate after voice assignment).
 
 ---
 
-## Current Chapters (v1.11.0)
+## Current Chapters (v1.11.1)
 
 1. Introducing Yourself  
 2. Family  
