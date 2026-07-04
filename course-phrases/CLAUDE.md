@@ -6,7 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.11.1** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.12.1** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **160** |
+| **Chapters** | **6** |
+| **Unique words** | **194** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -26,6 +29,18 @@ Same wipeout risk as the main app. Edit directly in the conversation.
 
 Update `VERSION` at the top of the script block and follow semver below. `applyVersion()` sets the tab title and `#app-title` header.
 
+### Update phrase & unique-word counts on every commit
+
+The toolbar stats line in `index.html` is computed at runtime (`PHRASES.length`, `countUniqueDutchWords()`). The **metadata table above** (`**Phrases**`, `**Chapters**`, `**Unique words**`) is the documented snapshot — keep it in sync whenever you add, remove, or edit phrases.
+
+Before every commit that touches `CHAPTERS` data or this guide:
+
+1. Run `node course-phrases/check-pronunciation.js`
+2. If it reports a CLAUDE.md count mismatch, update the three **N** values in the metadata table to match the script output
+3. Commit only when the check passes (0 failures)
+
+Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`): lowercase each `dutch` field, split on whitespace/punctuation, ignore tokens of length 1.
+
 ---
 
 ## Versioning (semver)
@@ -33,7 +48,7 @@ Update `VERSION` at the top of the script block and follow semver below. `applyV
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 11, patch: 1 };
+const VERSION = { major: 1, minor: 12, patch: 1 };
 ```
 
 | Bump | When | Examples |
@@ -83,7 +98,8 @@ Runtime helpers (do not edit manually):
 2. Sort phrases in pedagogical order (not necessarily A–Z): **vocabulary / single words first**, then **sentences and dialogue** at the bottom of each chapter.
 3. Use correct Dutch spelling in `dutch`; keep numerals as words when teaching numbers (e.g. *vierenveertig*, not `44`).
 4. Bump **MINOR** for a new chapter; **PATCH** for phrases added to an existing chapter.
-5. **Run `node course-phrases/check-pronunciation.js` after adding/editing phrases**, before committing. It catches bare numerals, multi-syllable words with no CAPS stress marker, and the same phrase transcribed two different ways — all mechanical, zero-dependency checks (see the file header for what it does and doesn't catch). It does **not** verify phonetic accuracy or catch structural inconsistencies across parallel constructions (e.g. sibling greetings that should share a stress pattern) — that still needs an actual read-through by whoever/whatever is making the change.
+5. **Run `node course-phrases/check-pronunciation.js` after adding/editing phrases**, before committing. It catches bare numerals, multi-syllable words with no CAPS stress marker, the same phrase transcribed two different ways, and **CLAUDE.md phrase/chapter/unique-word count drift** — all mechanical, zero-dependency checks (see the file header for what it does and doesn't catch). It does **not** verify phonetic accuracy or catch structural inconsistencies across parallel constructions (e.g. sibling greetings that should share a stress pattern) — that still needs an actual read-through by whoever/whatever is making the change.
+6. **Update the metadata table** (`**Phrases**`, `**Chapters**`, `**Unique words**`) when counts change — the check script fails if these don't match `index.html`.
 
 ### Pronunciation guide (`pron`)
 
@@ -104,6 +120,7 @@ Same conventions as FastrackDutch:
 - Settings bar (`.settings-bar`, above the toolbar): **Speed** slider (0.5×–1.5×) and **Dutch voice** / **English voice** dropdowns
 - One table inside `.card`; chapter section headers are `.ch-hdr` rows
 - Toolbar: phrase/chapter count, **Pause**, **Play All**
+- **Bookmarks** section (always first, before Chapter 1): starred phrases for quick practice; **Play Dutch** / **Play Both** when non-empty
 - Floating bar (`#float-ctrl`): **Pause/Resume** + **Stop** — visible during active or paused playback
 
 ### Speed & voice settings
@@ -116,6 +133,7 @@ Same conventions as FastrackDutch:
 | Control | Class / ID | Action |
 |---------|------------|--------|
 | 🔊 | `.spk-btn` | Dutch only |
+| ★ / ☆ | `.bm-btn` | Toggle bookmark (persisted in `localStorage['cp_bookmarks']` — array of phrase indices) |
 | ▶ (last column) | `.pbtn` | Dutch → `GAP_MS` (700ms) → English |
 | ▶ Play Dutch | `.pc-btn[data-mode=dutch]` | Queue chapter, Dutch only |
 | ▶ Play Both | `.pc-btn[data-mode=both]` | Queue chapter, Dutch then English per row |
@@ -171,10 +189,12 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.10.6**: Ch.5 — consistent `de`/`het` on meal and food vocab (*de lunch*, *het diner*, *de koffie*, *de melk*, *de thee*, *de pasta*, *de snack*, *het eten*); removed duplicate bare *brood*.
 - **v1.11.0**: Chapter 6 — Adjectives (base forms, inflected *de*/*het* phrases, stacked adjectives).
 - **v1.11.1**: Dutch *v* → *f* in pronunciation guide where appropriate; fix speed slider (set utterance rate after voice assignment).
+- **v1.12.0**: Bookmarks — ☆/★ per row, **Bookmarks** practice section at top (before Chapter 1), Play Dutch/Both for bookmark list; persisted in `localStorage['cp_bookmarks']`.
+- **v1.12.1**: Stats line shows unique Dutch word count (tokenised from all `dutch` fields).
 
 ---
 
-## Current Chapters (v1.11.1)
+## Current Chapters (v1.12.1)
 
 1. Introducing Yourself  
 2. Family  

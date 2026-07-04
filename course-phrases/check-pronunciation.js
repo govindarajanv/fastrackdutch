@@ -2,12 +2,11 @@
 // Deterministic consistency checks for course-phrases/index.html's CHAPTERS data.
 // Run after adding/editing phrases: node course-phrases/check-pronunciation.js
 //
-// This only catches MECHANICAL issues: bare numerals, multi-syllable words
-// with no stress marker at all, and the same phrase transcribed two
-// different ways. It does NOT verify phonetic accuracy, and it does NOT
-// catch structural inconsistencies across parallel constructions (e.g. "these
-// 5 greetings should share one stress pattern") — that needs an actual
-// review pass by a human or an LLM. See course-phrases/CLAUDE.md.
+// This catches MECHANICAL issues: bare numerals, multi-syllable words with no
+// stress marker, the same phrase transcribed two different ways, and CLAUDE.md
+// phrase/chapter/unique-word count drift vs index.html. It does NOT verify
+// phonetic accuracy, and it does NOT catch structural inconsistencies across
+// parallel constructions — that needs an actual review pass. See CLAUDE.md.
 
 const fs = require('fs');
 const path = require('path');
@@ -69,9 +68,40 @@ byPhrase.forEach((variants, key) => {
   }
 });
 
-console.log(`\nChecked ${entries.length} phrases. ${errors} mechanical issue(s) found.`);
+const chapterCount = (html.match(/title:\s*'Chapter \d+:/g) || []).length;
+const uniqueWords = (() => {
+  const tokens = new Set();
+  entries.forEach(e => {
+    e.dutch.toLowerCase().split(/[\s.,!?;:()\[\]"'\/\-–—]+/).forEach(t => {
+      if (t.length > 1) tokens.add(t);
+    });
+  });
+  return tokens.size;
+})();
 
-// 5. Informational only (not a failure): common grammar words that show up with more
+console.log(`\nChecked ${entries.length} phrases. ${errors} mechanical issue(s) found.`);
+console.log(`Stats: ${entries.length} phrases · ${chapterCount} chapters · ${uniqueWords} unique words`);
+
+// 5. CLAUDE.md metadata must match live counts (see course-phrases/CLAUDE.md)
+const CLAUDE = path.join(__dirname, 'CLAUDE.md');
+const claudeMd = fs.readFileSync(CLAUDE, 'utf8');
+const expect = (label, actual) => {
+  const re = new RegExp(`\\*\\*${label}\\*\\* \\| \\*\\*(\\d+)\\*\\*`);
+  const m = claudeMd.match(re);
+  if (!m) {
+    fail(`CLAUDE.md missing **${label}** | **N** row in metadata table — add it and set to ${actual}`);
+    return;
+  }
+  const documented = Number(m[1]);
+  if (documented !== actual) {
+    fail(`CLAUDE.md **${label}** is ${documented} but index.html has ${actual} — update the metadata table before committing`);
+  }
+};
+expect('Phrases', entries.length);
+expect('Chapters', chapterCount);
+expect('Unique words', uniqueWords);
+
+// 6. Informational only (not a failure): common grammar words that show up with more
 // than one spelling across different sentences. Alignment is a heuristic (whole-entry
 // token soup, not true word-for-word alignment) so treat this as a hint to eyeball,
 // not a verdict.

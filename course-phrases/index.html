@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Dutch Daily Course Notes v1.11.1</title>
+<title>My Dutch Daily Course Notes v1.12.1</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -63,7 +63,14 @@ body.playback-active .wrap{padding-bottom:88px}
 .pc-btn:hover{background:var(--orange);color:#fff}
 .pc-btn.active{background:var(--orange);color:#fff}
 .pc-btn.active:hover{background:#c96200}
-.card .ch-hdr:first-child td{border-top:none}
+.tbl th.bm-col,.tbl td.bm-col{width:36px;text-align:center;padding:6px 4px}
+.bm-btn{background:transparent;border:none;cursor:pointer;font-size:1.05rem;line-height:1;padding:2px;color:#cbd5e1;transition:color .15s,transform .15s}
+.bm-btn:hover{color:var(--orange);transform:scale(1.12)}
+.bm-btn.on{color:var(--orange)}
+.ch-hdr.bookmarks td{background:#fff7ed!important;color:#9a3412;border-top:none}
+.ch-hdr.bookmarks .pc-btn{border-color:#c2410c;color:#c2410c}
+.ch-hdr.bookmarks .pc-btn:hover,.ch-hdr.bookmarks .pc-btn.active{background:#c2410c;border-color:#c2410c;color:#fff}
+.bm-empty td{background:#fafafa!important;color:var(--muted);font-size:.84rem;font-style:italic}
 .float-ctrl{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:300;display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--white);border:1px solid var(--border);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.18);transition:opacity .2s,transform .2s}
 .float-ctrl.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(12px)}
 .float-ctrl button{border-radius:20px;padding:8px 16px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
@@ -86,7 +93,7 @@ body.playback-active .wrap{padding-bottom:88px}
 <body>
 
 <header id="hdr">
-  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.11.1</span></h1>
+  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.12.1</span></h1>
   <a id="back-link" href="../index.html">← FastrackDutch</a>
 </header>
 
@@ -95,7 +102,7 @@ body.playback-active .wrap{padding-bottom:88px}
 
   <div class="intro">
     Each row shows the <strong>Dutch phrase</strong>, an <strong>English pronunciation guide</strong> (CAPS = stressed syllable), and the <strong>English meaning</strong>.
-    Tap 🔊 for Dutch only, ▶ for Dutch then English, or use <strong>Play Dutch</strong> / <strong>Play Both</strong> per chapter. A floating bar appears during playback for quick <strong>Pause</strong> / <strong>Stop</strong>.
+    Tap 🔊 for Dutch only, ▶ for Dutch then English, or use <strong>Play Dutch</strong> / <strong>Play Both</strong> per chapter. Tap <strong>☆</strong> to bookmark phrases — they appear at the top for quick practice. A floating bar appears during playback for quick <strong>Pause</strong> / <strong>Stop</strong>.
   </div>
 
   <div class="settings-bar">
@@ -129,6 +136,7 @@ body.playback-active .wrap{padding-bottom:88px}
           <th>Dutch</th>
           <th>English Pronunciation</th>
           <th>English Meaning</th>
+          <th class="bm-col" title="Bookmark">★</th>
           <th>▶</th>
         </tr>
       </thead>
@@ -147,7 +155,7 @@ body.playback-active .wrap{padding-bottom:88px}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 11, patch: 1 };
+const VERSION = { major: 1, minor: 12, patch: 1 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -362,6 +370,17 @@ const CHAPTER_RANGES = [];
   });
 })();
 
+function countUniqueDutchWords() {
+  const tokens = new Set();
+  PHRASES.forEach(p => {
+    p.dutch.toLowerCase().split(/[\s.,!?;:()\[\]"'\/\-–—]+/).forEach(t => {
+      if (t.length > 1) tokens.add(t);
+    });
+  });
+  return tokens.size;
+}
+const UNIQUE_WORD_COUNT = countUniqueDutchWords();
+
 // ── TTS ──────────────────────────────────────────────────────────────
 const GAP_MS = 700; // pause between Dutch and English within a phrase
 let dutchVoice = null;
@@ -436,7 +455,7 @@ function pausePlayback() {
     } else if (queueState) {
       pauseSnapshot = {
         kind: 'queue',
-        idx: queueState.idx,
+        idx: queueState.indices ? queueState.indices[queueState.pos] : queueState.idx,
         phase: queueState.phase || 'dutch',
         mode: queueState.mode,
       };
@@ -618,12 +637,37 @@ function speakDutchEnglish(dutch, english, btn) {
   });
 }
 
+function advanceQueueFrom(idx) {
+  if (!queueState) return;
+  delay(600, () => {
+    if (!queueState) return;
+    if (queueState.indices) {
+      const nextPos = queueState.pos + 1;
+      if (nextPos >= queueState.indices.length) {
+        stopPlayback();
+        return;
+      }
+      queueState.pos = nextPos;
+      playQueuePhrase(queueState.indices[nextPos], 'dutch');
+    } else {
+      queueState.idx = idx + 1;
+      playNextInQueue();
+    }
+  });
+}
+
 function playQueuePhrase(idx, phase) {
-  if (!queueState || idx >= queueState.end) {
+  if (!queueState || idx >= PHRASES.length) {
     stopPlayback();
     return;
   }
-  queueState.idx = idx;
+  if (!queueState.indices) {
+    if (idx >= queueState.end) {
+      stopPlayback();
+      return;
+    }
+    queueState.idx = idx;
+  }
   queueState.phase = phase;
   highlightRow(idx);
   const p = PHRASES[idx];
@@ -632,11 +676,7 @@ function playQueuePhrase(idx, phase) {
     speakText(p.dutch, 'nl-NL', () => {
       if (!queueState) return;
       if (queueState.mode === 'dutch') {
-        delay(600, () => {
-          if (!queueState) return;
-          queueState.idx = idx + 1;
-          playNextInQueue();
-        });
+        advanceQueueFrom(idx);
       } else {
         queueState.phase = 'english';
         delay(GAP_MS, () => {
@@ -650,11 +690,7 @@ function playQueuePhrase(idx, phase) {
 
   speakText(p.english, 'en-US', () => {
     if (!queueState) return;
-    delay(600, () => {
-      if (!queueState) return;
-      queueState.idx = idx + 1;
-      playNextInQueue();
-    });
+    advanceQueueFrom(idx);
   });
 }
 
@@ -680,6 +716,21 @@ function startQueue(start, end, btn, label, mode) {
   playNextInQueue();
 }
 
+function startQueueIndices(indices, btn, label, mode) {
+  if (queueState && queueState.btn === btn) {
+    stopPlayback();
+    return;
+  }
+  if (!indices.length) return;
+  stopPlayback();
+  queueState = { indices: indices.slice(), pos: 0, btn, label, mode: mode || 'both', phase: 'dutch' };
+  btn.textContent = '■ Stop';
+  btn.classList.add('active');
+  startTTSResume();
+  updatePauseBtn();
+  playQueuePhrase(indices[0], 'dutch');
+}
+
 function togglePlayAll() {
   const btn = document.getElementById('play-all');
   startQueue(0, PHRASES.length, btn, '▶ Play All', 'both');
@@ -691,37 +742,102 @@ function togglePlayChapter(chIdx, btn, mode) {
   startQueue(range.start, range.end, btn, label, mode);
 }
 
+function togglePlayBookmarks(btn, mode) {
+  const label = mode === 'dutch' ? '▶ Play Dutch' : '▶ Play Both';
+  startQueueIndices(bookmarks, btn, label, mode);
+}
+
+// ── Bookmarks ────────────────────────────────────────────────────────
+const BM_KEY = 'cp_bookmarks';
+
+function loadBookmarks() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(BM_KEY) || '[]');
+    if (!Array.isArray(raw)) return [];
+    return raw.filter(i => Number.isInteger(i) && i >= 0 && i < PHRASES.length);
+  } catch {
+    return [];
+  }
+}
+
+let bookmarks = loadBookmarks();
+
+function saveBookmarks() {
+  localStorage.setItem(BM_KEY, JSON.stringify(bookmarks));
+}
+
+function toggleBookmark(idx) {
+  const pos = bookmarks.indexOf(idx);
+  if (pos >= 0) bookmarks.splice(pos, 1);
+  else bookmarks.push(idx);
+  saveBookmarks();
+  if (isPlaybackActive()) stopPlayback();
+  renderTable();
+}
+
 // ── Render ───────────────────────────────────────────────────────────
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-const tbody = document.getElementById('phrase-body');
-let rowIdx = 0;
-tbody.innerHTML = CHAPTERS.map((ch, chIdx) => {
-  const hdr = `<tr class="ch-hdr"><td colspan="4"><div class="ch-hdr-inner"><span>${esc(ch.title)}</span><div class="ch-btns"><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="dutch" title="Play Dutch only for this chapter">▶ Play Dutch</button><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="both" title="Play Dutch then English for this chapter">▶ Play Both</button></div></div></td></tr>`;
-  const rows = ch.phrases.map(p => {
-    const i = rowIdx++;
-    return `<tr>
+function renderPhraseRow(idx) {
+  const p = PHRASES[idx];
+  const on = bookmarks.includes(idx);
+  return `<tr>
     <td class="dc" data-label="Dutch">
       <div class="dc-wrap">
-        <button type="button" class="spk-btn" data-idx="${i}" data-dutch="${esc(p.dutch)}" title="Play Dutch only">🔊</button>
+        <button type="button" class="spk-btn" data-idx="${idx}" data-dutch="${esc(p.dutch)}" title="Play Dutch only">🔊</button>
         <span class="dc-text">${esc(p.dutch)}</span>
       </div>
     </td>
     <td class="pc" data-label="Pronunciation">${esc(p.pron)}</td>
     <td data-label="Meaning">${esc(p.english)}</td>
+    <td class="bm-col" data-label="Bookmark">
+      <button type="button" class="bm-btn${on ? ' on' : ''}" data-idx="${idx}" title="${on ? 'Remove bookmark' : 'Bookmark for quick practice'}">${on ? '★' : '☆'}</button>
+    </td>
     <td data-label="Play">
-      <button type="button" class="pbtn" data-idx="${i}" data-dutch="${esc(p.dutch)}" data-english="${esc(p.english)}" title="Play Dutch then English">▶</button>
+      <button type="button" class="pbtn" data-idx="${idx}" data-dutch="${esc(p.dutch)}" data-english="${esc(p.english)}" title="Play Dutch then English">▶</button>
     </td>
   </tr>`;
+}
+
+function renderBookmarksSection() {
+  const n = bookmarks.length;
+  const hdr = `<tr class="ch-hdr bookmarks"><td colspan="5"><div class="ch-hdr-inner"><span>★ Bookmarks${n ? ` (${n})` : ''}</span><div class="ch-btns">${n ? '<button type="button" class="pc-btn bm-play" data-mode="dutch" title="Play bookmarked phrases, Dutch only">▶ Play Dutch</button><button type="button" class="pc-btn bm-play" data-mode="both" title="Play bookmarked phrases, Dutch then English">▶ Play Both</button>' : ''}</div></div></td></tr>`;
+  if (!n) {
+    return hdr + '<tr class="bm-empty"><td colspan="5">Tap ☆ on any phrase below to bookmark it for quick practice here.</td></tr>';
+  }
+  return hdr + bookmarks.map(i => renderPhraseRow(i)).join('');
+}
+
+function renderTable() {
+  const tbody = document.getElementById('phrase-body');
+  const chapters = CHAPTERS.map((ch, chIdx) => {
+    let idx = 0;
+    for (let c = 0; c < chIdx; c++) idx += CHAPTERS[c].phrases.length;
+    const hdr = `<tr class="ch-hdr"><td colspan="5"><div class="ch-hdr-inner"><span>${esc(ch.title)}</span><div class="ch-btns"><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="dutch" title="Play Dutch only for this chapter">▶ Play Dutch</button><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="both" title="Play Dutch then English for this chapter">▶ Play Both</button></div></div></td></tr>`;
+    const rows = ch.phrases.map((p, j) => renderPhraseRow(idx + j)).join('');
+    return hdr + rows;
   }).join('');
-  return hdr + rows;
-}).join('');
+  tbody.innerHTML = renderBookmarksSection() + chapters;
+  const bmLabel = bookmarks.length ? ` · ${bookmarks.length} bookmark${bookmarks.length === 1 ? '' : 's'}` : '';
+  document.getElementById('phrase-count').textContent = `${PHRASES.length} phrase${PHRASES.length === 1 ? '' : 's'} · ${CHAPTERS.length} chapter${CHAPTERS.length === 1 ? '' : 's'} · ${UNIQUE_WORD_COUNT} unique words${bmLabel}`;
+}
 
-document.getElementById('phrase-count').textContent = `${PHRASES.length} phrase${PHRASES.length === 1 ? '' : 's'} · ${CHAPTERS.length} chapter${CHAPTERS.length === 1 ? '' : 's'}`;
+renderTable();
 
+const tbody = document.getElementById('phrase-body');
 tbody.addEventListener('click', e => {
+  const bmBtn = e.target.closest('.bm-btn');
+  if (bmBtn) {
+    toggleBookmark(Number(bmBtn.dataset.idx));
+    return;
+  }
+  const bmPlay = e.target.closest('.bm-play');
+  if (bmPlay) {
+    togglePlayBookmarks(bmPlay, bmPlay.dataset.mode);
+    return;
+  }
   const pcBtn = e.target.closest('.pc-btn');
   if (pcBtn) {
     togglePlayChapter(Number(pcBtn.dataset.ch), pcBtn, pcBtn.dataset.mode);
