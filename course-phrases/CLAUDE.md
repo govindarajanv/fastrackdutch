@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.12.1** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.12.3** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **160** |
 | **Chapters** | **6** |
 | **Unique words** | **194** |
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 12, patch: 1 };
+const VERSION = { major: 1, minor: 12, patch: 3 };
 ```
 
 | Bump | When | Examples |
@@ -165,7 +165,7 @@ Active queue button shows **■ Stop** (`.pc-btn.active`).
 ## Known Issues / Technical Debt
 
 - **`.play-cell` CSS class is dead code.** Added in v1.8.3 for a play-cell wrapper that was never applied to any element in the render template. Safe to delete, or finish wiring it up — not done as of v1.9.1.
-- **Queue playback highlights the wrong button.** During Play Chapter / Play Dutch / Play All, `highlightRow()` only adds `.playing` to `.spk-btn` (the small 🔊 icon). `.pbtn.playing` (the bigger ▶ button, with its pulse animation) is now only reachable via a single-row ▶ click — before the v1.8.3 refactor, queue playback highlighted `.pbtn` instead. Cosmetic, not fixed as of v1.9.1.
+- **Queue playback highlights the wrong button.** During Play Chapter / Play Dutch / Play All, `highlightRow()` only adds `.playing` to `.spk-btn` (the small 🔊 icon). `.pbtn.playing` (the bigger ▶ button, with its pulse animation) is now only reachable via a single-row ▶ click — before the v1.8.3 refactor, queue playback highlighted `.pbtn` instead. **Fixed in v1.12.2** — full row highlight + auto-scroll during queue playback.
 - **Version numbering starts at v1.8.3, not v1.0.0.** The very first commit to add semver (v1.8.3) was retroactive — no real v1.0–v1.7 ever existed. Don't read early version numbers as evidence of prior releases.
 
 ## Verifying changes
@@ -191,10 +191,12 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.11.1**: Dutch *v* → *f* in pronunciation guide where appropriate; fix speed slider (set utterance rate after voice assignment).
 - **v1.12.0**: Bookmarks — ☆/★ per row, **Bookmarks** practice section at top (before Chapter 1), Play Dutch/Both for bookmark list; persisted in `localStorage['cp_bookmarks']`.
 - **v1.12.1**: Stats line shows unique Dutch word count (tokenised from all `dutch` fields).
+- **v1.12.2**: Playing row highlighted + auto-scroll during queue and single-row playback.
+- **v1.12.3**: Softer row highlight (light blue wash, single left accent); no pulsing buttons during chapter playback.
 
 ---
 
-## Current Chapters (v1.12.1)
+## Current Chapters (v1.12.3)
 
 1. Introducing Yourself  
 2. Family  

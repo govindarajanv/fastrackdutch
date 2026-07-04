@@ -43,19 +43,24 @@ body.playback-active .wrap{padding-bottom:88px}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tr:nth-child(even) td{background:#fafafa}
 .tbl tr:hover td{background:#fff8f0}
+tr.phrase-row{scroll-margin-top:72px;scroll-margin-bottom:100px}
+tr.phrase-row td{transition:background .22s ease,box-shadow .22s ease}
+tr.phrase-row.playing-row td{background:#f0f5fc!important}
+tr.phrase-row.playing-row td:first-child{box-shadow:inset 3px 0 0 var(--blue)}
+tr.phrase-row.playing-row:hover td{background:#f0f5fc!important}
 .dc{font-weight:600;color:var(--blue)}
 .dc-wrap{display:flex;align-items:flex-start;gap:8px}
 .dc-text{flex:1;min-width:0}
 .spk-btn{background:var(--blue);color:#fff;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:.72rem;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;margin-top:1px}
 .spk-btn:hover{background:#0048b8;transform:scale(1.08)}
-.spk-btn.playing{background:#0048b8;animation:pulse .7s infinite}
+.spk-btn.playing{background:#0048b8;box-shadow:0 0 0 2px rgba(255,255,255,.85),0 0 0 4px rgba(0,48,130,.22)}
 .pc{font-style:italic;color:#555;font-family:Consolas,monospace;font-size:.82rem}
 .tbl td:last-child{text-align:center;padding:6px}
 .play-cell{display:flex;align-items:center;justify-content:center;gap:6px}
 .pbtn{background:var(--orange);color:#fff;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.75rem;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
 .pbtn:hover{background:#c96200;transform:scale(1.1)}
 .pbtn:active{transform:scale(.95)}
-.pbtn.playing{background:#c96200;animation:pulse .7s infinite}
+.pbtn.playing{background:#c96200;box-shadow:0 0 0 2px rgba(255,255,255,.85),0 0 0 4px rgba(231,117,0,.28)}
 .ch-hdr td{background:var(--bg)!important;font-weight:700;font-size:.8rem;color:var(--blue);padding:12px 14px;border-top:2px solid var(--border);letter-spacing:.3px}
 .ch-hdr-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .ch-btns{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
@@ -80,10 +85,11 @@ body.playback-active .wrap{padding-bottom:88px}
 #float-pause.paused:hover{background:#1e7a3c}
 #float-stop{background:transparent;border:1.5px solid var(--orange);color:var(--orange)}
 #float-stop:hover{background:var(--orange);color:#fff}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
 @media(max-width:640px){
   .tbl thead{display:none}
   .tbl tr{display:block;border-bottom:1px solid var(--border);padding:10px 14px}
+  tr.phrase-row.playing-row{background:#f0f5fc;border-left:3px solid var(--blue);border-radius:0 6px 6px 0}
+  tr.phrase-row.playing-row td:first-child{box-shadow:none}
   .tbl td{display:block;border:none;padding:3px 0;background:transparent !important;text-align:left}
   .tbl td:last-child{padding-top:8px;text-align:left}
   .tbl td::before{content:attr(data-label);font-size:.68rem;text-transform:uppercase;color:var(--muted);letter-spacing:.4px;display:block;margin-bottom:2px}
@@ -155,7 +161,7 @@ body.playback-active .wrap{padding-bottom:88px}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 12, patch: 1 };
+const VERSION = { major: 1, minor: 12, patch: 3 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -533,12 +539,37 @@ function stopTTSResume() {
 
 function clearPlaying() {
   document.querySelectorAll('.pbtn.playing, .spk-btn.playing').forEach(b => b.classList.remove('playing'));
+  document.querySelectorAll('tr.phrase-row.playing-row').forEach(r => r.classList.remove('playing-row'));
 }
 
-function highlightRow(idx) {
+function phraseRowSource() {
+  if (queueState?.indices) return 'bookmark';
+  return 'chapter';
+}
+
+function scrollToPhraseRow(row) {
+  if (!row) return;
+  row.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+}
+
+function highlightRow(idx, source) {
   clearPlaying();
-  const rowBtn = document.querySelector(`.spk-btn[data-idx="${idx}"]`);
-  if (rowBtn) rowBtn.classList.add('playing');
+  const src = source || phraseRowSource();
+  const row = document.querySelector(`tr.phrase-row[data-idx="${idx}"][data-source="${src}"]`)
+    || document.querySelector(`tr.phrase-row[data-idx="${idx}"]`);
+  if (!row) return;
+  row.classList.add('playing-row');
+  scrollToPhraseRow(row);
+}
+
+function highlightFromBtn(btn) {
+  if (!btn) return;
+  const row = btn.closest('tr.phrase-row');
+  if (!row) return;
+  clearPlaying();
+  row.classList.add('playing-row');
+  btn.classList.add('playing');
+  scrollToPhraseRow(row);
 }
 
 function nlRate() { return +(0.88 * ttsSpeed).toFixed(3); }
@@ -563,18 +594,18 @@ function speakDutchOnly(dutch, btn) {
   stopPlayback();
   window.speechSynthesis.resume();
   singleState = { btn, dutch, english: null, phase: 'dutch' };
-  if (btn) btn.classList.add('playing');
+  highlightFromBtn(btn);
   updatePauseBtn();
   speakText(dutch, 'nl-NL', () => {
     singleState = null;
-    if (btn) btn.classList.remove('playing');
+    clearPlaying();
     updatePauseBtn();
   });
 }
 
 function resumeSingle(snap) {
   singleState = { btn: snap.btn, dutch: snap.dutch, english: snap.english, phase: snap.phase };
-  if (snap.btn) snap.btn.classList.add('playing');
+  highlightFromBtn(snap.btn);
   updatePauseBtn();
   if (snap.phase === 'english' && snap.english) {
     speakText(snap.english, 'en-US', finishSingle);
@@ -593,9 +624,8 @@ function resumeSingle(snap) {
 }
 
 function finishSingle() {
-  const btn = singleState?.btn;
   singleState = null;
-  if (btn) btn.classList.remove('playing');
+  clearPlaying();
   updatePauseBtn();
 }
 
@@ -625,7 +655,7 @@ function speakDutchEnglish(dutch, english, btn) {
   stopPlayback();
   window.speechSynthesis.resume();
   singleState = { btn, dutch, english, phase: 'dutch' };
-  if (btn) btn.classList.add('playing');
+  highlightFromBtn(btn);
   updatePauseBtn();
   speakText(dutch, 'nl-NL', () => {
     if (!singleState) return;
@@ -780,10 +810,10 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function renderPhraseRow(idx) {
+function renderPhraseRow(idx, source = 'chapter') {
   const p = PHRASES[idx];
   const on = bookmarks.includes(idx);
-  return `<tr>
+  return `<tr class="phrase-row" data-idx="${idx}" data-source="${source}">
     <td class="dc" data-label="Dutch">
       <div class="dc-wrap">
         <button type="button" class="spk-btn" data-idx="${idx}" data-dutch="${esc(p.dutch)}" title="Play Dutch only">🔊</button>
@@ -807,7 +837,7 @@ function renderBookmarksSection() {
   if (!n) {
     return hdr + '<tr class="bm-empty"><td colspan="5">Tap ☆ on any phrase below to bookmark it for quick practice here.</td></tr>';
   }
-  return hdr + bookmarks.map(i => renderPhraseRow(i)).join('');
+  return hdr + bookmarks.map(i => renderPhraseRow(i, 'bookmark')).join('');
 }
 
 function renderTable() {
