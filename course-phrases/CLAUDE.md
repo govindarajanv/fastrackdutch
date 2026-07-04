@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.10.6** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.11.0** (independent semver — not tied to FastrackDutch) |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -33,7 +33,7 @@ Update `VERSION` at the top of the script block and follow semver below. `applyV
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 10, patch: 6 };
+const VERSION = { major: 1, minor: 11, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -168,13 +168,15 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.10.4**: Reorder Ch.5 restaurant dialogue; add *Ja, mag ik een koffie?* after *Weet u het al?*
 - **v1.10.5**: All chapters — vocabulary/words at top, phrases and sentences at bottom.
 - **v1.10.6**: Ch.5 — consistent `de`/`het` on meal and food vocab (*de lunch*, *het diner*, *de koffie*, *de melk*, *de thee*, *de pasta*, *de snack*, *het eten*); removed duplicate bare *brood*.
+- **v1.11.0**: Chapter 6 — Adjectives (base forms, inflected *de*/*het* phrases, stacked adjectives).
 
 ---
 
-## Current Chapters (v1.10.6)
+## Current Chapters (v1.11.0)
 
 1. Introducing Yourself  
 2. Family  
 3. Describing People  
 4. To Be & To Have  
 5. Food, Meals & Ordering  
+6. Adjectives  

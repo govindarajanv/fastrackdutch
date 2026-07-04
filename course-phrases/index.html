@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Dutch Daily Course Notes v1.10.6</title>
+<title>My Dutch Daily Course Notes v1.11.0</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -86,7 +86,7 @@ body.playback-active .wrap{padding-bottom:88px}
 <body>
 
 <header id="hdr">
-  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.10.6</span></h1>
+  <h1 id="app-title">My Dutch Daily Course Notes<span class="ver">v1.11.0</span></h1>
   <a id="back-link" href="../index.html">← FastrackDutch</a>
 </header>
 
@@ -147,7 +147,7 @@ body.playback-active .wrap{padding-bottom:88px}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 10, patch: 6 };
+const VERSION = { major: 1, minor: 11, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -319,6 +319,35 @@ const CHAPTERS = [
       { dutch: 'Mag ik de rekening, alstublieft?', pron: 'makh ik duh REK-uh-ning, ALS-tuu-bleeft?', english: 'May I have the bill, please?' },
       { dutch: 'Pin of contant?', pron: 'pin of kon-TANT', english: 'Card or cash?' },
       { dutch: 'Ik wil graag contant betalen.', pron: 'ik vil khraakh kon-TANT buh-TAH-len', english: 'I would like to pay in cash.' },
+    ],
+  },
+  {
+    title: 'Chapter 6: Adjectives',
+    phrases: [
+      { dutch: 'Bijvoeglijke naamwoorden – adjectives', pron: 'bay-VOEG-lik-uh NOWM-voh-dren', english: 'Adjectives (bijvoeglijke naamwoorden)' },
+      { dutch: 'Blij', pron: 'blay', english: 'Happy' },
+      { dutch: 'Trots', pron: 'trots', english: 'Proud' },
+      { dutch: 'Vrolijk', pron: 'VROH-likh', english: 'Cheerful' },
+      { dutch: 'Klein', pron: 'klayn', english: 'Small' },
+      { dutch: 'Groen', pron: 'khroon', english: 'Green' },
+      { dutch: 'De auto is mooi en blauw', pron: 'duh OW-toh is MOH-ee en blaw', english: 'The car is beautiful and blue' },
+      { dutch: 'De auto is klein', pron: 'duh OW-toh is klayn', english: 'The car is small' },
+      { dutch: 'De mooie blauwe auto', pron: 'duh MOH-ee BLOW-uh OW-toh', english: 'The beautiful blue car' },
+      { dutch: 'Het grappige boek', pron: 'het GRAH-pik-uh book', english: 'The funny book' },
+      { dutch: 'Het lekkere eten', pron: 'het LEK-kuh-ruh AY-ten', english: 'The delicious food' },
+      { dutch: 'Het goede gesprek', pron: 'het KHOO-duh guh-SPREK', english: 'The good conversation' },
+      { dutch: 'De blije zoon', pron: 'duh BLAY-uh zohn', english: 'The happy son' },
+      { dutch: 'De trotse vrolijke moeder', pron: 'duh TROT-suh VROH-lik-uh MOO-der', english: 'The proud cheerful mother' },
+      { dutch: 'Ik wil een blauwe auto', pron: 'ik vil un BLOW-uh OW-toh', english: 'I want a blue car' },
+      { dutch: 'Deze is perfect voor jou', pron: 'DAY-zuh is per-FEKT vor yow', english: 'This one is perfect for you' },
+      { dutch: 'Veel plezier', pron: 'vayl pleh-SEER', english: 'Have fun / Enjoy' },
+      { dutch: 'Het witte huis', pron: 'het VIT-uh hows', english: 'The white house' },
+      { dutch: 'De goede man', pron: 'duh KHOO-duh man', english: 'The good man' },
+      { dutch: 'Het mooie kasteel', pron: 'het MOH-ee kas-TAYL', english: 'The beautiful castle' },
+      { dutch: 'De grote beer', pron: 'duh KHROH-tuh bayr', english: 'The big bear' },
+      { dutch: 'De kleine auto', pron: 'duh KLAY-nuh OW-toh', english: 'The small car' },
+      { dutch: 'De groene auto', pron: 'duh KHROH-nuh OW-toh', english: 'The green car' },
+      { dutch: 'De kleine groene auto', pron: 'duh KLAY-nuh KHROH-nuh OW-toh', english: 'The small green car' },
     ],
   },
 ];
