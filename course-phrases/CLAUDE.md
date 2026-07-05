@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.14.2** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **215** |
+| **Version** | **v1.14.3** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **217** |
 | **Chapters** | **7** |
-| **Unique words** | **244** |
+| **Unique words** | **245** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 14, patch: 2 };
+const VERSION = { major: 1, minor: 14, patch: 3 };
 ```
 
 | Bump | When | Examples |
@@ -215,10 +215,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.14.0**: Chapter 7 — Getting Groceries (supermarket departments, weighing, checkout dialogue, wegen/kosten/pinnen).
 - **v1.14.1**: Ch.7 — complete *wegen*/*betalen* conjugation rows with *het vlees*, *de boodschappen*, *de kassa*.
 - **v1.14.2**: Ch.7 — add *de afdeling* vocabulary row.
+- **v1.14.3**: Ch.7 — add *betalen* and *kopen* vocabulary rows.
 
 ---
 
-## Current Chapters (v1.14.2)
+## Current Chapters (v1.14.3)
 
 1. Introducing Yourself  
 2. Family  
