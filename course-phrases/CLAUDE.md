@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.13.1** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **160** |
-| **Chapters** | **6** |
-| **Unique words** | **193** |
+| **Version** | **v1.14.2** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **215** |
+| **Chapters** | **7** |
+| **Unique words** | **244** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 13, patch: 1 };
+const VERSION = { major: 1, minor: 14, patch: 2 };
 ```
 
 | Bump | When | Examples |
@@ -212,10 +212,13 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.12.4**: Pronunciation fixes — *gesprek* → khuh-SPREK, *grappige* → KHRAH-pi-khuh, *gereserveerd* → khuh-…; *-lijk* → *-likh-*; guttural-g rules + check-script guards in CLAUDE.md.
 - **v1.13.0**: Bookmark **↓ Export** / **↑ Import** — JSON file to/from local device; import resolves by Dutch phrase text if indices change.
 - **v1.13.1**: Ch.6 heading row — *Bijvoeglijke naamwoorden* only (drop inline English).
+- **v1.14.0**: Chapter 7 — Getting Groceries (supermarket departments, weighing, checkout dialogue, wegen/kosten/pinnen).
+- **v1.14.1**: Ch.7 — complete *wegen*/*betalen* conjugation rows with *het vlees*, *de boodschappen*, *de kassa*.
+- **v1.14.2**: Ch.7 — add *de afdeling* vocabulary row.
 
 ---
 
-## Current Chapters (v1.13.1)
+## Current Chapters (v1.14.2)
 
 1. Introducing Yourself  
 2. Family  
@@ -223,3 +226,4 @@ There is no dev server for this static file, and no project run-skill or `chromi
 4. To Be & To Have  
 5. Food, Meals & Ordering  
 6. Adjectives  
+7. Getting Groceries  
