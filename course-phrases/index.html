@@ -78,6 +78,15 @@ tr.phrase-row.playing-row:hover td{background:#f0f5fc!important}
 .ch-hdr.bookmarks .pc-btn{border-color:#c2410c;color:#c2410c}
 .ch-hdr.bookmarks .pc-btn:hover,.ch-hdr.bookmarks .pc-btn.active{background:#c2410c;border-color:#c2410c;color:#fff}
 .bm-empty td{background:#fafafa!important;color:var(--muted);font-size:.84rem;font-style:italic}
+.exercises-hdr td{background:#e0e7ff!important;color:#1e3a8a;border-top:2px solid var(--border)}
+.exercise-row td{background:#fff!important;padding:12px 14px;border-bottom:1px solid #f0f0f0}
+.exercise-row:last-child td{border-bottom:none}
+.exercise-num{display:inline-flex;align-items:center;justify-content:center;background:var(--blue);color:#fff;border-radius:50%;width:22px;height:22px;font-size:.75rem;font-weight:700;margin-right:8px;flex-shrink:0}
+.exercise-task{color:var(--text);font-size:.9rem;line-height:1.5;display:flex;align-items:flex-start;gap:2px}
+.exercise-answer{margin-top:8px;padding:8px 12px;background:#f0f5fc;border-radius:6px;border-left:3px solid var(--blue)}
+.exercise-answer summary{cursor:pointer;font-size:.82rem;color:var(--blue);font-weight:600;list-style:none}
+.exercise-answer summary::-webkit-details-marker{display:none}
+.exercise-answer p{margin:0;font-size:.9rem;color:#003082;font-weight:600}
 .float-ctrl{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:300;display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--white);border:1px solid var(--border);border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.18);transition:opacity .2s,transform .2s}
 .float-ctrl.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(12px)}
 .float-ctrl button{border-radius:20px;padding:8px 16px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
@@ -166,7 +175,7 @@ tr.phrase-row.playing-row:hover td{background:#f0f5fc!important}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 15, patch: 1 };
+const VERSION = { major: 1, minor: 16, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -452,26 +461,39 @@ const CHAPTERS = [
       { dutch: 'Mexicaans restaurant', pron: 'mek-see-KAHNS res-tow-RAHN', english: 'Mexican restaurant' },
       { dutch: 'bestellen', pron: 'buh-STEL-len', english: 'To order' },
       { dutch: 'reserveren', pron: 'ray-zer-VAIR-en', english: 'To reserve' },
+      { dutch: 'Tafel reserveren', pron: 'TAH-fel ray-zer-VAIR-en', english: 'To reserve a table' },
       { dutch: 'Totaal', pron: 'toh-TAHL', english: 'Total' },
+      { dutch: 'Heeft u een tafel gereserveerd?', pron: 'hayft u un TAH-fel khuh-ray-zer-VAYRT?', english: 'Have you reserved a table?' },
+      { dutch: 'Nee. Heeft u een tafel voor drie?', pron: 'nay. hayft u un TAH-fel voor dree?', english: 'No. Do you have a table for three?' },
       { dutch: 'Het bord en bestek komt eraan', pron: 'het bort en bus-TEK komt AIR-ahn', english: 'The plate and cutlery are coming' },
+      { dutch: 'Wat wilt u bestellen?', pron: 'vaht vilt u buh-STEL-len', english: 'What would you like to order?' },
+      { dutch: 'Ik wil graag een koffie', pron: 'ik vil khraakh un KOFF-ee', english: 'I would like a coffee' },
+      { dutch: 'Ik heb patat als voorgerecht', pron: 'ik heb pah-TAHT als FOR-khuh-rekht', english: 'I have fries as a starter' },
+      { dutch: 'Ik wil graag de taco\'s als voorgerecht', pron: 'ik vil khraakh duh TAH-kohs als FOR-khuh-rekht', english: 'I would like the tacos as a starter' },
+      { dutch: 'Ik wil graag pizza als hoofdgerecht', pron: 'ik vil khraakh PEE-tsah als HOHFT-khuh-rekht', english: 'I would like pizza as a main course' },
+      { dutch: 'Ik wil graag een ijsje als dessert', pron: 'ik vil khraakh un AYS-yuh als day-SAYRT', english: 'I would like an ice cream as dessert' },
+      { dutch: 'En frisdrank als dranken, alstublieft', pron: 'en FRIS-drank als DRAHN-ken, ALS-tuu-bleft', english: 'And soft drinks as beverages, please' },
       { dutch: 'Was alles naar wens?', pron: 'vah AHL-les nahr vens?', english: 'Was everything to your liking?' },
       { dutch: 'Ja, mag ik de rekening, alstublieft?', pron: 'Yah, makh ik duh REK-uh-ning, ALS-tuu-bleeft?', english: 'Yes, may I have the bill, please?' },
       { dutch: 'Dat wordt dan vijfenzestig euro', pron: 'dat vort dan fayf-en-ZES-tikh OO-roh', english: 'That will be sixty-five euros then' },
       { dutch: 'Pinnen of contant?', pron: 'PIN-nen of kon-TANT?', english: 'Card or cash?' },
       { dutch: 'Pinnen, alstublieft', pron: 'PIN-nen, ALS-tuu-bleft', english: 'Card, please' },
       { dutch: 'Dank u wel. Tot ziens', pron: 'dank u vel. tot SEENS', english: 'Thank you. Goodbye' },
-      { dutch: 'Tafel reserveren', pron: 'TAH-fel ray-zer-VAIR-en', english: 'To reserve a table' },
-      { dutch: 'Ik heb patat als voorgerecht', pron: 'ik heb pah-TAHT als FOR-khuh-rekht', english: 'I have fries as a starter' },
-      { dutch: 'Heeft u een tafel gereserveerd?', pron: 'hayft u un TAH-fel khuh-ray-zer-VAYRT?', english: 'Have you reserved a table?' },
-      { dutch: 'Nee. Heeft u een tafel voor drie?', pron: 'nay. hayft u un TAH-fel voor dree?', english: 'No. Do you have a table for three?' },
-      { dutch: 'Wat wilt u bestellen?', pron: 'vaht vilt u buh-STEL-len', english: 'What would you like to order?' },
-      { dutch: 'Ik wil graag een koffie', pron: 'ik vil khraakh un KOFF-ee', english: 'I would like a coffee' },
-      { dutch: 'Ik wil graag de taco\'s als voorgerecht', pron: 'ik vil khraakh duh TAH-kohs als FOR-khuh-rekht', english: 'I would like the tacos as a starter' },
-      { dutch: 'Ik wil graag pizza als hoofdgerecht', pron: 'ik vil khraakh PEE-tsah als HOHFT-khuh-rekht', english: 'I would like pizza as a main course' },
-      { dutch: 'Ik wil graag een ijsje als dessert', pron: 'ik vil khraakh un AYS-yuh als day-SAYRT', english: 'I would like an ice cream as dessert' },
-      { dutch: 'En frisdrank als dranken, alstublieft', pron: 'en FRIS-drank als DRAHN-ken, ALS-tuu-bleft', english: 'And soft drinks as beverages, please' },
     ],
   },
+];
+
+const EXERCISES = [
+  { task: 'Translate to Dutch: "Hello, my name is Govind. I am Indian."', answer: 'Hallo, mijn naam is Govind. Ik ben Indiaas.' },
+  { task: 'Translate to Dutch: "This is my daughter. She is my sister."', answer: 'Dit is mijn dochter. Zij is mijn zus.' },
+  { task: 'Translate to Dutch: "I have short, dark hair and brown eyes."', answer: 'Ik heb kort, donker haar en bruine ogen.' },
+  { task: 'Conjugate "to be" for "we" in Dutch: "We are Dutch."', answer: 'Wij zijn Nederlanders.' },
+  { task: 'Translate to Dutch: "I would like two beers. May I have the bill, please?"', answer: 'Ik wil graag twee biertjes. Mag ik de rekening, alstublieft?' },
+  { task: 'Translate to Dutch: "The beautiful blue car. The funny book."', answer: 'De mooie blauwe auto. Het grappige boek.' },
+  { task: 'Translate to Dutch: "I buy bread at the bakery. The apples are in the fruit section."', answer: 'Ik koop brood op de bakkerij. De appels liggen op de fruitafdeling.' },
+  { task: 'Translate to Dutch: "Have you reserved a table? I would like pizza as a main course."', answer: 'Heeft u een tafel gereserveerd? Ik wil graag pizza als hoofdgerecht.' },
+  { task: 'Form a Dutch sentence using these words: "Ik heb" + "een boek"', answer: 'Ik heb een boek.' },
+  { task: 'Form a Dutch sentence using these words: "Wij" + "betalen" + "de boodschappen"', answer: 'Wij betalen de boodschappen.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);
@@ -1034,6 +1056,17 @@ function renderBookmarksSection() {
   return hdr + bookmarks.map(i => renderPhraseRow(i, 'bookmark')).join('');
 }
 
+function renderExercisesSection() {
+  const hdr = '<tr class="ch-hdr exercises-hdr"><td colspan="5"><div class="ch-hdr-inner"><span>Exercises</span></div></td></tr>';
+  const rows = EXERCISES.map((ex, i) => `<tr class="exercise-row">
+    <td colspan="5">
+      <div class="exercise-task"><span class="exercise-num">${i + 1}</span>${esc(ex.task)}</div>
+      <details class="exercise-answer"><summary>Show answer</summary><p>${esc(ex.answer)}</p></details>
+    </td>
+  </tr>`).join('');
+  return hdr + rows;
+}
+
 function renderTable() {
   const tbody = document.getElementById('phrase-body');
   const chapters = CHAPTERS.map((ch, chIdx) => {
@@ -1043,7 +1076,8 @@ function renderTable() {
     const rows = ch.phrases.map((p, j) => renderPhraseRow(idx + j)).join('');
     return hdr + rows;
   }).join('');
-  tbody.innerHTML = renderBookmarksSection() + chapters;
+  const exercises = EXERCISES.length ? renderExercisesSection() : '';
+  tbody.innerHTML = renderBookmarksSection() + chapters + exercises;
   const bmLabel = bookmarks.length ? ` · ${bookmarks.length} bookmark${bookmarks.length === 1 ? '' : 's'}` : '';
   document.getElementById('phrase-count').textContent = `${PHRASES.length} phrase${PHRASES.length === 1 ? '' : 's'} · ${CHAPTERS.length} chapter${CHAPTERS.length === 1 ? '' : 's'} · ${UNIQUE_WORD_COUNT} unique words${bmLabel}`;
 }
