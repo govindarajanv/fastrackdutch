@@ -181,7 +181,7 @@ tr.phrase-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 16, patch: 1 };
+const VERSION = { major: 1, minor: 16, patch: 2 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -490,16 +490,16 @@ const CHAPTERS = [
 ];
 
 const EXERCISES = [
-  { task: 'Translate to Dutch: "Hello, my name is Govind. I am Indian."', answer: 'Hallo, mijn naam is Govind. Ik ben Indiaas.' },
-  { task: 'Translate to Dutch: "This is my daughter. She is my sister."', answer: 'Dit is mijn dochter. Zij is mijn zus.' },
-  { task: 'Translate to Dutch: "I have short, dark hair and brown eyes."', answer: 'Ik heb kort, donker haar en bruine ogen.' },
-  { task: 'Conjugate "to be" for "we" in Dutch: "We are Dutch."', answer: 'Wij zijn Nederlanders.' },
-  { task: 'Translate to Dutch: "I would like two beers. May I have the bill, please?"', answer: 'Ik wil graag twee biertjes. Mag ik de rekening, alstublieft?' },
-  { task: 'Translate to Dutch: "The beautiful blue car. The funny book."', answer: 'De mooie blauwe auto. Het grappige boek.' },
-  { task: 'Translate to Dutch: "I buy bread at the bakery. The apples are in the fruit section."', answer: 'Ik koop brood op de bakkerij. De appels liggen op de fruitafdeling.' },
-  { task: 'Translate to Dutch: "Have you reserved a table? I would like pizza as a main course."', answer: 'Heeft u een tafel gereserveerd? Ik wil graag pizza als hoofdgerecht.' },
-  { task: 'Form a Dutch sentence using these words: "Ik heb" + "een boek"', answer: 'Ik heb een boek.' },
-  { task: 'Form a Dutch sentence using these words: "Wij" + "betalen" + "de boodschappen"', answer: 'Wij betalen de boodschappen.' },
+  { task: 'Translate to Dutch: "Hi. I am Govind. I live in Utrecht."', answer: 'Hoi. Ik ben Govind. Ik woon in Utrecht.' },
+  { task: 'Translate to Dutch: "Our grandfather is called Arthur."', answer: 'Onze opa heet Arthur.' },
+  { task: 'Translate to Dutch: "Do you have a beard? Yes, I have brown eyes."', answer: 'Heb je een baard? Ja, ik heb bruine ogen.' },
+  { task: 'Translate to Dutch: "Are you a person? Yes, I have books."', answer: 'Ben jij een persoon? Ja, ik heb boeken.' },
+  { task: 'Translate to Dutch: "She drinks coffee. He eats vegetables."', answer: 'Zij drinkt koffie. Hij eet groenten.' },
+  { task: 'Translate to Dutch: "The big bear is small. The green car is beautiful."', answer: 'De grote beer is klein. De groene auto is mooi.' },
+  { task: 'Translate to Dutch: "I buy cheese at the supermarket. The apples are in the fruit section."', answer: 'Ik koop kaas in de supermarkt. De appels liggen op de fruitafdeling.' },
+  { task: 'Translate to Dutch: "Do you have a table for two? I would like pizza."', answer: 'Heeft u een tafel voor twee? Ik wil graag pizza.' },
+  { task: 'Translate to Dutch: "My aunt is called Emma."', answer: 'Mijn tante heet Emma.' },
+  { task: 'Translate to Dutch: "How much does the cheese cost? It costs one euro."', answer: 'Hoeveel kost de kaas? Het kost een euro.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);
