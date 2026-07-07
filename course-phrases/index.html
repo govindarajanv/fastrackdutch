@@ -37,6 +37,8 @@ body.playback-active .wrap{padding-bottom:88px}
 #pause-btn.paused{background:var(--blue);color:#fff}
 #play-all{background:transparent;border:1.5px solid var(--orange);color:var(--orange);border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
 #play-all:hover,#play-all.active{background:var(--orange);color:#fff}
+#print-btn{background:transparent;border:1.5px solid var(--blue);color:var(--blue);border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
+#print-btn:hover{background:var(--blue);color:#fff}
 .card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .tbl{width:100%;border-collapse:collapse;font-size:.88rem}
 .tbl th{background:var(--blue);color:#fff;padding:9px 14px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
@@ -70,7 +72,7 @@ tr.phrase-row.playing-row:hover td{background:#f0f5fc!important}
 .collapse-btn{background:transparent;border:none;cursor:pointer;font-size:1.1rem;color:var(--blue);padding:0 4px;line-height:1;flex-shrink:0}
 .collapse-btn:hover{color:var(--orange)}
 .ch-hdr.collapsed .collapse-btn{font-weight:700}
-tr.phrase-row.hidden{display:none}
+tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 .ch-btns{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .pc-btn{background:transparent;border:1.5px solid var(--orange);color:var(--orange);border-radius:20px;padding:4px 11px;font-size:.73rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
 .pc-btn:hover{background:var(--orange);color:#fff}
@@ -111,6 +113,19 @@ tr.phrase-row.hidden{display:none}
   .tbl td:last-child{padding-top:8px;text-align:left}
   .tbl td::before{content:attr(data-label);font-size:.68rem;text-transform:uppercase;color:var(--muted);letter-spacing:.4px;display:block;margin-bottom:2px}
 }
+@media print{
+  header,.settings-bar,.toolbar,.float-ctrl,.spk-btn,.pbtn,.bm-btn,.pc-btn,.collapse-btn,.bm-export,.bm-import{display:none !important}
+  body{background:#fff;color:#000}
+  .wrap{max-width:100%;padding:10px 0}
+  .intro{display:none}
+  .card{box-shadow:none;border:1px solid #ccc}
+  .ch-hdr td{color:#000;background:#eee !important}
+  .ch-hdr.bookmarks td{background:#fff7ed !important}
+  .ch-hdr.exercises-hdr td{background:#e0e7ff !important}
+  .tbl td{padding:4px 6px;font-size:10pt}
+  .tbl th{background:#003082 !important;color:#fff}
+  .exercise-answer{background:#f0f5fc !important}
+}
 </style>
 </head>
 <body>
@@ -149,6 +164,7 @@ tr.phrase-row.hidden{display:none}
     <div class="toolbar-actions">
       <button type="button" id="pause-btn" disabled title="Pause or resume playback">⏸ Pause</button>
       <button type="button" id="play-all">▶ Play All</button>
+      <button type="button" id="print-btn" title="Open print dialog to save as PDF">🖨 Print / PDF</button>
     </div>
     <span id="bm-status" aria-live="polite"></span>
   </div>
@@ -181,7 +197,7 @@ tr.phrase-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 16, patch: 4 };
+const VERSION = { major: 1, minor: 16, patch: 5 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -500,7 +516,7 @@ const EXERCISES = [
   { task: 'Chapter 4 — Translate to Dutch: "This is Emma. She has books."', answer: 'Dit is Emma. Zij heeft boeken.' },
   { task: 'Chapter 5 — Translate to Dutch: "She drinks coffee. He eats vegetables."', answer: 'Zij drinkt koffie. Hij eet groenten.' },
   { task: 'Chapter 5 — Translate to Dutch: "She drinks tea. He eats a banana."', answer: 'Zij drinkt thee. Hij eet een banaan.' },
-  { task: 'Chapter 6 — Translate to Dutch: "The big bear is small. The green car is beautiful."', answer: 'De grote beer is klein. De groene auto is mooi.' },
+      { task: 'Chapter 6 — Translate to Dutch: "The big bear is proud. The green car is beautiful."', answer: 'De grote beer is trots. De groene auto is mooi.' },
   { task: 'Chapter 6 — Translate to Dutch: "The white house is small."', answer: 'Het witte huis is klein.' },
   { task: 'Chapter 7 — Translate to Dutch: "I buy cheese at the supermarket. The apples are in the fruit section."', answer: 'Ik koop kaas in de supermarkt. De appels liggen op de fruitafdeling.' },
   { task: 'Chapter 7 — Translate to Dutch: "How much does the cheese cost? It costs one euro."', answer: 'Hoeveel kost de kaas? Het kost een euro.' },
@@ -1153,6 +1169,7 @@ tbody.addEventListener('click', e => {
 });
 
 document.getElementById('play-all').addEventListener('click', togglePlayAll);
+document.getElementById('print-btn').addEventListener('click', () => window.print());
 
 const speedSlider = document.getElementById('speed-slider');
 const speedVal = document.getElementById('speed-val');
