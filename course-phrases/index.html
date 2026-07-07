@@ -181,7 +181,7 @@ tr.phrase-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 16, patch: 2 };
+const VERSION = { major: 1, minor: 16, patch: 3 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -490,16 +490,22 @@ const CHAPTERS = [
 ];
 
 const EXERCISES = [
-  { task: 'Translate to Dutch: "Hi. I am Govind. I live in Utrecht."', answer: 'Hoi. Ik ben Govind. Ik woon in Utrecht.' },
-  { task: 'Translate to Dutch: "Our grandfather is called Arthur."', answer: 'Onze opa heet Arthur.' },
-  { task: 'Translate to Dutch: "Do you have a beard? Yes, I have brown eyes."', answer: 'Heb je een baard? Ja, ik heb bruine ogen.' },
-  { task: 'Translate to Dutch: "Are you a person? Yes, I have books."', answer: 'Ben jij een persoon? Ja, ik heb boeken.' },
-  { task: 'Translate to Dutch: "She drinks coffee. He eats vegetables."', answer: 'Zij drinkt koffie. Hij eet groenten.' },
-  { task: 'Translate to Dutch: "The big bear is small. The green car is beautiful."', answer: 'De grote beer is klein. De groene auto is mooi.' },
-  { task: 'Translate to Dutch: "I buy cheese at the supermarket. The apples are in the fruit section."', answer: 'Ik koop kaas in de supermarkt. De appels liggen op de fruitafdeling.' },
-  { task: 'Translate to Dutch: "Do you have a table for two? I would like pizza."', answer: 'Heeft u een tafel voor twee? Ik wil graag pizza.' },
-  { task: 'Translate to Dutch: "My aunt is called Emma."', answer: 'Mijn tante heet Emma.' },
-  { task: 'Translate to Dutch: "How much does the cheese cost? It costs one euro."', answer: 'Hoeveel kost de kaas? Het kost een euro.' },
+  { task: 'Chapter 1 — Translate to Dutch: "Hi. I am Govind. I live in Utrecht."', answer: 'Hoi. Ik ben Govind. Ik woon in Utrecht.' },
+  { task: 'Chapter 1 — Translate to Dutch: "Good day. Nice to meet you."', answer: 'Goedendag. Aangenaam.' },
+  { task: 'Chapter 2 — Translate to Dutch: "Our grandfather is called Arthur."', answer: 'Onze opa heet Arthur.' },
+  { task: 'Chapter 2 — Translate to Dutch: "This is my cousin. She is a girl."', answer: 'Dit is mijn nicht. Zij is een meisje.' },
+  { task: 'Chapter 3 — Translate to Dutch: "Do you have a beard? Yes, I have brown eyes."', answer: 'Heb je een baard? Ja, ik heb bruine ogen.' },
+  { task: 'Chapter 3 — Translate to Dutch: "I have a nose and ears."', answer: 'Ik heb een neus en oren.' },
+  { task: 'Chapter 4 — Translate to Dutch: "Are you a person? Yes, I have books."', answer: 'Ben jij een persoon? Ja, ik heb boeken.' },
+  { task: 'Chapter 4 — Translate to Dutch: "This is Emma. She has books."', answer: 'Dit is Emma. Zij heeft boeken.' },
+  { task: 'Chapter 5 — Translate to Dutch: "She drinks coffee. He eats vegetables."', answer: 'Zij drinkt koffie. Hij eet groenten.' },
+  { task: 'Chapter 5 — Translate to Dutch: "She drinks tea. He eats a banana."', answer: 'Zij drinkt thee. Hij eet een banaan.' },
+  { task: 'Chapter 6 — Translate to Dutch: "The big bear is small. The green car is beautiful."', answer: 'De grote beer is klein. De groene auto is mooi.' },
+  { task: 'Chapter 6 — Translate to Dutch: "The white house is small."', answer: 'Het witte huis is klein.' },
+  { task: 'Chapter 7 — Translate to Dutch: "I buy cheese at the supermarket. The apples are in the fruit section."', answer: 'Ik koop kaas in de supermarkt. De appels liggen op de fruitafdeling.' },
+  { task: 'Chapter 7 — Translate to Dutch: "How much does the cheese cost? It costs one euro."', answer: 'Hoeveel kost de kaas? Het kost een euro.' },
+  { task: 'Chapter 8 — Translate to Dutch: "Do you have a table for two? I would like pizza."', answer: 'Heeft u een tafel voor twee? Ik wil graag pizza.' },
+  { task: 'Chapter 8 — Translate to Dutch: "I would like coffee and an ice cream as dessert."', answer: 'Ik wil graag koffie en een ijsje als dessert.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);

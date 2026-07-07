@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.16.2** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.16.3** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **253** |
 | **Chapters** | **8** |
 | **Unique words** | **280** |
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 16, patch: 2 };
+const VERSION = { major: 1, minor: 16, patch: 3 };
 ```
 
 | Bump | When | Examples |
@@ -221,10 +221,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.16.0**: Add a separate **Exercises** section at the bottom with 10 translation / sentence-formation tasks based on Chapters 1–8. Answers are hidden behind a "Show answer" expander; exercises are not counted as phrases or chapters.
 - **v1.16.1**: Add **expand/collapse** toggle buttons to each chapter header. All chapters start expanded by default; rows get `data-chapter` attributes and the `hidden` class when collapsed.
 - **v1.16.2**: Rewrite the 10 Exercises so answers are new combinations of chapter vocabulary and grammar, not direct copies of existing phrases.
+- **v1.16.3**: Expand Exercises to **16 tasks** (2 per chapter), each labeled with its chapter and using fresh vocabulary/grammar combinations.
 
 ---
 
-## Current Chapters (v1.16.2)
+## Current Chapters (v1.16.3)
 
 1. Introducing Yourself  
 2. Family  
