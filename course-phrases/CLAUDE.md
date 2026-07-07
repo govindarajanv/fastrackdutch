@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.14.3** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **217** |
-| **Chapters** | **7** |
-| **Unique words** | **245** |
+| **Version** | **v1.15.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **252** |
+| **Chapters** | **8** |
+| **Unique words** | **280** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 14, patch: 3 };
+const VERSION = { major: 1, minor: 15, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -216,10 +216,20 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.14.1**: Ch.7 — complete *wegen*/*betalen* conjugation rows with *het vlees*, *de boodschappen*, *de kassa*.
 - **v1.14.2**: Ch.7 — add *de afdeling* vocabulary row.
 - **v1.14.3**: Ch.7 — add *betalen* and *kopen* vocabulary rows.
+- **v1.15.0**: Chapter 8 — Restaurant (waiter, menu, table, ordering, courses, paying, restaurant types, reserving a table).
 
 ---
 
-## Current Chapters (v1.14.3)
+## Current Chapters (v1.15.0)
+
+1. Introducing Yourself  
+2. Family  
+3. Describing People  
+4. To Be & To Have  
+5. Food, Meals & Ordering  
+6. Adjectives  
+7. Getting Groceries  
+8. Restaurant  
 
 1. Introducing Yourself  
 2. Family  

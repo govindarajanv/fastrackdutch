@@ -166,7 +166,7 @@ tr.phrase-row.playing-row:hover td{background:#f0f5fc!important}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 14, patch: 3 };
+const VERSION = { major: 1, minor: 15, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -429,6 +429,46 @@ const CHAPTERS = [
       { dutch: 'Ik koop brood op de bakkerij', pron: 'ik khohp broht op duh BAH-kuh-ray', english: 'I buy bread at the bakery' },
       { dutch: 'Ik koop brood in de bakkerij', pron: 'ik khohp broht in duh BAH-kuh-ray', english: 'I buy bread in the bakery' },
       { dutch: 'De appels liggen op de fruitafdeling', pron: 'duh AH-pels LIK-khen op duh FROO-it-ahf-day-ling', english: 'The apples are in the fruit section' },
+    ],
+  },
+  {
+    title: 'Chapter 8: Restaurant',
+    phrases: [
+      { dutch: 'De ober', pron: 'duh OH-ber', english: 'The waiter' },
+      { dutch: 'Het menu', pron: 'het muh-NOO', english: 'The menu' },
+      { dutch: 'De tafel', pron: 'duh TAH-fel', english: 'The table' },
+      { dutch: 'Het restaurant', pron: 'het res-tow-RAHN', english: 'The restaurant' },
+      { dutch: 'Het bord', pron: 'het bort', english: 'The plate' },
+      { dutch: 'Het bestek', pron: 'het bus-TEK', english: 'The cutlery' },
+      { dutch: 'Het gerecht', pron: 'het khuh-REKHT', english: 'The dish' },
+      { dutch: 'De keuken', pron: 'duh KOO-ken', english: 'The kitchen' },
+      { dutch: 'De snackbar', pron: 'duh SNEK-bahr', english: 'The snackbar' },
+      { dutch: 'De voorgerechten', pron: 'duh FOR-khuh-rekh-ten', english: 'The starters' },
+      { dutch: 'De hoofdgerechten', pron: 'duh HOHFT-khuh-rekh-ten', english: 'The main courses' },
+      { dutch: 'De desserts', pron: 'duh day-SAYRTS', english: 'The desserts' },
+      { dutch: 'De dranken', pron: 'duh DRAHN-ken', english: 'The drinks' },
+      { dutch: 'Italiaans restaurant', pron: 'ee-TAH-lee-ahns res-tow-RAHN', english: 'Italian restaurant' },
+      { dutch: 'Aziatisch eten', pron: 'ah-zee-AH-tis AY-ten', english: 'Asian food' },
+      { dutch: 'Mexicaans restaurant', pron: 'mek-see-KAHNS res-tow-RAHN', english: 'Mexican restaurant' },
+      { dutch: 'bestellen', pron: 'buh-STEL-len', english: 'To order' },
+      { dutch: 'reserveren', pron: 'ray-zer-VAIR-en', english: 'To reserve' },
+      { dutch: 'Totaal', pron: 'toh-TAHL', english: 'Total' },
+      { dutch: 'Het bord en bestek komt eraan', pron: 'het bort en bus-TEK komt AIR-ahn', english: 'The plate and cutlery are coming' },
+      { dutch: 'Was alles naar wens?', pron: 'vah AHL-les nahr vens?', english: 'Was everything to your liking?' },
+      { dutch: 'Ja, mag ik de rekening, alstublieft?', pron: 'Yah, makh ik duh REK-uh-ning, ALS-tuu-bleeft?', english: 'Yes, may I have the bill, please?' },
+      { dutch: 'Dat wordt dan vijfenzestig euro. Pinnen of contant?', pron: 'dat vort dan fayf-en-ZES-tikh OO-roh. PIN-nen of kon-TANT?', english: 'That will be sixty-five euros then. Card or cash?' },
+      { dutch: 'Pinnen, alstublieft', pron: 'PIN-nen, ALS-tuu-bleft', english: 'Card, please' },
+      { dutch: 'Dank u wel. Tot ziens', pron: 'dank u vel. tot SEENS', english: 'Thank you. Goodbye' },
+      { dutch: 'Tafel reserveren', pron: 'TAH-fel ray-zer-VAIR-en', english: 'To reserve a table' },
+      { dutch: 'Ik heb patat als voorgerecht', pron: 'ik heb pah-TAHT als FOR-khuh-rekht', english: 'I have fries as a starter' },
+      { dutch: 'Heeft u een tafel gereserveerd?', pron: 'hayft u un TAH-fel khuh-ray-zer-VAYRT?', english: 'Have you reserved a table?' },
+      { dutch: 'Nee. Heeft u een tafel voor drie?', pron: 'nay. hayft u un TAH-fel voor dree?', english: 'No. Do you have a table for three?' },
+      { dutch: 'Wat wilt u bestellen?', pron: 'vaht vilt u buh-STEL-len', english: 'What would you like to order?' },
+      { dutch: 'Ik wil graag een koffie', pron: 'ik vil khraakh un KOFF-ee', english: 'I would like a coffee' },
+      { dutch: 'Ik wil graag de taco\'s als voorgerecht', pron: 'ik vil khraakh duh TAH-kohs als FOR-khuh-rekht', english: 'I would like the tacos as a starter' },
+      { dutch: 'Ik wil graag pizza als hoofdgerecht', pron: 'ik vil khraakh PEE-tsah als HOHFT-khuh-rekht', english: 'I would like pizza as a main course' },
+      { dutch: 'Ik wil graag een ijsje als dessert', pron: 'ik vil khraakh un AYS-yuh als day-SAYRT', english: 'I would like an ice cream as dessert' },
+      { dutch: 'En frisdrank als dranken, alstublieft', pron: 'en FRIS-drank als DRAHN-ken, ALS-tuu-bleft', english: 'And soft drinks as beverages, please' },
     ],
   },
 ];
