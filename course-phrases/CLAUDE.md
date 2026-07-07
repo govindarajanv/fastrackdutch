@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.16.0** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.16.1** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **253** |
 | **Chapters** | **8** |
 | **Unique words** | **280** |
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 16, patch: 0 };
+const VERSION = { major: 1, minor: 16, patch: 1 };
 ```
 
 | Bump | When | Examples |
@@ -219,10 +219,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.15.0**: Chapter 8 — Restaurant (waiter, menu, table, ordering, courses, paying, restaurant types, reserving a table).
 - **v1.15.1**: Ch.8 — split *Dat wordt dan vijfenzestig euro. Pinnen of contant?* into two separate rows.
 - **v1.16.0**: Add a separate **Exercises** section at the bottom with 10 translation / sentence-formation tasks based on Chapters 1–8. Answers are hidden behind a "Show answer" expander; exercises are not counted as phrases or chapters.
+- **v1.16.1**: Add **expand/collapse** toggle buttons to each chapter header. All chapters start expanded by default; rows get `data-chapter` attributes and the `hidden` class when collapsed.
 
 ---
 
-## Current Chapters (v1.16.0)
+## Current Chapters (v1.16.1)
 
 1. Introducing Yourself  
 2. Family  
