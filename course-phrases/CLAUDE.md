@@ -6,8 +6,8 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.15.0** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **252** |
+| **Version** | **v1.15.1** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **253** |
 | **Chapters** | **8** |
 | **Unique words** | **280** |
 | **Link from main app** | Header → `course-phrases/` |
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 15, patch: 0 };
+const VERSION = { major: 1, minor: 15, patch: 1 };
 ```
 
 | Bump | When | Examples |
@@ -217,10 +217,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.14.2**: Ch.7 — add *de afdeling* vocabulary row.
 - **v1.14.3**: Ch.7 — add *betalen* and *kopen* vocabulary rows.
 - **v1.15.0**: Chapter 8 — Restaurant (waiter, menu, table, ordering, courses, paying, restaurant types, reserving a table).
+- **v1.15.1**: Ch.8 — split *Dat wordt dan vijfenzestig euro. Pinnen of contant?* into two separate rows.
 
 ---
 
-## Current Chapters (v1.15.0)
+## Current Chapters (v1.15.1)
 
 1. Introducing Yourself  
 2. Family  
