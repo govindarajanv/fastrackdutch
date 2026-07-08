@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.16.6** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **253** |
-| **Chapters** | **8** |
-| **Unique words** | **280** |
+| **Version** | **v1.17.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **276** |
+| **Chapters** | **9** |
+| **Unique words** | **297** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 16, patch: 6 };
+const VERSION = { major: 1, minor: 17, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -225,10 +225,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.16.4**: Add expand/collapse to the **Exercises** section; fix pronunciations: *alsjeblieft* → `ALS-yuh-bleeft` and *Tot ziens* → `tot ZEENS`.
 - **v1.16.5**: Fix Exercises expand/collapse CSS bug; replace silly exercise *De grote beer is klein* with *De grote beer is trots*; add **Print / PDF** toolbar button that opens the browser print dialog with a print stylesheet.
 - **v1.16.6**: Replace *De grote beer is trots* exercise with *De kleine auto is groen. Het witte huis is mooi.* — a more sensible description.
+- **v1.17.0**: Chapter 9 — Questions (yes/no inversion, question words, WH-questions, statement→question pairs).
 
 ---
 
-## Current Chapters (v1.16.6)
+## Current Chapters (v1.17.0)
 
 1. Introducing Yourself  
 2. Family  
@@ -238,11 +239,4 @@ There is no dev server for this static file, and no project run-skill or `chromi
 6. Adjectives  
 7. Getting Groceries  
 8. Restaurant  
-
-1. Introducing Yourself  
-2. Family  
-3. Describing People  
-4. To Be & To Have  
-5. Food, Meals & Ordering  
-6. Adjectives  
-7. Getting Groceries  
+9. Questions  
