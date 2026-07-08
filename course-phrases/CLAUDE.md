@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.17.1** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.17.2** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **276** |
 | **Chapters** | **9** |
 | **Unique words** | **297** |
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 17, patch: 1 };
+const VERSION = { major: 1, minor: 17, patch: 2 };
 ```
 
 | Bump | When | Examples |
@@ -227,10 +227,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.16.6**: Replace *De grote beer is trots* exercise with *De kleine auto is groen. Het witte huis is mooi.* — a more sensible description.
 - **v1.17.0**: Chapter 9 — Questions (yes/no inversion, question words, WH-questions, statement→question pairs).
 - **v1.17.1**: Chapters start **collapsed** by default (+ to expand); auto-expand during chapter playback so highlight/scroll still work.
+- **v1.17.2**: Add **2 Exercises** for Chapter 9 (18 tasks total, 2 per chapter).
 
 ---
 
-## Current Chapters (v1.17.1)
+## Current Chapters (v1.17.2)
 
 1. Introducing Yourself  
 2. Family  
