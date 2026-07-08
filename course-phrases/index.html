@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 17, patch: 0 };
+const VERSION = { major: 1, minor: 17, patch: 1 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -733,6 +733,21 @@ function phraseRowSource() {
   return 'chapter';
 }
 
+function expandChapter(chIdx) {
+  const header = document.querySelector(`tr.ch-hdr[data-chapter="${chIdx}"]`);
+  if (!header || !header.classList.contains('collapsed')) return;
+  const btn = header.querySelector('.collapse-btn');
+  header.classList.remove('collapsed');
+  if (btn) {
+    btn.textContent = '−';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.setAttribute('aria-label', 'Collapse chapter');
+  }
+  document.querySelectorAll(`tr.phrase-row[data-chapter="${chIdx}"]`).forEach(row => {
+    row.classList.remove('hidden');
+  });
+}
+
 function scrollToPhraseRow(row) {
   if (!row) return;
   row.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
@@ -744,6 +759,7 @@ function highlightRow(idx, source) {
   const row = document.querySelector(`tr.phrase-row[data-idx="${idx}"][data-source="${src}"]`)
     || document.querySelector(`tr.phrase-row[data-idx="${idx}"]`);
   if (!row) return;
+  if (row.dataset.chapter !== undefined) expandChapter(Number(row.dataset.chapter));
   row.classList.add('playing-row');
   scrollToPhraseRow(row);
 }
@@ -1083,8 +1099,9 @@ function esc(s) {
 function renderPhraseRow(idx, source = 'chapter', chIdx = null) {
   const p = PHRASES[idx];
   const on = bookmarks.includes(idx);
+  const hiddenClass = chIdx !== null ? ' hidden' : '';
   const chapterAttr = chIdx !== null ? ` data-chapter="${chIdx}"` : '';
-  return `<tr class="phrase-row" data-idx="${idx}" data-source="${source}"${chapterAttr}>
+  return `<tr class="phrase-row${hiddenClass}" data-idx="${idx}" data-source="${source}"${chapterAttr}>
     <td class="dc" data-label="Dutch">
       <div class="dc-wrap">
         <button type="button" class="spk-btn" data-idx="${idx}" data-dutch="${esc(p.dutch)}" title="Play Dutch only">🔊</button>
@@ -1129,7 +1146,7 @@ function renderTable() {
   const chapters = CHAPTERS.map((ch, chIdx) => {
     let idx = 0;
     for (let c = 0; c < chIdx; c++) idx += CHAPTERS[c].phrases.length;
-    const hdr = `<tr class="ch-hdr" data-chapter="${chIdx}"><td colspan="5"><div class="ch-hdr-inner"><div class="ch-title-wrap"><button type="button" class="collapse-btn" data-ch="${chIdx}" aria-label="Collapse chapter" aria-expanded="true">−</button><span>${esc(ch.title)}</span></div><div class="ch-btns"><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="dutch" title="Play Dutch only for this chapter">▶ Play Dutch</button><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="both" title="Play Dutch then English for this chapter">▶ Play Both</button></div></div></td></tr>`;
+    const hdr = `<tr class="ch-hdr collapsed" data-chapter="${chIdx}"><td colspan="5"><div class="ch-hdr-inner"><div class="ch-title-wrap"><button type="button" class="collapse-btn" data-ch="${chIdx}" aria-label="Expand chapter" aria-expanded="false">+</button><span>${esc(ch.title)}</span></div><div class="ch-btns"><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="dutch" title="Play Dutch only for this chapter">▶ Play Dutch</button><button type="button" class="pc-btn" data-ch="${chIdx}" data-mode="both" title="Play Dutch then English for this chapter">▶ Play Both</button></div></div></td></tr>`;
     const rows = ch.phrases.map((p, j) => renderPhraseRow(idx + j, 'chapter', chIdx)).join('');
     return hdr + rows;
   }).join('');

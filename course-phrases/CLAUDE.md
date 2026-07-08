@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.17.0** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.17.1** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **276** |
 | **Chapters** | **9** |
 | **Unique words** | **297** |
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 17, patch: 0 };
+const VERSION = { major: 1, minor: 17, patch: 1 };
 ```
 
 | Bump | When | Examples |
@@ -219,17 +219,18 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.15.0**: Chapter 8 — Restaurant (waiter, menu, table, ordering, courses, paying, restaurant types, reserving a table).
 - **v1.15.1**: Ch.8 — split *Dat wordt dan vijfenzestig euro. Pinnen of contant?* into two separate rows.
 - **v1.16.0**: Add a separate **Exercises** section at the bottom with 10 translation / sentence-formation tasks based on Chapters 1–8. Answers are hidden behind a "Show answer" expander; exercises are not counted as phrases or chapters.
-- **v1.16.1**: Add **expand/collapse** toggle buttons to each chapter header. All chapters start expanded by default; rows get `data-chapter` attributes and the `hidden` class when collapsed.
+- **v1.16.1**: Add **expand/collapse** toggle buttons to each chapter header. Rows get `data-chapter` attributes and the `hidden` class when collapsed (chapters collapsed by default since v1.17.1).
 - **v1.16.2**: Rewrite the 10 Exercises so answers are new combinations of chapter vocabulary and grammar, not direct copies of existing phrases.
 - **v1.16.3**: Expand Exercises to **16 tasks** (2 per chapter), each labeled with its chapter and using fresh vocabulary/grammar combinations.
 - **v1.16.4**: Add expand/collapse to the **Exercises** section; fix pronunciations: *alsjeblieft* → `ALS-yuh-bleeft` and *Tot ziens* → `tot ZEENS`.
 - **v1.16.5**: Fix Exercises expand/collapse CSS bug; replace silly exercise *De grote beer is klein* with *De grote beer is trots*; add **Print / PDF** toolbar button that opens the browser print dialog with a print stylesheet.
 - **v1.16.6**: Replace *De grote beer is trots* exercise with *De kleine auto is groen. Het witte huis is mooi.* — a more sensible description.
 - **v1.17.0**: Chapter 9 — Questions (yes/no inversion, question words, WH-questions, statement→question pairs).
+- **v1.17.1**: Chapters start **collapsed** by default (+ to expand); auto-expand during chapter playback so highlight/scroll still work.
 
 ---
 
-## Current Chapters (v1.17.0)
+## Current Chapters (v1.17.1)
 
 1. Introducing Yourself  
 2. Family  
