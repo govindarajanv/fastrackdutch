@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 17, patch: 2 };
+const VERSION = { major: 1, minor: 17, patch: 3 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -1133,8 +1133,8 @@ function renderBookmarksSection() {
 }
 
 function renderExercisesSection() {
-  const hdr = '<tr class="ch-hdr exercises-hdr" data-exercises="1"><td colspan="5"><div class="ch-hdr-inner"><div class="ch-title-wrap"><button type="button" class="collapse-btn" data-exercises="1" aria-label="Collapse exercises" aria-expanded="true">−</button><span>Exercises</span></div></div></td></tr>';
-  const rows = EXERCISES.map((ex, i) => `<tr class="exercise-row" data-exercises="1">
+  const hdr = '<tr class="ch-hdr exercises-hdr collapsed" data-exercises="1"><td colspan="5"><div class="ch-hdr-inner"><div class="ch-title-wrap"><button type="button" class="collapse-btn" data-exercises="1" aria-label="Expand exercises" aria-expanded="false">+</button><span>Exercises</span></div></div></td></tr>';
+  const rows = EXERCISES.map((ex, i) => `<tr class="exercise-row hidden" data-exercises="1">
     <td colspan="5">
       <div class="exercise-task"><span class="exercise-num">${i + 1}</span>${esc(ex.task)}</div>
       <details class="exercise-answer"><summary>Show answer</summary><p>${esc(ex.answer)}</p></details>
