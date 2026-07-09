@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 17, patch: 3 };
+const VERSION = { major: 1, minor: 18, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -531,6 +531,60 @@ const CHAPTERS = [
       { dutch: 'Eet hij fruit?', pron: 'ayt hay froyt?', english: 'Does he eat fruit?' },
     ],
   },
+  {
+    title: 'Chapter 10: Counting',
+    phrases: [
+      { dutch: 'Nul', pron: 'nul', english: 'Zero' },
+      { dutch: 'Een', pron: 'ayn', english: 'One' },
+      { dutch: 'Twee', pron: 'tvay', english: 'Two' },
+      { dutch: 'Drie', pron: 'dree', english: 'Three' },
+      { dutch: 'Vier', pron: 'feer', english: 'Four' },
+      { dutch: 'Vijf', pron: 'vayf', english: 'Five' },
+      { dutch: 'Zes', pron: 'zes', english: 'Six' },
+      { dutch: 'Zeven', pron: 'ZAY-ven', english: 'Seven' },
+      { dutch: 'Acht', pron: 'akht', english: 'Eight' },
+      { dutch: 'Negen', pron: 'NAY-khen', english: 'Nine' },
+      { dutch: 'Tien', pron: 'teen', english: 'Ten' },
+      { dutch: 'Elf', pron: 'elf', english: 'Eleven' },
+      { dutch: 'Twaalf', pron: 'tvaalf', english: 'Twelve' },
+      { dutch: 'Dertien', pron: 'DER-teen', english: 'Thirteen' },
+      { dutch: 'Veertien', pron: 'FAYR-teen', english: 'Fourteen' },
+      { dutch: 'Vijftien', pron: 'VAYF-teen', english: 'Fifteen' },
+      { dutch: 'Zestien', pron: 'ZES-teen', english: 'Sixteen' },
+      { dutch: 'Zeventien', pron: 'ZAY-ven-teen', english: 'Seventeen' },
+      { dutch: 'Achttien', pron: 'AKHT-teen', english: 'Eighteen' },
+      { dutch: 'Negentien', pron: 'NAY-khen-teen', english: 'Nineteen' },
+      { dutch: 'Twintig', pron: 'TVIN-tikh', english: 'Twenty' },
+      { dutch: 'Tellen', pron: 'TEL-len', english: 'To count' },
+      { dutch: 'Eenentwintig', pron: 'AYN-en-TVIN-tikh', english: 'Twenty-one' },
+      { dutch: 'Drieëntwintig', pron: 'DREE-en-TVIN-tikh', english: 'Twenty-three' },
+      { dutch: 'Vijfentwintig', pron: 'VAYF-en-TVIN-tikh', english: 'Twenty-five' },
+      { dutch: 'Dertig', pron: 'DER-tikh', english: 'Thirty' },
+      { dutch: 'Veertig', pron: 'FAYR-tikh', english: 'Forty' },
+      { dutch: 'Vierenvijftig', pron: 'FEER-en-VAYF-tikh', english: 'Fifty-four' },
+      { dutch: 'Zesenvijftig', pron: 'ZES-en-VAYF-tikh', english: 'Fifty-six' },
+      { dutch: 'Achtenzestig', pron: 'AKHT-en-ZES-tikh', english: 'Sixty-eight' },
+      { dutch: 'Achtenzeventig', pron: 'AKHT-en-ZAY-ven-tikh', english: 'Seventy-eight' },
+      { dutch: 'Tachtig', pron: 'TAKH-tikh', english: 'Eighty' },
+      { dutch: 'Honderd', pron: 'HON-derd', english: 'One hundred' },
+      { dutch: 'Honderdeen', pron: 'HON-derd-ayn', english: 'One hundred and one' },
+      { dutch: 'Honderdvijfentwintig', pron: 'HON-derd-VAYF-en-TVIN-tikh', english: 'One hundred and twenty-five' },
+      { dutch: 'Honderdtwintig', pron: 'HON-derd-TVIN-tikh', english: 'One hundred and twenty' },
+      { dutch: 'Tweehonderd', pron: 'tvay-HON-derd', english: 'Two hundred' },
+      { dutch: 'Driehonderd', pron: 'dree-HON-derd', english: 'Three hundred' },
+      { dutch: 'Vierhonderd', pron: 'feer-HON-derd', english: 'Four hundred' },
+      { dutch: 'Duizend', pron: 'DOY-zent', english: 'One thousand' },
+      { dutch: 'Miljoen', pron: 'mil-YOON', english: 'One million' },
+      { dutch: 'Miljard', pron: 'mil-YAHRD', english: 'One billion' },
+      { dutch: 'Biljoen', pron: 'bil-YOON', english: 'One trillion' },
+      { dutch: 'Eenentwintig. Hoeveel appels?', pron: 'AYN-en-TVIN-tikh. HOO-veel AH-pels?', english: 'Twenty-one. How many apples?' },
+      { dutch: 'Vier appels', pron: 'feer AH-pels', english: 'Four apples' },
+      { dutch: 'Hoeveel appels en bananen?', pron: 'HOO-veel AH-pels en bah-NAH-nen?', english: 'How many apples and bananas?' },
+      { dutch: 'Vier appels en twee bananen', pron: 'feer AH-pels en tvay bah-NAH-nen', english: 'Four apples and two bananas' },
+      { dutch: 'Hoe oud ben je?', pron: 'hoo owt ben yuh?', english: 'How old are you?' },
+      { dutch: 'Ik ben vierenveertig jaar oud.', pron: 'ik ben FEER-en-FAYR-tikh yahr owt', english: 'I am forty-four years old.' },
+    ],
+  },
 ];
 
 const EXERCISES = [
@@ -552,6 +606,8 @@ const EXERCISES = [
   { task: 'Chapter 8 — Translate to Dutch: "I would like coffee and an ice cream as dessert."', answer: 'Ik wil graag koffie en een ijsje als dessert.' },
   { task: 'Chapter 9 — Translate to Dutch: "Emma has a book. Does Emma have a book?"', answer: 'Emma heeft een boek. Heeft Emma een boek?' },
   { task: 'Chapter 9 — Translate to Dutch: "Where is the supermarket? When is Christmas?"', answer: 'Waar is de supermarkt? Wanneer is het kerst?' },
+  { task: 'Chapter 10 — Translate to Dutch: "How many apples and bananas? Four apples and two bananas."', answer: 'Hoeveel appels en bananen? Vier appels en twee bananen.' },
+  { task: 'Chapter 10 — Translate to Dutch: "One hundred and twenty-five. Two hundred. One thousand."', answer: 'Honderdvijfentwintig. Tweehonderd. Duizend.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);

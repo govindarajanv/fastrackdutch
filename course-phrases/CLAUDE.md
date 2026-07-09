@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.17.3** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **276** |
-| **Chapters** | **9** |
-| **Unique words** | **297** |
+| **Version** | **v1.18.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **325** |
+| **Chapters** | **10** |
+| **Unique words** | **334** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 17, patch: 3 };
+const VERSION = { major: 1, minor: 18, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -229,10 +229,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.17.1**: Chapters start **collapsed** by default (+ to expand); auto-expand during chapter playback so highlight/scroll still work.
 - **v1.17.2**: Add **2 Exercises** for Chapter 9 (18 tasks total, 2 per chapter).
 - **v1.17.3**: Exercises section starts **collapsed** by default (same +/− toggle as chapters).
+- **v1.18.0**: Chapter 10 — Counting (0–20, compound numbers, hundreds/thousands, counting dialogue, age); **2 Exercises** (20 tasks total).
 
 ---
 
-## Current Chapters (v1.17.3)
+## Current Chapters (v1.18.0)
 
 1. Introducing Yourself  
 2. Family  
@@ -243,3 +244,4 @@ There is no dev server for this static file, and no project run-skill or `chromi
 7. Getting Groceries  
 8. Restaurant  
 9. Questions  
+10. Counting  
