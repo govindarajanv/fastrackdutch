@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.18.4** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.18.5** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **325** |
 | **Chapters** | **10** |
 | **Unique words** | **334** |
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 18, patch: 4 };
+const VERSION = { major: 1, minor: 18, patch: 5 };
 ```
 
 | Bump | When | Examples |
@@ -234,10 +234,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.18.2**: Improve Ch.9/10 Exercises — inversion drill + vraagwoorden pair; counting dialogue with *drieëntwintig* + age with *dertig*.
 - **v1.18.3**: Replace Ch.9/10 Exercises with user-authored tasks (*hoeveel mensen*, morning inversion, *fruitafdeling*/*zevenenzestig*, *grote huis*/*tochtig*).
 - **v1.18.4**: Ch.9 ex2 → supermarket with *opa*; Ch.10 ex2 → *Hoe oud is dat grote huis? Tachtig.*
+- **v1.18.5**: Ch.9 ex2 → *Ik woon in Utrecht met mijn familie.*
 
 ---
 
-## Current Chapters (v1.18.4)
+## Current Chapters (v1.18.5)
 
 1. Introducing Yourself  
 2. Family  
