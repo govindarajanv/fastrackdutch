@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.19.2** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.19.3** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **359** |
 | **Chapters** | **11** |
 | **Unique words** | **354** |
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 19, patch: 2 };
+const VERSION = { major: 1, minor: 19, patch: 3 };
 ```
 
 | Bump | When | Examples |
@@ -241,10 +241,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.19.0**: Chapter 11 — Telling Time (clock/watch/alarm vocabulary, day periods, *Hoe laat is het?*, full hour/quarter/half-past telling from 11:00 → 12:00, klokkijken terminology: linker/rechter, hele/halve uren, kwartieren); 34 new phrases; **2 Exercises** (22 tasks total).
 - **v1.19.1**: Ch.11 exercises → user-authored sentences applying chapter time patterns — *Ik ga naar de supermarkt om tien uur in de ochtend.* and *Ik praat met mijn opa om tien over half zes in de middag.* (5:40 PM).
 - **v1.19.2**: Ch.11 exercises revised — ex21 prompt → *I buy groceries at supermarket at 10 o'clock in the morning* (answer: *Ik koop boodschappen in de supermarkt om tien uur in de ochtend.*); ex22 answer → *Ik spreek om twintig voor zes 's avonds met mijn opa.* (5:40 PM as "twenty to six in the evening", *spreken* + *'s avonds*).
+- **v1.19.3**: Ch.11 ex22 answer → *Ik spreek om tien over half zes 's avonds met mijn opa.* — uses the idiomatic relative *tien over half zes* (10 past half six = 5:40) matching the chapter's "over half" pattern, instead of the literal *twintig voor zes*.
 
 ---
 
-## Current Chapters (v1.19.2)
+## Current Chapters (v1.19.3)
 
 1. Introducing Yourself  
 2. Family  
