@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.18.8** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **325** |
-| **Chapters** | **10** |
-| **Unique words** | **334** |
+| **Version** | **v1.19.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **359** |
+| **Chapters** | **11** |
+| **Unique words** | **354** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 18, patch: 8 };
+const VERSION = { major: 1, minor: 19, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -238,10 +238,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.18.6**: Ch.9 ex2 answer → *mijn gezin* (matches Ch.2 *gezin*).
 - **v1.18.7**: Ch.9 ex2 → *in de stad Utrecht* (explicit “city” word order).
 - **v1.18.8**: Ch.10 ex2 → *dat grote witte huis* / *Tachtig jaar oud.*
+- **v1.19.0**: Chapter 11 — Telling Time (clock/watch/alarm vocabulary, day periods, *Hoe laat is het?*, full hour/quarter/half-past telling from 11:00 → 12:00, klokkijken terminology: linker/rechter, hele/halve uren, kwartieren); 34 new phrases; **2 Exercises** (22 tasks total).
 
 ---
 
-## Current Chapters (v1.18.8)
+## Current Chapters (v1.19.0)
 
 1. Introducing Yourself  
 2. Family  
@@ -253,3 +254,4 @@ There is no dev server for this static file, and no project run-skill or `chromi
 8. Restaurant  
 9. Questions  
 10. Counting  
+11. Telling Time

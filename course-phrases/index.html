@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 18, patch: 8 };
+const VERSION = { major: 1, minor: 19, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -585,6 +585,45 @@ const CHAPTERS = [
       { dutch: 'Ik ben vierenveertig jaar oud.', pron: 'ik ben FEER-en-FAYR-tikh yahr owt', english: 'I am forty-four years old.' },
     ],
   },
+  {
+    title: 'Chapter 11: Telling Time',
+    phrases: [
+      { dutch: 'De klok', pron: 'duh klok', english: 'The clock' },
+      { dutch: 'Het horloge', pron: 'het hor-LOH-zhuh', english: 'The watch' },
+      { dutch: 'De wekker', pron: 'duh WEK-er', english: 'The alarm clock' },
+      { dutch: 'Ochtend / morgen', pron: 'OHKH-tent / MOR-khen', english: 'Morning' },
+      { dutch: 'Middag', pron: 'MID-dakh', english: 'Afternoon' },
+      { dutch: 'Avond', pron: 'AH-vont', english: 'Evening' },
+      { dutch: 'Nacht', pron: 'nakht', english: 'Night' },
+      { dutch: 'Klokkijken', pron: 'KLOK-kay-ken', english: 'Telling time / reading the clock' },
+      { dutch: 'De linker', pron: 'duh LIN-ker', english: 'The left (hand)' },
+      { dutch: 'De rechter', pron: 'duh REKH-ter', english: 'The right (hand)' },
+      { dutch: 'Hele uren', pron: 'HAY-luh UR-en', english: 'Whole hours' },
+      { dutch: 'Halve uren', pron: 'HAL-vuh UR-en', english: 'Half hours' },
+      { dutch: 'Kwartieren', pron: 'kvar-TEE-ren', english: 'Quarters' },
+      { dutch: 'Dit is een klok.', pron: 'dit is un klok.', english: 'This is a clock.' },
+      { dutch: 'Dit is een horloge.', pron: 'dit is un hor-LOH-zhuh.', english: 'This is a watch.' },
+      { dutch: 'Hoe laat is het?', pron: 'hoo laht is het?', english: 'What time is it?' },
+      { dutch: 'Het is vijf uur. Dit is een wekker.', pron: 'het is vayf uur. dit is un WEK-er.', english: 'It is five (5:00). This is an alarm clock.' },
+      { dutch: 'En hoe laat is het nu?', pron: 'en hoo laht is het nuu?', english: 'And what time is it now?' },
+      { dutch: 'Het is half tien.', pron: 'het is haf teen.', english: 'It is half past nine. (9:30)' },
+      { dutch: 'Het is kwart over negen.', pron: 'het is kvart OH-fer NAY-khen.', english: 'It is quarter past nine. (9:15)' },
+      { dutch: 'Het is kwart voor zes.', pron: 'het is kvart foor ses.', english: 'It is quarter to six. (5:45)' },
+      { dutch: 'Het is elf uur.', pron: 'het is elf uur.', english: 'It is eleven (11:00).' },
+      { dutch: 'Het is vijf over elf.', pron: 'het is vayf OH-fer elf.', english: 'It is five past eleven. (11:05)' },
+      { dutch: 'Het is tien over elf.', pron: 'het is teen OH-fer elf.', english: 'It is ten past eleven. (11:10)' },
+      { dutch: 'Het is kwart over elf.', pron: 'het is kvart OH-fer elf.', english: 'It is quarter past eleven. (11:15)' },
+      { dutch: 'Het is tien voor half twaalf.', pron: 'het is teen foor haf tvaalf.', english: 'It is ten to half twelve. (11:20)' },
+      { dutch: 'Het is vijf voor half twaalf.', pron: 'het is vayf foor haf tvaalf.', english: 'It is five to half twelve. (11:25)' },
+      { dutch: 'Het is half twaalf.', pron: 'het is haf tvaalf.', english: 'It is half past eleven. (11:30)' },
+      { dutch: 'Het is vijf over half twaalf.', pron: 'het is vayf OH-fer haf tvaalf.', english: 'It is five past half twelve. (11:35)' },
+      { dutch: 'Het is tien over half twaalf.', pron: 'het is teen OH-fer haf tvaalf.', english: 'It is ten past half twelve. (11:40)' },
+      { dutch: 'Het is kwart voor twaalf.', pron: 'het is kvart foor tvaalf.', english: 'It is quarter to twelve. (11:45)' },
+      { dutch: 'Het is tien voor twaalf.', pron: 'het is teen foor tvaalf.', english: 'It is ten to twelve. (11:50)' },
+      { dutch: 'Het is vijf voor twaalf.', pron: 'het is vayf foor tvaalf.', english: 'It is five to twelve. (11:55)' },
+      { dutch: 'Het is twaalf uur.', pron: 'het is tvaalf uur.', english: 'It is twelve (12:00).' },
+    ],
+  },
 ];
 
 const EXERCISES = [
@@ -608,6 +647,8 @@ const EXERCISES = [
   { task: 'Chapter 9 — Translate to Dutch: "I live in Utrecht city with my family."', answer: 'Ik woon in de stad Utrecht met mijn gezin.' },
   { task: 'Chapter 10 — Translate to Dutch: "How many apples are there in the fruit section? Sixty-seven."', answer: 'Hoeveel appels zijn er op de fruitafdeling? Zevenenzestig.' },
   { task: 'Chapter 10 — Translate to Dutch: "How old is that large white house? Eighty years old."', answer: 'Hoe oud is dat grote witte huis? Tachtig jaar oud.' },
+  { task: 'Chapter 11 — Translate to Dutch: "What time is it now? It is ten o\'clock."', answer: 'Hoe laat is het nu? Het is tien uur.' },
+  { task: 'Chapter 11 — Translate to Dutch: "It is half past three. It is quarter to four."', answer: 'Het is half vier. Het is kwart voor vier.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);
