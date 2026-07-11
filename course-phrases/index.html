@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 20, patch: 0 };
+const VERSION = { major: 1, minor: 20, patch: 1 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -628,31 +628,19 @@ const CHAPTERS = [
     title: 'Chapter 12: Seasons, Months & Days',
     phrases: [
       { dutch: 'Seizoenen', pron: 'say-ZOO-nen', english: 'Seasons' },
-      { dutch: 'In de winter', pron: 'in duh VIN-ter', english: 'In the winter' },
       { dutch: 'Maand', pron: 'maant', english: 'Month' },
-      { dutch: 'December', pron: 'day-SEM-ber', english: 'December' },
       { dutch: 'Januari', pron: 'yah-noo-AH-ree', english: 'January' },
       { dutch: 'Februari', pron: 'fay-broo-AH-ree', english: 'February' },
-      { dutch: 'Sinterklaas is in december', pron: 'SIN-ter-klaas is in day-SEM-ber', english: 'Sinterklaas is in December' },
-      { dutch: 'Sinterklaas is op 5 december', pron: 'SIN-ter-klaas is op vayf day-SEM-ber', english: 'Sinterklaas is on 5 December' },
-      { dutch: 'Oud en nieuw is op 31 december', pron: 'owt en nyoo is op AYN-en-DAYR-tikh day-SEM-ber', english: 'New Year\'s Eve is on 31 December' },
-      { dutch: 'Valentijnsdag is in februari', pron: 'fah-len-TAYNS-dakh is in fay-broo-AH-ree', english: 'Valentine\'s Day is in February' },
-      { dutch: 'In de lente', pron: 'in duh LEN-tuh', english: 'In the spring' },
       { dutch: 'Maart', pron: 'maart', english: 'March' },
       { dutch: 'April', pron: 'ah-PRIL', english: 'April' },
       { dutch: 'Mei', pron: 'may', english: 'May' },
-      { dutch: 'Koningsdag is in april', pron: 'KOH-nings-dakh is in ah-PRIL', english: 'King\'s Day is in April' },
-      { dutch: 'Koningsdag is op de 27 april', pron: 'KOH-nings-dakh is op duh SAY-fen-en-TVEEN-tikh ah-PRIL', english: 'King\'s Day is on 27 April' },
-      { dutch: 'In de zomer', pron: 'in duh ZOH-mer', english: 'In the summer' },
-      { dutch: 'Het is zomer', pron: 'het is ZOH-mer', english: 'It is summer' },
       { dutch: 'Juni', pron: 'YUU-nee', english: 'June' },
       { dutch: 'Juli', pron: 'YUU-lee', english: 'July' },
       { dutch: 'Augustus', pron: 'ow-KHUS-tus', english: 'August' },
-      { dutch: 'De zomervakantie is in juli en augustus', pron: 'duh ZOH-mer-fah-khan-see is in YUU-lee en ow-KHUS-tus', english: 'The summer holiday is in July and August' },
-      { dutch: 'In de herfst', pron: 'in duh herst', english: 'In the autumn' },
       { dutch: 'September', pron: 'sep-TEM-ber', english: 'September' },
       { dutch: 'Oktober', pron: 'ok-TOH-ber', english: 'October' },
       { dutch: 'November', pron: 'noh-VEM-ber', english: 'November' },
+      { dutch: 'December', pron: 'day-SEM-ber', english: 'December' },
       { dutch: 'De week', pron: 'duh week', english: 'The week' },
       { dutch: 'Werkdagen', pron: 'VERK-dah-khen', english: 'Weekdays' },
       { dutch: 'Het weekend', pron: 'het VEEK-ent', english: 'The weekend' },
@@ -667,6 +655,18 @@ const CHAPTERS = [
       { dutch: 'Zon', pron: 'zon', english: 'Sun' },
       { dutch: 'Maan', pron: 'maan', english: 'Moon' },
       { dutch: 'Donder', pron: 'DON-der', english: 'Thunder' },
+      { dutch: 'In de winter', pron: 'in duh VIN-ter', english: 'In the winter' },
+      { dutch: 'In de lente', pron: 'in duh LEN-tuh', english: 'In the spring' },
+      { dutch: 'In de zomer', pron: 'in duh ZOH-mer', english: 'In the summer' },
+      { dutch: 'In de herfst', pron: 'in duh herst', english: 'In the autumn' },
+      { dutch: 'Het is zomer', pron: 'het is ZOH-mer', english: 'It is summer' },
+      { dutch: 'Sinterklaas is in december', pron: 'SIN-ter-klaas is in day-SEM-ber', english: 'Sinterklaas is in December' },
+      { dutch: 'Sinterklaas is op 5 december', pron: 'SIN-ter-klaas is op vayf day-SEM-ber', english: 'Sinterklaas is on 5 December' },
+      { dutch: 'Oud en nieuw is op 31 december', pron: 'owt en nyoo is op AYN-en-DAYR-tikh day-SEM-ber', english: 'New Year\'s Eve is on 31 December' },
+      { dutch: 'Valentijnsdag is in februari', pron: 'fah-len-TAYNS-dakh is in fay-broo-AH-ree', english: 'Valentine\'s Day is in February' },
+      { dutch: 'Koningsdag is in april', pron: 'KOH-nings-dakh is in ah-PRIL', english: 'King\'s Day is in April' },
+      { dutch: 'Koningsdag is op de 27 april', pron: 'KOH-nings-dakh is op duh SAY-fen-en-TVEEN-tikh ah-PRIL', english: 'King\'s Day is on 27 April' },
+      { dutch: 'De zomervakantie is in juli en augustus', pron: 'duh ZOH-mer-fah-khan-see is in YUU-lee en ow-KHUS-tus', english: 'The summer holiday is in July and August' },
       { dutch: 'Ik werk op maandag', pron: 'ik verk op MAAN-dakh', english: 'I work on Monday' },
       { dutch: 'Ik voetbal op dinsdagavond', pron: 'ik VOOT-bal op DINS-dakh-ah-font', english: 'I play football on Tuesday evening' },
     ],
@@ -696,8 +696,8 @@ const EXERCISES = [
   { task: 'Chapter 10 — Translate to Dutch: "How old is that large white house? Eighty years old."', answer: 'Hoe oud is dat grote witte huis? Tachtig jaar oud.' },
   { task: 'Chapter 11 — Translate to Dutch: "I buy groceries at supermarket at 10 o\'clock in the morning"', answer: 'Ik koop boodschappen in de supermarkt om tien uur in de ochtend.' },
   { task: 'Chapter 11 — Translate to Dutch: "I speak with my grandfather at 5:40 PM."', answer: 'Ik spreek om tien over half zes \'s avonds met mijn opa.' },
-  { task: 'Chapter 12 — Translate to Dutch: "King\'s Day is in April. Sinterklaas is in December."', answer: 'Koningsdag is in april. Sinterklaas is in december.' },
-  { task: 'Chapter 12 — Translate to Dutch: "I work on Monday. I play football on Tuesday evening."', answer: 'Ik werk op maandag. Ik voetbal op dinsdagavond.' },
+  { task: 'Chapter 12 — Translate to Dutch: "In the winter I work on Friday."', answer: 'In de winter werk ik op vrijdag.' },
+  { task: 'Chapter 12 — Translate to Dutch: "The summer holiday is in August. I play football on the weekend."', answer: 'De zomervakantie is in augustus. Ik voetbal in het weekend.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);
