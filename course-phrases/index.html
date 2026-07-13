@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 20, patch: 1 };
+const VERSION = { major: 1, minor: 21, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -671,6 +671,36 @@ const CHAPTERS = [
       { dutch: 'Ik voetbal op dinsdagavond', pron: 'ik VOOT-bal op DINS-dakh-ah-font', english: 'I play football on Tuesday evening' },
     ],
   },
+  {
+    title: 'Chapter 13: Clothing',
+    phrases: [
+      { dutch: 'Het shirt', pron: 'het shirt', english: 'The shirt' },
+      { dutch: 'De riem', pron: 'duh reem', english: 'The belt' },
+      { dutch: 'De broek', pron: 'duh brook', english: 'The trousers / pants' },
+      { dutch: 'De korte broek', pron: 'duh KOR-tuh brook', english: 'The shorts' },
+      { dutch: 'Het pak', pron: 'het pak', english: 'The suit' },
+      { dutch: 'De schoenen', pron: 'duh SKHOO-nen', english: 'The shoes' },
+      { dutch: 'De jurk', pron: 'duh yurk', english: 'The dress' },
+      { dutch: 'De rok', pron: 'duh rok', english: 'The skirt' },
+      { dutch: 'De hakken', pron: 'duh HAHK-en', english: 'The heels' },
+      { dutch: 'De sokken', pron: 'duh SOK-en', english: 'The socks' },
+      { dutch: 'De jas', pron: 'duh yas', english: 'The coat / jacket' },
+      { dutch: 'Dragen', pron: 'DRAH-khen', english: 'To wear / to carry' },
+      { dutch: 'Maten', pron: 'MAH-ten', english: 'Sizes' },
+      { dutch: 'Groot', pron: 'khroht', english: 'Big / large' },
+      { dutch: 'Klein', pron: 'klayn', english: 'Small' },
+      { dutch: 'Kort', pron: 'kort', english: 'Short' },
+      { dutch: 'Kleding', pron: 'KLAY-ding', english: 'Clothing' },
+      { dutch: 'Ik draag een shirt, een broek en schoenen.', pron: 'ik draakh un shirt, un brook en SKHOO-nen', english: 'I wear a shirt, trousers and shoes.' },
+      { dutch: 'Jij draagt een jas.', pron: 'yay draakht un yas', english: 'You wear a coat.' },
+      { dutch: 'Zij draagt een jurk en hakken.', pron: 'zay draakht un yurk en HAHK-en', english: 'She wears a dress and heels.' },
+      { dutch: 'Dat klopt.', pron: 'dat klopt', english: 'That is correct.' },
+      { dutch: 'Deze schoenen zijn groot.', pron: 'DAY-zuh SKHOO-nen zayn khroht', english: 'These shoes are big.' },
+      { dutch: 'Die sokken zijn klein.', pron: 'dee SOK-en zayn klayn', english: 'Those socks are small.' },
+      { dutch: 'Grote schoenen en kleine schoenen.', pron: 'KHROH-tuh SKHOO-nen en KLAY-nuh SKHOO-nen', english: 'Big shoes and small shoes.' },
+      { dutch: 'Zij draagt een groot shirt.', pron: 'zay draakht un khroht shirt', english: 'She wears a big shirt.' },
+    ],
+  },
 ];
 
 const EXERCISES = [
@@ -698,6 +728,8 @@ const EXERCISES = [
   { task: 'Chapter 11 — Translate to Dutch: "I speak with my grandfather at 5:40 PM."', answer: 'Ik spreek om tien over half zes \'s avonds met mijn opa.' },
   { task: 'Chapter 12 — Translate to Dutch: "In the winter I work on Friday."', answer: 'In de winter werk ik op vrijdag.' },
   { task: 'Chapter 12 — Translate to Dutch: "The summer holiday is in August. I play football on the weekend."', answer: 'De zomervakantie is in augustus. Ik voetbal in het weekend.' },
+  { task: 'Chapter 13 — Translate to Dutch: "You wear a suit when you go to office tomorrow morning"', answer: 'Jij draagt een pak als jij morgenochtend naar kantoor gaat.' },
+  { task: 'Chapter 13 — Translate to Dutch: "Her socks are short, so she shops socks in the clothing section of the supermarket"', answer: 'Haar sokken zijn kort, dus zij koopt sokken in de kledingafdeling van de supermarkt.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);

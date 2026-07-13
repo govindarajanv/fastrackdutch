@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.20.1** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **401** |
-| **Chapters** | **12** |
-| **Unique words** | **396** |
+| **Version** | **v1.21.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **426** |
+| **Chapters** | **13** |
+| **Unique words** | **414** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -48,7 +48,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 20, patch: 1 };
+const VERSION = { major: 1, minor: 21, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -244,10 +244,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.19.3**: Ch.11 ex22 answer → *Ik spreek om tien over half zes 's avonds met mijn opa.* — uses the idiomatic relative *tien over half zes* (10 past half six = 5:40) matching the chapter's "over half" pattern, instead of the literal *twintig voor zes*.
 - **v1.20.0**: Chapter 12 — Seasons, Months & Days (seasons, months, holidays, weekdays/weekend, days of the week, sun/moon/thunder etymology hints, schedule sentences); 42 new phrases; **2 Exercises** (24 tasks total).
 - **v1.20.1**: Ch.12 — reorder vocab/short phrases first, sentences last; rewrite exercises as unique combinations (*In de winter werk ik op vrijdag.*; *De zomervakantie is in augustus. Ik voetbal in het weekend.*).
+- **v1.21.0**: Chapter 13 — Clothing (shirt/riem/broek/korte broek/pak/schoenen/jurk/rok/hakken/sokken/jas, *dragen* conjugation *Ik draag / Jij draagt / Zij draagt*, sizes *groot/klein/kort* + inflected *grote/kleine*, demonstratives *deze/die* + *zijn*, *Dat klopt.*, *Kleding*); 25 new phrases; **2 Exercises** (26 tasks total) — *Jij draagt een pak als jij morgenochtend naar kantoor gaat.* and *Haar sokken zijn kort, dus zij koopt sokken in de kledingafdeling van de supermarkt.*
 
 ---
 
-## Current Chapters (v1.20.1)
+## Current Chapters (v1.21.0)
 
 1. Introducing Yourself  
 2. Family  
@@ -260,4 +261,5 @@ There is no dev server for this static file, and no project run-skill or `chromi
 9. Questions  
 10. Counting  
 11. Telling Time  
-12. Seasons, Months & Days
+12. Seasons, Months & Days  
+13. Clothing
