@@ -17,6 +17,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 
 ## Critical Rules
 
+### Git pull at session start
+
+**Always run `git pull` before starting work.** The remote is sometimes updated by other Cursor sessions (a parallel session added Ch.12 Seasons while another was adding a different chapter), so the local branch can be stale — starting from a stale base causes version/chapter-number collisions and rejected pushes. Confirm `git status` shows `up to date with 'origin/main'` before editing. If a push is rejected, do **not** force-push — pull/rebase and reconcile (renumber chapters / bump versions / recompute metadata) instead. See the root `../CLAUDE.md` for the same rule repo-wide.
+
 ### Read before editing
 
 Always Read the exact line range in `index.html` before editing (~600+ lines). Use targeted reads, not full-file reads.
