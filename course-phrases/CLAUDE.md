@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.21.0** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **426** |
-| **Chapters** | **13** |
-| **Unique words** | **414** |
+| **Version** | **v1.22.3** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **452** |
+| **Chapters** | **14** |
+| **Unique words** | **440** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -52,7 +52,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 21, patch: 0 };
+const VERSION = { major: 1, minor: 22, patch: 3 };
 ```
 
 | Bump | When | Examples |
@@ -249,10 +249,14 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.20.0**: Chapter 12 — Seasons, Months & Days (seasons, months, holidays, weekdays/weekend, days of the week, sun/moon/thunder etymology hints, schedule sentences); 42 new phrases; **2 Exercises** (24 tasks total).
 - **v1.20.1**: Ch.12 — reorder vocab/short phrases first, sentences last; rewrite exercises as unique combinations (*In de winter werk ik op vrijdag.*; *De zomervakantie is in augustus. Ik voetbal in het weekend.*).
 - **v1.21.0**: Chapter 13 — Clothing (shirt/riem/broek/korte broek/pak/schoenen/jurk/rok/hakken/sokken/jas, *dragen* conjugation *Ik draag / Jij draagt / Zij draagt*, sizes *groot/klein/kort* + inflected *grote/kleine*, demonstratives *deze/die* + *zijn*, *Dat klopt.*, *Kleding*); 25 new phrases; **2 Exercises** (26 tasks total) — *Jij draagt een pak als jij morgenochtend naar kantoor gaat.* and *Haar sokken zijn kort, dus zij koopt sokken in de kledingafdeling van de supermarkt.*
+- **v1.22.0**: Chapter 14 — The Body & Health (body parts, doctor, health vocabulary, healthy/unhealthy habits, illness sentences); 26 new phrases; **2 Exercises** (28 tasks total).
+- **v1.22.1**: Ch.14 exercises → multi-chapter scenarios combining Ch.2/4/11/12/14 — *Mijn opa is verkouden. Wat is het probleem? Hij heeft hoofdpijn.* and *In de winter heeft mijn dochter buikpijn. Op maandagochtend spreek ik met de dokter.*
+- **v1.22.2**: Ch.14 exercises → user-authored — *Mijn tante heeft sinds de ochtend buikpijn. Gisteravond at zij vet eten.* and *Ik word verkouden in de lente 's ochtends. Ik spreek met de dokter als ik niet gezond ben.*
+- **v1.22.3**: Ch.14 exercises revised — *Mijn tante heeft sinds de ochtend buikpijn. Zij at vet eten.* and *Ik ben verkouden na het drinken van cola uit de supermarkt.*
 
 ---
 
-## Current Chapters (v1.21.0)
+## Current Chapters (v1.22.3)
 
 1. Introducing Yourself  
 2. Family  
@@ -266,4 +270,5 @@ There is no dev server for this static file, and no project run-skill or `chromi
 10. Counting  
 11. Telling Time  
 12. Seasons, Months & Days  
-13. Clothing
+13. Clothing  
+14. The Body & Health

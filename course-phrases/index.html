@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 21, patch: 0 };
+const VERSION = { major: 1, minor: 22, patch: 3 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -701,6 +701,37 @@ const CHAPTERS = [
       { dutch: 'Zij draagt een groot shirt.', pron: 'zay draakht un khroht shirt', english: 'She wears a big shirt.' },
     ],
   },
+  {
+    title: 'Chapter 14: The Body & Health',
+    phrases: [
+      { dutch: 'Het lichaam', pron: 'het LI-khaam', english: 'The body' },
+      { dutch: 'Het hoofd', pron: 'het HOHFT', english: 'The head' },
+      { dutch: 'De schouder', pron: 'duh SKHOW-der', english: 'The shoulder' },
+      { dutch: 'De arm', pron: 'duh arm', english: 'The arm' },
+      { dutch: 'De nek', pron: 'duh nek', english: 'The neck' },
+      { dutch: 'De borst', pron: 'duh borst', english: 'The chest' },
+      { dutch: 'De buik', pron: 'duh bowk', english: 'The belly / abdomen' },
+      { dutch: 'De hand', pron: 'duh hant', english: 'The hand' },
+      { dutch: 'De heup', pron: 'duh hayp', english: 'The hip' },
+      { dutch: 'Het been', pron: 'het bayn', english: 'The leg' },
+      { dutch: 'De voet', pron: 'duh voot', english: 'The foot' },
+      { dutch: 'De rug', pron: 'duh rukh', english: 'The back' },
+      { dutch: 'De vinger', pron: 'duh VING-er', english: 'The finger' },
+      { dutch: 'De dokter', pron: 'duh DOK-ter', english: 'The doctor' },
+      { dutch: 'Gezondheid', pron: 'khuh-ZONT-hayt', english: 'Health' },
+      { dutch: 'Gezond en ongezond', pron: 'khuh-ZONT en on-khuh-ZONT', english: 'Healthy and unhealthy' },
+      { dutch: 'Wat is het probleem?', pron: 'vaht is het pro-BLAY-m?', english: 'What is the problem?' },
+      { dutch: 'Sporten is gezond.', pron: 'SPOR-ten is khuh-ZONT', english: 'Exercising is healthy.' },
+      { dutch: 'Gezond eten is gezond.', pron: 'khuh-ZONT AY-ten is khuh-ZONT', english: 'Healthy eating is healthy.' },
+      { dutch: 'Water drinken is gezond.', pron: 'VAH-ter DRIN-ken is khuh-ZONT', english: 'Drinking water is healthy.' },
+      { dutch: 'Inactief zijn is ongezond.', pron: 'in-akh-TEEF zayn is on-khuh-ZONT', english: 'Being inactive is unhealthy.' },
+      { dutch: 'Vet eten is ongezond.', pron: 'fet AY-ten is on-khuh-ZONT', english: 'Eating fatty food is unhealthy.' },
+      { dutch: 'Ik heb hoofdpijn.', pron: 'ik heb HOOFT-payn', english: 'I have a headache.' },
+      { dutch: 'Jij hebt buikpijn.', pron: 'yay hept BOWK-payn', english: 'You have a stomach ache.' },
+      { dutch: 'Ik ben verkouden.', pron: 'ik ben fer-KHOW-den', english: 'I have a cold.' },
+      { dutch: 'Ik heb een botbreuk.', pron: 'ik heb un BOT-broyk', english: 'I have a broken bone.' },
+    ],
+  },
 ];
 
 const EXERCISES = [
@@ -730,6 +761,8 @@ const EXERCISES = [
   { task: 'Chapter 12 — Translate to Dutch: "The summer holiday is in August. I play football on the weekend."', answer: 'De zomervakantie is in augustus. Ik voetbal in het weekend.' },
   { task: 'Chapter 13 — Translate to Dutch: "You wear a suit when you go to office tomorrow morning"', answer: 'Jij draagt een pak als jij morgenochtend naar kantoor gaat.' },
   { task: 'Chapter 13 — Translate to Dutch: "Her socks are short, so she shops socks in the clothing section of the supermarket"', answer: 'Haar sokken zijn kort, dus zij koopt sokken in de kledingafdeling van de supermarkt.' },
+  { task: 'Chapter 14 — Translate to Dutch: "My aunt has stomach ache since morning. She ate fatty food."', answer: 'Mijn tante heeft sinds de ochtend buikpijn. Zij at vet eten.' },
+  { task: 'Chapter 14 — Translate to Dutch: "I have a cold after drinking cola bought in the supermarket."', answer: 'Ik ben verkouden na het drinken van cola uit de supermarkt.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);
