@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 22, patch: 3 };
+const VERSION = { major: 1, minor: 23, patch: 2 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -732,6 +732,36 @@ const CHAPTERS = [
       { dutch: 'Ik heb een botbreuk.', pron: 'ik heb un BOT-broyk', english: 'I have a broken bone.' },
     ],
   },
+  {
+    title: 'Chapter 15: Comparisons',
+    phrases: [
+      { dutch: 'Vergelijkingen', pron: 'fer-khuh-LAY-king-en', english: 'Comparisons' },
+      { dutch: 'Grootte', pron: 'KHROH-tuh', english: 'Size' },
+      { dutch: 'Kleiner dan', pron: 'KLAY-ner dan', english: 'Smaller than' },
+      { dutch: 'Net zo groot als', pron: 'net zoh khroht als', english: 'Just as big as' },
+      { dutch: 'Groter dan', pron: 'KHROH-ter dan', english: 'Bigger than' },
+      { dutch: 'Schoonheid', pron: 'SKHOHN-hayt', english: 'Beauty' },
+      { dutch: 'Lelijker dan', pron: 'LAY-lee-ker dan', english: 'Uglier than' },
+      { dutch: 'Net zo mooi als', pron: 'net zoh MOH-ee als', english: 'Just as beautiful as' },
+      { dutch: 'Mooier dan', pron: 'MOH-yer dan', english: 'More beautiful than' },
+      { dutch: 'Prachtig', pron: 'PRAKH-tikh', english: 'Magnificent / splendid' },
+      { dutch: 'Bijzonder', pron: 'bay-ZON-der', english: 'Special / particular' },
+      { dutch: 'Superlatieven', pron: 'SOO-per-lah-TEE-ven', english: 'Superlatives' },
+      { dutch: 'Groot, groter, grootst', pron: 'khroht, KHROH-ter, khrohst', english: 'Big, bigger, biggest' },
+      { dutch: 'Mooi, mooier, mooist', pron: 'MOH-ee, MOH-yer, MOH-ee-st', english: 'Beautiful, more beautiful, most beautiful' },
+      { dutch: 'Even groot als', pron: 'AY-ven khroht als', english: 'As big as' },
+      { dutch: 'Even mooi als', pron: 'AY-ven MOH-ee als', english: 'As beautiful as' },
+      { dutch: 'Amsterdam is groter dan Amstelveen.', pron: 'AM-ster-dam is KHROH-ter dan AHMS-tel-vayn', english: 'Amsterdam is bigger than Amstelveen.' },
+      { dutch: 'Amstelveen is kleiner dan Amsterdam.', pron: 'AHMS-tel-vayn is KLAY-ner dan AM-ster-dam', english: 'Amstelveen is smaller than Amsterdam.' },
+      { dutch: 'Amsterdam is mooier dan Amstelveen.', pron: 'AM-ster-dam is MOH-yer dan AHMS-tel-vayn', english: 'Amsterdam is more beautiful than Amstelveen.' },
+      { dutch: 'Amstelveen is lelijker dan Amsterdam.', pron: 'AHMS-tel-vayn is LAY-lee-ker dan AM-ster-dam', english: 'Amstelveen is uglier than Amsterdam.' },
+      { dutch: 'De hond is groot.', pron: 'duh hont is khroht', english: 'The dog is big.' },
+      { dutch: 'De beer is groter.', pron: 'duh bayr is KHROH-ter', english: 'The bear is bigger.' },
+      { dutch: 'De olifant is het grootst.', pron: 'duh OH-li-fant is het khrohst', english: 'The elephant is the biggest.' },
+      { dutch: 'De tafel is groter dan de stoel.', pron: 'duh TAH-fel is KHROH-ter dan duh stool', english: 'The table is bigger than the chair.' },
+      { dutch: 'De man is even groot als de vrouw.', pron: 'duh man is AY-ven khroht als duh frow', english: 'The man is as big as the woman.' },
+    ],
+  },
 ];
 
 const EXERCISES = [
@@ -763,6 +793,8 @@ const EXERCISES = [
   { task: 'Chapter 13 — Translate to Dutch: "Her socks are short, so she shops socks in the clothing section of the supermarket"', answer: 'Haar sokken zijn kort, dus zij koopt sokken in de kledingafdeling van de supermarkt.' },
   { task: 'Chapter 14 — Translate to Dutch: "My aunt has stomach ache since morning. She ate fatty food."', answer: 'Mijn tante heeft sinds de ochtend buikpijn. Zij at vet eten.' },
   { task: 'Chapter 14 — Translate to Dutch: "I have a cold after drinking cola bought in the supermarket."', answer: 'Ik ben verkouden na het drinken van cola uit de supermarkt.' },
+  { task: 'Chapter 15 — Translate to Dutch: "On Saturday evening my mother goes to Utrecht. Utrecht is as beautiful as Amsterdam"', answer: 'Op zaterdagavond gaat mijn moeder naar Utrecht. Utrecht is even mooi als Amsterdam.' },
+  { task: 'Chapter 15 — Translate to Dutch: "In winter my grandfather eats unhealthy food. Is the pleasure bigger than the health?"', answer: 'In de winter eet mijn opa ongezond eten. Is het plezier groter dan de gezondheid?' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);

@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.22.3** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **452** |
-| **Chapters** | **14** |
-| **Unique words** | **440** |
+| **Version** | **v1.23.2** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **477** |
+| **Chapters** | **15** |
+| **Unique words** | **460** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -52,7 +52,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 22, patch: 3 };
+const VERSION = { major: 1, minor: 23, patch: 2 };
 ```
 
 | Bump | When | Examples |
@@ -104,6 +104,24 @@ Runtime helpers (do not edit manually):
 4. Bump **MINOR** for a new chapter; **PATCH** for phrases added to an existing chapter.
 5. **Run `node course-phrases/check-pronunciation.js` after adding/editing phrases**, before committing. It catches bare numerals, multi-syllable words with no CAPS stress marker, the same phrase transcribed two different ways, and **CLAUDE.md phrase/chapter/unique-word count drift** — all mechanical, zero-dependency checks (see the file header for what it does and doesn't catch). It does **not** verify phonetic accuracy or catch structural inconsistencies across parallel constructions (e.g. sibling greetings that should share a stress pattern) — that still needs an actual read-through by whoever/whatever is making the change.
 6. **Update the metadata table** (`**Phrases**`, `**Chapters**`, `**Unique words**`) when counts change — the check script fails if these don't match `index.html`.
+
+### Exercises (translation tasks)
+
+Each content chapter gets **2 exercises** in the `EXERCISES` array at the bottom of `index.html`. Exercises are **not** counted as phrases or chapters.
+
+**Mandatory rule — integrative, not repetitive:**
+
+When writing or rewriting exercises for chapter *N*, **never** copy or lightly rephrase phrases from chapter *N* (or any single chapter). Each exercise must be a **new English prompt** whose Dutch answer **combines vocabulary and grammar from multiple chapters 1 through *N***, forcing the learner to recall and apply everything learned so far.
+
+| Do | Don't |
+|----|-------|
+| Cross-chapter scenarios (e.g. Ch.15 *net zo mooi als* + Ch.13 *jurk* + Ch.12 *zaterdagavond* + Ch.2 *moeder* + Ch.6 *blauwe auto*) | Repeat a sentence from the new chapter with one word changed |
+| Use the **new chapter's grammar pattern** in a fresh context | Quote Amsterdam/Amstelveen or animal superlative chains verbatim from Ch.15 |
+| Label `Chapter N — Translate to Dutch: "…"` | Reuse the chapter's example sentences as answers |
+
+Before marking exercise work complete: read the target chapter's phrases and confirm **neither exercise answer appears in that chapter** (or is a trivial variant). Prefer the style established in v1.16.2+ and Ch.13/14 user-authored multi-chapter scenarios.
+
+When adding a new chapter, always add its 2 exercises in the **same change set** — do not defer exercises to a follow-up.
 
 ### Pronunciation guide (`pron`)
 
@@ -253,10 +271,13 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.22.1**: Ch.14 exercises → multi-chapter scenarios combining Ch.2/4/11/12/14 — *Mijn opa is verkouden. Wat is het probleem? Hij heeft hoofdpijn.* and *In de winter heeft mijn dochter buikpijn. Op maandagochtend spreek ik met de dokter.*
 - **v1.22.2**: Ch.14 exercises → user-authored — *Mijn tante heeft sinds de ochtend buikpijn. Gisteravond at zij vet eten.* and *Ik word verkouden in de lente 's ochtends. Ik spreek met de dokter als ik niet gezond ben.*
 - **v1.22.3**: Ch.14 exercises revised — *Mijn tante heeft sinds de ochtend buikpijn. Zij at vet eten.* and *Ik ben verkouden na het drinken van cola uit de supermarkt.*
+- **v1.23.0**: Chapter 15 — Comparisons (*vergelijkingen*, size/beauty comparison patterns *kleiner/groter/mooier/lelijker dan*, *net zo … als*, *even … als*, superlative triples *groot/groter/grootst* and *mooi/mooier/mooist*, *prachtig*, *bijzonder*, Amsterdam/Amstelveen sentences, animal superlative chain, table/chair and man/woman equality); 25 new phrases; **2 Exercises** (30 tasks total).
+- **v1.23.1**: Ch.15 exercises rewritten as integrative multi-chapter scenarios (not Ch.15 phrase copies) — *Op zaterdagavond draagt mijn moeder een jurk. De kleine jurk is net zo mooi als de blauwe auto.* (Ch.15 *net zo mooi als* + Ch.2/6/12/13) and *In de winter eet mijn opa ongezond eten. Is de supermarkt groter dan de bakkerij?* (Ch.15 *groter dan* + Ch.2/5/7/9/12/14). Added **Exercises** mandatory rule to CLAUDE.md Critical Rules — answers must combine vocab/grammar from chapters 1–N, never repeat the target chapter's phrases.
+- **v1.23.2**: Ch.15 exercises → user-authored — *Op zaterdagavond gaat mijn moeder naar Utrecht. Utrecht is even mooi als Amsterdam.* and *In de winter eet mijn opa ongezond eten. Is het plezier groter dan de gezondheid?*
 
 ---
 
-## Current Chapters (v1.22.3)
+## Current Chapters (v1.23.2)
 
 1. Introducing Yourself  
 2. Family  
@@ -271,4 +292,5 @@ There is no dev server for this static file, and no project run-skill or `chromi
 11. Telling Time  
 12. Seasons, Months & Days  
 13. Clothing  
-14. The Body & Health
+14. The Body & Health  
+15. Comparisons
