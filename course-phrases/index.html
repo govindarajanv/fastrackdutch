@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 23, patch: 2 };
+const VERSION = { major: 1, minor: 24, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -762,6 +762,40 @@ const CHAPTERS = [
       { dutch: 'De man is even groot als de vrouw.', pron: 'duh man is AY-ven khroht als duh frow', english: 'The man is as big as the woman.' },
     ],
   },
+  {
+    title: 'Chapter 16: Daily Routines',
+    phrases: [
+      { dutch: 'Ochtendroutine', pron: 'OHKH-tent-roo-TEE-nuh', english: 'Morning routine' },
+      { dutch: 'Middagroutine', pron: 'MID-dakh-roo-TEE-nuh', english: 'Afternoon routine' },
+      { dutch: 'Avondroutine', pron: 'AH-vont-roo-TEE-nuh', english: 'Evening routine' },
+      { dutch: 'Worden', pron: 'VOR-den', english: 'To become' },
+      { dutch: 'Poetsen', pron: 'POOTS-en', english: 'To brush / to polish' },
+      { dutch: 'Eten', pron: 'AY-ten', english: 'To eat' },
+      { dutch: 'Reizen', pron: 'RAY-zen', english: 'To travel' },
+      { dutch: 'Werken', pron: 'VERK-en', english: 'To work' },
+      { dutch: 'Sporten', pron: 'SPOR-ten', english: 'To exercise / to play sport' },
+      { dutch: 'Slapen', pron: 'SLAH-pen', english: 'To sleep' },
+      { dutch: 'Ontbijten', pron: 'ON-tbay-ten', english: 'To have breakfast' },
+      { dutch: 'Wakker worden', pron: 'VAHK-er VOR-den', english: 'To wake up' },
+      { dutch: 'Gaan slapen', pron: 'khahn SLAH-pen', english: 'To go to sleep' },
+      { dutch: 'Tanden poetsen', pron: 'TAHN-den POOTS-en', english: 'To brush teeth' },
+      { dutch: 'Ontbijt eten', pron: 'ON-tbayt AY-ten', english: 'To eat breakfast' },
+      { dutch: 'Met de trein gaan', pron: 'met duh trayn khahn', english: 'To go by train' },
+      { dutch: 'In de ochtend', pron: 'in duh OHKH-tent', english: 'In the morning' },
+      { dutch: 'In de middag', pron: 'in duh MID-dakh', english: 'In the afternoon' },
+      { dutch: 'In de avond', pron: 'in duh AH-vont', english: 'In the evening' },
+      { dutch: 'Ik word wakker om acht uur.', pron: 'ik vort VAHK-er om akht uur', english: 'I wake up at eight o\'clock.' },
+      { dutch: 'Ik eet ontbijt om half negen.', pron: 'ik ayt ON-tbayt om haf NAY-khen', english: 'I eat breakfast at half past eight. (8:30)' },
+      { dutch: 'Ik poets mijn tanden om negen uur.', pron: 'ik poost main TAHN-den om NAY-khen uur', english: 'I brush my teeth at nine o\'clock.' },
+      { dutch: 'Ik werk van negen tot vijf uur.', pron: 'ik verk fan NAY-khen tot vayf uur', english: 'I work from nine to five.' },
+      { dutch: 'Ik reis met de trein naar huis.', pron: 'ik rays met duh trayn naar hows', english: 'I travel home by train.' },
+      { dutch: 'Ik sport om negen uur.', pron: 'ik sport om NAY-khen uur', english: 'I exercise at nine o\'clock.' },
+      { dutch: 'Ik ga slapen om elf uur.', pron: 'ik khah SLAH-pen om elf uur', english: 'I go to sleep at eleven o\'clock.' },
+      { dutch: 'Ik word wakker, eet ontbijt en poets mijn tanden in de ochtend.', pron: 'ik vort VAHK-er, ayt ON-tbayt en poost main TAHN-den in duh OHKH-tent', english: 'I wake up, eat breakfast and brush my teeth in the morning.' },
+      { dutch: 'Ik werk en reis met de trein in de middag.', pron: 'ik verk en rays met duh trayn in duh MID-dakh', english: 'I work and travel home by train in the afternoon.' },
+      { dutch: 'Ik sport en ga slapen in de avond.', pron: 'ik sport en khah SLAH-pen in duh AH-vont', english: 'I exercise and go to sleep in the evening.' },
+    ],
+  },
 ];
 
 const EXERCISES = [
@@ -795,6 +829,8 @@ const EXERCISES = [
   { task: 'Chapter 14 — Translate to Dutch: "I have a cold after drinking cola bought in the supermarket."', answer: 'Ik ben verkouden na het drinken van cola uit de supermarkt.' },
   { task: 'Chapter 15 — Translate to Dutch: "On Saturday evening my mother goes to Utrecht. Utrecht is as beautiful as Amsterdam"', answer: 'Op zaterdagavond gaat mijn moeder naar Utrecht. Utrecht is even mooi als Amsterdam.' },
   { task: 'Chapter 15 — Translate to Dutch: "In winter my grandfather eats unhealthy food. Is the pleasure bigger than the health?"', answer: 'In de winter eet mijn opa ongezond eten. Is het plezier groter dan de gezondheid?' },
+  { task: 'Chapter 16 — Translate to Dutch: "On Wednesday morning my daughter wears a dress and goes to school. She wakes up at seven o\'clock."', answer: 'Op woensdagochtend draagt mijn dochter een jurk en gaat naar school. Zij wordt om zeven uur wakker.' },
+  { task: 'Chapter 16 — Translate to Dutch: "In the afternoon my father works and my sister buys groceries in the supermarket. At eleven o\'clock in the evening he goes to sleep."', answer: 'In de middag werkt mijn vader en koopt mijn zus boodschappen in de supermarkt. Om elf uur \'s avonds gaat hij slapen.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);

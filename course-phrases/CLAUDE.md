@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.23.2** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **477** |
-| **Chapters** | **15** |
-| **Unique words** | **460** |
+| **Version** | **v1.24.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **506** |
+| **Chapters** | **16** |
+| **Unique words** | **480** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -52,7 +52,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 23, patch: 2 };
+const VERSION = { major: 1, minor: 24, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -274,10 +274,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.23.0**: Chapter 15 — Comparisons (*vergelijkingen*, size/beauty comparison patterns *kleiner/groter/mooier/lelijker dan*, *net zo … als*, *even … als*, superlative triples *groot/groter/grootst* and *mooi/mooier/mooist*, *prachtig*, *bijzonder*, Amsterdam/Amstelveen sentences, animal superlative chain, table/chair and man/woman equality); 25 new phrases; **2 Exercises** (30 tasks total).
 - **v1.23.1**: Ch.15 exercises rewritten as integrative multi-chapter scenarios (not Ch.15 phrase copies) — *Op zaterdagavond draagt mijn moeder een jurk. De kleine jurk is net zo mooi als de blauwe auto.* (Ch.15 *net zo mooi als* + Ch.2/6/12/13) and *In de winter eet mijn opa ongezond eten. Is de supermarkt groter dan de bakkerij?* (Ch.15 *groter dan* + Ch.2/5/7/9/12/14). Added **Exercises** mandatory rule to CLAUDE.md Critical Rules — answers must combine vocab/grammar from chapters 1–N, never repeat the target chapter's phrases.
 - **v1.23.2**: Ch.15 exercises → user-authored — *Op zaterdagavond gaat mijn moeder naar Utrecht. Utrecht is even mooi als Amsterdam.* and *In de winter eet mijn opa ongezond eten. Is het plezier groter dan de gezondheid?*
+- **v1.24.0**: Chapter 16 — Daily Routines (*ochtendroutine/middagroutine/avondroutine*, routine verbs, time-of-day patterns, morning/afternoon/evening sentences); 29 new phrases; **2 Exercises** (32 tasks total). Fixed *in de morgen* → *in de ochtend*; numeric times → Dutch words (*acht uur*, *negen uur*, etc.).
 
 ---
 
-## Current Chapters (v1.23.2)
+## Current Chapters (v1.24.0)
 
 1. Introducing Yourself  
 2. Family  
@@ -293,4 +294,5 @@ There is no dev server for this static file, and no project run-skill or `chromi
 12. Seasons, Months & Days  
 13. Clothing  
 14. The Body & Health  
-15. Comparisons
+15. Comparisons  
+16. Daily Routines
