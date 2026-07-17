@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 24, patch: 0 };
+const VERSION = { major: 1, minor: 25, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -796,6 +796,47 @@ const CHAPTERS = [
       { dutch: 'Ik sport en ga slapen in de avond.', pron: 'ik sport en khah SLAH-pen in duh AH-vont', english: 'I exercise and go to sleep in the evening.' },
     ],
   },
+  {
+    title: 'Chapter 17: Transport',
+    phrases: [
+      { dutch: 'Vervoer', pron: 'fer-FOOR', english: 'Transport' },
+      { dutch: 'Nemen', pron: 'NAY-men', english: 'To take' },
+      { dutch: 'Reizen', pron: 'RAY-zen', english: 'To travel' },
+      { dutch: 'Per', pron: 'per', english: 'By / via' },
+      { dutch: 'Van', pron: 'fan', english: 'From' },
+      { dutch: 'Naar', pron: 'naar', english: 'To / towards' },
+      { dutch: 'De auto', pron: 'duh OW-toh', english: 'The car' },
+      { dutch: 'De bus', pron: 'duh bus', english: 'The bus' },
+      { dutch: 'De trein', pron: 'duh trayn', english: 'The train' },
+      { dutch: 'Het vliegtuig', pron: 'het FLAYKH-tookh', english: 'The aeroplane / airplane' },
+      { dutch: 'De fiets', pron: 'duh feets', english: 'The bicycle' },
+      { dutch: 'De tram', pron: 'duh tram', english: 'The tram' },
+      { dutch: 'De metro', pron: 'duh MAY-troh', english: 'The metro / subway' },
+      { dutch: 'Het vliegveld', pron: 'het FLAYKH-felt', english: 'The airport' },
+      { dutch: 'Het Centraal Station', pron: 'het sen-TRAAL stah-SYOHN', english: 'Central Station' },
+      { dutch: 'Museumplein', pron: 'myu-ZAY-um-playn', english: 'Museum Square (Amsterdam)' },
+      { dutch: 'Dierentuin Artis', pron: 'DEER-en-town AR-tis', english: 'Artis Zoo' },
+      { dutch: 'De Jordaan', pron: 'duh yor-DAHN', english: 'The Jordaan (Amsterdam neighbourhood)' },
+      { dutch: 'Den Haag', pron: 'den hakh', english: 'The Hague' },
+      { dutch: 'Rotterdam', pron: 'rot-ter-DAM', english: 'Rotterdam' },
+      { dutch: 'Amsterdam', pron: 'AM-ster-dam', english: 'Amsterdam' },
+      { dutch: 'Utrecht', pron: 'OO-trekht', english: 'Utrecht' },
+      { dutch: 'Schiphol', pron: 'SKHIP-hol', english: 'Schiphol (airport)' },
+      { dutch: 'Nederland heeft vier grote steden.', pron: 'NAY-der-lant hayft feer KHROH-tuh STAY-den', english: 'The Netherlands has four big cities.' },
+      { dutch: 'Ik neem de metro van Den Haag naar Rotterdam.', pron: 'ik naym duh MAY-troh fan den hakh naar rot-ter-DAM', english: 'I take the metro from The Hague to Rotterdam.' },
+      { dutch: 'Jij neemt de auto van Schiphol naar Den Haag.', pron: 'yay naymt duh OW-toh fan SKHIP-hol naar den hakh', english: 'You take the car from Schiphol to The Hague.' },
+      { dutch: 'Hij neemt de fiets van de Jordaan naar het station.', pron: 'hay naymt duh feets fan duh yor-DAHN naar het stah-SYOHN', english: 'He takes the bicycle from the Jordaan to the station.' },
+      { dutch: 'Ik reis per trein.', pron: 'ik rays per trayn', english: 'I travel by train.' },
+      { dutch: 'Ik reis met de trein.', pron: 'ik rays met duh trayn', english: 'I travel by train. / I travel with the train.' },
+      { dutch: 'Jij reist van het Museumplein naar Artis per tram.', pron: 'yay rayst fan het myu-ZAY-um-playn naar AR-tis per tram', english: 'You travel from Museumplein to Artis by tram.' },
+      { dutch: 'Hij reist van Utrecht naar Amsterdam.', pron: 'hay rayst fan OO-trekht naar AM-ster-dam', english: 'He travels from Utrecht to Amsterdam.' },
+      { dutch: 'Ik reis naar Schiphol per vliegtuig.', pron: 'ik rays naar SKHIP-hol per FLAYKH-tookh', english: 'I travel to Schiphol by plane.' },
+      { dutch: 'Ik reis met het vliegtuig naar Schiphol.', pron: 'ik rays met het FLAYKH-tookh naar SKHIP-hol', english: 'I travel by plane to Schiphol.' },
+      { dutch: 'Ik reis van Den Haag naar Rotterdam per trein.', pron: 'ik rays fan den hakh naar rot-ter-DAM per trayn', english: 'I travel from The Hague to Rotterdam by train.' },
+      { dutch: 'Ik neem de bus van Rotterdam naar Amsterdam.', pron: 'ik naym duh bus fan rot-ter-DAM naar AM-ster-dam', english: 'I take the bus from Rotterdam to Amsterdam.' },
+      { dutch: 'Ik ga met de fiets.', pron: 'ik khah met duh feets', english: 'I go by bicycle.' },
+    ],
+  },
 ];
 
 const EXERCISES = [
@@ -831,6 +872,8 @@ const EXERCISES = [
   { task: 'Chapter 15 — Translate to Dutch: "In winter my grandfather eats unhealthy food. Is the pleasure bigger than the health?"', answer: 'In de winter eet mijn opa ongezond eten. Is het plezier groter dan de gezondheid?' },
   { task: 'Chapter 16 — Translate to Dutch: "On Wednesday morning my daughter wears a dress and goes to school. She wakes up at seven o\'clock."', answer: 'Op woensdagochtend draagt mijn dochter een jurk en gaat naar school. Zij wordt om zeven uur wakker.' },
   { task: 'Chapter 16 — Translate to Dutch: "In the afternoon my father works and my sister buys groceries in the supermarket. At eleven o\'clock in the evening he goes to sleep."', answer: 'In de middag werkt mijn vader en koopt mijn zus boodschappen in de supermarkt. Om elf uur \'s avonds gaat hij slapen.' },
+  { task: 'Chapter 17 — Translate to Dutch: "In summer my brother goes by bike to the supermarket in the morning and buys ice and drinks."', answer: 'In de zomer gaat mijn broer in de ochtend met de fiets naar de supermarkt en koopt ijs en dranken.' },
+  { task: 'Chapter 17 — Translate to Dutch: "My father has to play sport in Utrecht, so he takes the car to Utrecht in the afternoon at 3:20 PM."', answer: 'Mijn vader moet in Utrecht sporten, dus hij neemt om twintig over drie in de middag de auto naar Utrecht.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);

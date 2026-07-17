@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.24.0** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **506** |
-| **Chapters** | **16** |
-| **Unique words** | **480** |
+| **Version** | **v1.25.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **542** |
+| **Chapters** | **17** |
+| **Unique words** | **503** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -52,7 +52,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 24, patch: 0 };
+const VERSION = { major: 1, minor: 25, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -275,10 +275,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.23.1**: Ch.15 exercises rewritten as integrative multi-chapter scenarios (not Ch.15 phrase copies) — *Op zaterdagavond draagt mijn moeder een jurk. De kleine jurk is net zo mooi als de blauwe auto.* (Ch.15 *net zo mooi als* + Ch.2/6/12/13) and *In de winter eet mijn opa ongezond eten. Is de supermarkt groter dan de bakkerij?* (Ch.15 *groter dan* + Ch.2/5/7/9/12/14). Added **Exercises** mandatory rule to CLAUDE.md Critical Rules — answers must combine vocab/grammar from chapters 1–N, never repeat the target chapter's phrases.
 - **v1.23.2**: Ch.15 exercises → user-authored — *Op zaterdagavond gaat mijn moeder naar Utrecht. Utrecht is even mooi als Amsterdam.* and *In de winter eet mijn opa ongezond eten. Is het plezier groter dan de gezondheid?*
 - **v1.24.0**: Chapter 16 — Daily Routines (*ochtendroutine/middagroutine/avondroutine*, routine verbs, time-of-day patterns, morning/afternoon/evening sentences); 29 new phrases; **2 Exercises** (32 tasks total). Fixed *in de morgen* → *in de ochtend*; numeric times → Dutch words (*acht uur*, *negen uur*, etc.).
+- **v1.25.0**: Chapter 17 — Transport (*vervoer*, *nemen/reizen*, *per/van/naar*, *met de* travel patterns, vehicles, Dutch cities & Amsterdam landmarks); 36 new phrases; **2 Exercises** (34 tasks total). Added *Ik reis met de trein.*, *Ik reis met het vliegtuig naar Schiphol.*, *Ik ga met de fiets.*; exercises: summer bike trip to supermarket for *ijs en dranken*; father *moet sporten* in Utrecht so takes the car at *twintig over drie*.
 
 ---
 
-## Current Chapters (v1.24.0)
+## Current Chapters (v1.25.0)
 
 1. Introducing Yourself  
 2. Family  
@@ -295,4 +296,5 @@ There is no dev server for this static file, and no project run-skill or `chromi
 13. Clothing  
 14. The Body & Health  
 15. Comparisons  
-16. Daily Routines
+16. Daily Routines  
+17. Transport
