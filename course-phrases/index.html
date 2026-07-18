@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 25, patch: 0 };
+const VERSION = { major: 1, minor: 27, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -837,6 +837,80 @@ const CHAPTERS = [
       { dutch: 'Ik ga met de fiets.', pron: 'ik khah met duh feets', english: 'I go by bicycle.' },
     ],
   },
+  {
+    title: 'Chapter 18: Positives/Negatives',
+    phrases: [
+      { dutch: 'Positief', pron: 'poh-zi-TEEF', english: 'Positive' },
+      { dutch: 'Negatief', pron: 'ne-gah-TEEF', english: 'Negative' },
+      { dutch: 'Nee', pron: 'nay', english: 'No' },
+      { dutch: 'Goed', pron: 'khoot', english: 'Good' },
+      { dutch: 'Slecht', pron: 'slekht', english: 'Bad' },
+      { dutch: 'Fantastisch', pron: 'fan-TAH-stikh', english: 'Fantastic' },
+      { dutch: 'Vreselijk', pron: 'FRAY-zuh-likh', english: 'Terrible / awful' },
+      { dutch: 'Prima', pron: 'PREE-mah', english: 'Fine / great' },
+      { dutch: 'Afschuwelijk', pron: 'AHF-skhoo-wuh-likh', english: 'Disgusting / awful' },
+      { dutch: 'Top', pron: 'top', english: 'Great / top' },
+      { dutch: 'Uitstekend', pron: 'oyt-STAY-kent', english: 'Excellent' },
+      { dutch: 'Heel goed', pron: 'hayl khoot', english: 'Very good' },
+      { dutch: 'Heel slecht', pron: 'hayl slekht', english: 'Very bad' },
+      { dutch: 'Veel succes', pron: 'fayl sook-SES', english: 'Good luck / much success' },
+      { dutch: 'Veel plezier', pron: 'fayl pleh-SEER', english: 'Have fun / enjoy' },
+      { dutch: 'Hoe gaat het?', pron: 'hoo khahd het?', english: 'How are you? / How is it going?' },
+      { dutch: 'Het gaat goed.', pron: 'het khahd khoot', english: 'It is going well. / I am fine.' },
+      { dutch: 'Het gaat niet goed.', pron: 'het khahd nayt khoot', english: 'It is not going well. / I am not fine.' },
+      { dutch: 'Ik heb een huis.', pron: 'ik heb un hows', english: 'I have a house.' },
+      { dutch: 'Ik heb geen huis.', pron: 'ik heb khayn hows', english: 'I do not have a house.' },
+      { dutch: 'Ik ben niet beroemd.', pron: 'ik ben nayt buh-RAYMT', english: 'I am not famous.' },
+      { dutch: 'Ik zie geen hond.', pron: 'ik zee khayn hont', english: 'I do not see a dog.' },
+      { dutch: 'Ik woon in Utrecht.', pron: 'ik vohn in OO-trekht', english: 'I live in Utrecht.' },
+      { dutch: 'Ik woon niet in Utrecht.', pron: 'ik vohn nayt in OO-trekht', english: 'I do not live in Utrecht.' },
+      { dutch: 'Ik heb een fiets.', pron: 'ik heb un feets', english: 'I have a bicycle.' },
+      { dutch: 'Ik heb geen fiets.', pron: 'ik heb khayn feets', english: 'I do not have a bicycle.' },
+      { dutch: 'Ik ben lang.', pron: 'ik ben lang', english: 'I am tall.' },
+      { dutch: 'Ik ben niet lang.', pron: 'ik ben nayt lang', english: 'I am not tall.' },
+    ],
+  },
+  {
+    title: 'Chapter 19: Inside the House',
+    phrases: [
+      { dutch: 'Het huis', pron: 'het hows', english: 'The house' },
+      { dutch: 'De kamer', pron: 'duh KAH-mer', english: 'The room' },
+      { dutch: 'De woonkamer', pron: 'duh VOHN-kah-mer', english: 'The living room' },
+      { dutch: 'De keuken', pron: 'duh KOO-ken', english: 'The kitchen' },
+      { dutch: 'De slaapkamer', pron: 'duh SLAHP-kah-mer', english: 'The bedroom' },
+      { dutch: 'De badkamer', pron: 'duh BAHT-kah-mer', english: 'The bathroom' },
+      { dutch: 'De televisie', pron: 'duh teh-lay-VEE-zee', english: 'The television' },
+      { dutch: 'De tafel', pron: 'duh TAH-fel', english: 'The table' },
+      { dutch: 'Het raam', pron: 'het raam', english: 'The window' },
+      { dutch: 'De bank', pron: 'duh bank', english: 'The sofa / couch' },
+      { dutch: 'De lamp', pron: 'duh lamp', english: 'The lamp' },
+      { dutch: 'De stoel', pron: 'duh stool', english: 'The chair' },
+      { dutch: 'De koelkast', pron: 'duh KOOL-kast', english: 'The fridge / refrigerator' },
+      { dutch: 'De oven', pron: 'duh OH-ven', english: 'The oven' },
+      { dutch: 'De kookplaat', pron: 'duh KOHK-plaht', english: 'The hob / stove' },
+      { dutch: 'De wasbak', pron: 'duh VAHS-bahk', english: 'The sink (kitchen)' },
+      { dutch: 'De vaatwasser', pron: 'duh VAHT-vah-ser', english: 'The dishwasher' },
+      { dutch: 'Het gordijn', pron: 'het gor-DAYN', english: 'The curtain' },
+      { dutch: 'Het bed', pron: 'het bed', english: 'The bed' },
+      { dutch: 'De kast', pron: 'duh kast', english: 'The cupboard / wardrobe' },
+      { dutch: 'Het toilet', pron: 'het twah-LET', english: 'The toilet' },
+      { dutch: 'De douche', pron: 'duh DOW-shuh', english: 'The shower' },
+      { dutch: 'De spiegel', pron: 'duh SPEE-khuhl', english: 'The mirror' },
+      { dutch: 'De wastafel', pron: 'duh VAHS-tah-fel', english: 'The sink (bathroom)' },
+      { dutch: 'Het bad', pron: 'het baht', english: 'The bath / bathtub' },
+      { dutch: 'Dit is een huis.', pron: 'dit is un hows', english: 'This is a house.' },
+      { dutch: 'Het huis heeft kamers.', pron: 'het hows hayft KAH-mers', english: 'The house has rooms.' },
+      { dutch: 'Welkom in de woonkamer.', pron: 'VEL-kom in duh VOHN-kah-mer', english: 'Welcome to the living room.' },
+      { dutch: 'Welkom in de keuken.', pron: 'VEL-kom in duh KOO-ken', english: 'Welcome to the kitchen.' },
+      { dutch: 'Dit is de slaapkamer.', pron: 'dit is duh SLAHP-kah-mer', english: 'This is the bedroom.' },
+      { dutch: 'Welkom in de badkamer.', pron: 'VEL-kom in duh BAHT-kah-mer', english: 'Welcome to the bathroom.' },
+      { dutch: 'De stoel is naast de tafel.', pron: 'duh stool is nahst duh TAH-fel', english: 'The chair is next to the table.' },
+      { dutch: 'De stoel is voor de tafel.', pron: 'duh stool is foor duh TAH-fel', english: 'The chair is in front of the table.' },
+      { dutch: 'De stoel is op de tafel.', pron: 'duh stool is op duh TAH-fel', english: 'The chair is on the table.' },
+      { dutch: 'De stoel is achter de tafel.', pron: 'duh stool is AKH-ter duh TAH-fel', english: 'The chair is behind the table.' },
+      { dutch: 'De stoel is onder de tafel.', pron: 'duh stool is ON-der duh TAH-fel', english: 'The chair is under the table.' },
+    ],
+  },
 ];
 
 const EXERCISES = [
@@ -874,6 +948,10 @@ const EXERCISES = [
   { task: 'Chapter 16 — Translate to Dutch: "In the afternoon my father works and my sister buys groceries in the supermarket. At eleven o\'clock in the evening he goes to sleep."', answer: 'In de middag werkt mijn vader en koopt mijn zus boodschappen in de supermarkt. Om elf uur \'s avonds gaat hij slapen.' },
   { task: 'Chapter 17 — Translate to Dutch: "In summer my brother goes by bike to the supermarket in the morning and buys ice and drinks."', answer: 'In de zomer gaat mijn broer in de ochtend met de fiets naar de supermarkt en koopt ijs en dranken.' },
   { task: 'Chapter 17 — Translate to Dutch: "My father has to play sport in Utrecht, so he takes the car to Utrecht in the afternoon at 3:20 PM."', answer: 'Mijn vader moet in Utrecht sporten, dus hij neemt om twintig over drie in de middag de auto naar Utrecht.' },
+  { task: 'Chapter 18 — Translate to Dutch: "In winter Amsterdam is cold. She is not happy with the winter season."', answer: 'In de winter is Amsterdam koud. Zij is niet blij met de winter.' },
+  { task: 'Chapter 18 — Translate to Dutch: "My uncle is not famous. He does not live in a big house and has no car."', answer: 'Mijn oom is niet beroemd. Hij woont niet in een groot huis en heeft geen auto.' },
+  { task: 'Chapter 19 — Translate to Dutch: "In the large white house the lamp is next to the window. The chair is in front of the table and it does not have a fridge."', answer: 'In het grote witte huis is de lamp naast het raam. De stoel is voor de tafel en het huis heeft geen koelkast.' },
+  { task: 'Chapter 19 — Translate to Dutch: "Our kitchen is small and beautiful. It has a stove, a sink and does not have curtains."', answer: 'Onze keuken is klein en mooi. De keuken heeft een kookplaat en een wasbak, maar geen gordijnen.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);

@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.25.0** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **542** |
-| **Chapters** | **17** |
-| **Unique words** | **503** |
+| **Version** | **v1.27.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **606** |
+| **Chapters** | **19** |
+| **Unique words** | **543** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -52,7 +52,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 25, patch: 0 };
+const VERSION = { major: 1, minor: 27, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -276,10 +276,12 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.23.2**: Ch.15 exercises → user-authored — *Op zaterdagavond gaat mijn moeder naar Utrecht. Utrecht is even mooi als Amsterdam.* and *In de winter eet mijn opa ongezond eten. Is het plezier groter dan de gezondheid?*
 - **v1.24.0**: Chapter 16 — Daily Routines (*ochtendroutine/middagroutine/avondroutine*, routine verbs, time-of-day patterns, morning/afternoon/evening sentences); 29 new phrases; **2 Exercises** (32 tasks total). Fixed *in de morgen* → *in de ochtend*; numeric times → Dutch words (*acht uur*, *negen uur*, etc.).
 - **v1.25.0**: Chapter 17 — Transport (*vervoer*, *nemen/reizen*, *per/van/naar*, *met de* travel patterns, vehicles, Dutch cities & Amsterdam landmarks); 36 new phrases; **2 Exercises** (34 tasks total). Added *Ik reis met de trein.*, *Ik reis met het vliegtuig naar Schiphol.*, *Ik ga met de fiets.*; exercises: summer bike trip to supermarket for *ijs en dranken*; father *moet sporten* in Utrecht so takes the car at *twintig over drie*.
+- **v1.26.0**: Chapter 18 — Positives/Negatives (*positief/negatief*, *geen*/*niet*, positive/negative adjectives, *Hoe gaat het?* / *Het gaat goed* / *Het gaat niet goed*, statement pairs); 28 new phrases; **2 Exercises** (36 tasks total). Exercises: cold Amsterdam in winter / *niet blij*; uncle *niet beroemd*, no big house, *geen auto*.
+- **v1.27.0**: Chapter 19 — Inside the House (*het huis*, rooms, living-room/kitchen/bedroom/bathroom vocabulary, welcome phrases, preposition sentences *naast/voor/op/achter/onder*); 36 new phrases; **2 Exercises** (38 tasks total). Exercises: lamp/raam/stoel/tafel in *grote witte huis*, *geen koelkast*; *onze keuken* klein en mooi with *kookplaat*, *wasbak*, *geen gordijnen*.
 
 ---
 
-## Current Chapters (v1.25.0)
+## Current Chapters (v1.27.0)
 
 1. Introducing Yourself  
 2. Family  
@@ -297,4 +299,6 @@ There is no dev server for this static file, and no project run-skill or `chromi
 14. The Body & Health  
 15. Comparisons  
 16. Daily Routines  
-17. Transport
+17. Transport  
+18. Positives/Negatives  
+19. Inside the House
