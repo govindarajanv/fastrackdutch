@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.27.0** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **606** |
-| **Chapters** | **19** |
-| **Unique words** | **543** |
+| **Version** | **v1.28.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **678** |
+| **Chapters** | **22** |
+| **Unique words** | **617** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -52,7 +52,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 27, patch: 0 };
+const VERSION = { major: 1, minor: 28, patch: 0 };
 ```
 
 | Bump | When | Examples |
@@ -278,10 +278,11 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.25.0**: Chapter 17 — Transport (*vervoer*, *nemen/reizen*, *per/van/naar*, *met de* travel patterns, vehicles, Dutch cities & Amsterdam landmarks); 36 new phrases; **2 Exercises** (34 tasks total). Added *Ik reis met de trein.*, *Ik reis met het vliegtuig naar Schiphol.*, *Ik ga met de fiets.*; exercises: summer bike trip to supermarket for *ijs en dranken*; father *moet sporten* in Utrecht so takes the car at *twintig over drie*.
 - **v1.26.0**: Chapter 18 — Positives/Negatives (*positief/negatief*, *geen*/*niet*, positive/negative adjectives, *Hoe gaat het?* / *Het gaat goed* / *Het gaat niet goed*, statement pairs); 28 new phrases; **2 Exercises** (36 tasks total). Exercises: cold Amsterdam in winter / *niet blij*; uncle *niet beroemd*, no big house, *geen auto*.
 - **v1.27.0**: Chapter 19 — Inside the House (*het huis*, rooms, living-room/kitchen/bedroom/bathroom vocabulary, welcome phrases, preposition sentences *naast/voor/op/achter/onder*); 36 new phrases; **2 Exercises** (38 tasks total). Exercises: lamp/raam/stoel/tafel in *grote witte huis*, *geen koelkast*; *onze keuken* klein en mooi with *kookplaat*, *wasbak*, *geen gordijnen*.
+- **v1.28.0**: Chapter 20 — Weather (*het weer*, weather nouns/conditions, compass directions, *liggen*, regional & weekday forecasts); 34 new phrases. Chapter 21 — Emotions (*emoties*, *voelen*, emotion adjectives, reflexive conjugation, *Ik ben trots op jou*); 25 new phrases. Chapter 22 — Narration 1 (*Koffie verkeerd* café story); 13 new phrases. **6 Exercises** (44 tasks total).
 
 ---
 
-## Current Chapters (v1.27.0)
+## Current Chapters (v1.28.0)
 
 1. Introducing Yourself  
 2. Family  
@@ -301,4 +302,7 @@ There is no dev server for this static file, and no project run-skill or `chromi
 16. Daily Routines  
 17. Transport  
 18. Positives/Negatives  
-19. Inside the House
+19. Inside the House  
+20. Weather  
+21. Emotions  
+22. Narration 1

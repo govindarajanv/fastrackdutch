@@ -197,7 +197,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 27, patch: 0 };
+const VERSION = { major: 1, minor: 28, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -911,6 +911,93 @@ const CHAPTERS = [
       { dutch: 'De stoel is onder de tafel.', pron: 'duh stool is ON-der duh TAH-fel', english: 'The chair is under the table.' },
     ],
   },
+  {
+    title: 'Chapter 20: Weather',
+    phrases: [
+      { dutch: 'Het weer', pron: 'het vayr', english: 'The weather' },
+      { dutch: 'De zon', pron: 'duh zon', english: 'The sun' },
+      { dutch: 'De wolk', pron: 'duh volk', english: 'The cloud' },
+      { dutch: 'De regen', pron: 'duh RAY-khen', english: 'The rain' },
+      { dutch: 'De sneeuw', pron: 'duh snayv', english: 'The snow' },
+      { dutch: 'De mist', pron: 'duh mist', english: 'The fog / mist' },
+      { dutch: 'De storm', pron: 'duh storm', english: 'The storm' },
+      { dutch: 'Noord', pron: 'nort', english: 'North' },
+      { dutch: 'Oost', pron: 'ohst', english: 'East' },
+      { dutch: 'Zuid', pron: 'zowt', english: 'South' },
+      { dutch: 'West', pron: 'vest', english: 'West' },
+      { dutch: 'Liggen', pron: 'LIKH-en', english: 'To lie / to be located' },
+      { dutch: 'Het weerbericht', pron: 'het VAYR-buh-rikht', english: 'The weather report / forecast' },
+      { dutch: 'Het is zonnig.', pron: 'het is ZON-nikh', english: 'It is sunny.' },
+      { dutch: 'Het is bewolkt.', pron: 'het is buh-VOLKT', english: 'It is cloudy.' },
+      { dutch: 'Het regent.', pron: 'het RAY-khent', english: 'It is raining.' },
+      { dutch: 'Het sneeuwt.', pron: 'het SNAY-vuwt', english: 'It is snowing.' },
+      { dutch: 'Het is mistig.', pron: 'het is MIS-tikh', english: 'It is foggy / misty.' },
+      { dutch: 'Het stormt.', pron: 'het stormt', english: 'It is stormy. / There is a storm.' },
+      { dutch: 'Den Haag ligt in het westen.', pron: 'den hakh likht in het VES-ten', english: 'The Hague is in the west.' },
+      { dutch: 'Groningen ligt in het noorden.', pron: 'KHROH-ning-en likht in het NOR-den', english: 'Groningen is in the north.' },
+      { dutch: 'Enschede ligt in het oosten.', pron: 'EN-skhuh-duh likht in het OHS-ten', english: 'Enschede is in the east.' },
+      { dutch: 'Maastricht ligt in het zuiden.', pron: 'MAHS-trikht likht in het ZOW-den', english: 'Maastricht is in the south.' },
+      { dutch: 'Het is zonnig in het zuiden.', pron: 'het is ZON-nikh in het ZOW-den', english: 'It is sunny in the south.' },
+      { dutch: 'Het regent in het westen.', pron: 'het RAY-khent in het VES-ten', english: 'It is raining in the west.' },
+      { dutch: 'Het is bewolkt in het oosten.', pron: 'het is buh-VOLKT in het OHS-ten', english: 'It is cloudy in the east.' },
+      { dutch: 'Het stormt in het noorden.', pron: 'het stormt in het NOR-den', english: 'It is stormy in the north.' },
+      { dutch: 'Het is mistig in het westen.', pron: 'het is MIS-tikh in het VES-ten', english: 'It is foggy in the west.' },
+      { dutch: 'Het sneeuwt in het noorden.', pron: 'het SNAY-vuwt in het NOR-den', english: 'It is snowing in the north.' },
+      { dutch: 'Het is zonnig op maandag.', pron: 'het is ZON-nikh op MAAN-dakh', english: 'It is sunny on Monday.' },
+      { dutch: 'Het is bewolkt op dinsdag.', pron: 'het is buh-VOLKT op DINS-dakh', english: 'It is cloudy on Tuesday.' },
+      { dutch: 'Het regent op woensdag.', pron: 'het RAY-khent op WOONS-dakh', english: 'It is raining on Wednesday.' },
+      { dutch: 'Het sneeuwt op donderdag.', pron: 'het SNAY-vuwt op DON-der-dakh', english: 'It is snowing on Thursday.' },
+    ],
+  },
+  {
+    title: 'Chapter 21: Emotions',
+    phrases: [
+      { dutch: 'Emoties', pron: 'ay-moh-TEES', english: 'Emotions' },
+      { dutch: 'Voelen', pron: 'VOO-len', english: 'To feel' },
+      { dutch: 'Blij', pron: 'blay', english: 'Happy / glad' },
+      { dutch: 'Verdrietig', pron: 'fer-DREET-ikh', english: 'Sad' },
+      { dutch: 'Boos', pron: 'bohs', english: 'Angry' },
+      { dutch: 'Verrast', pron: 'fer-RAST', english: 'Surprised' },
+      { dutch: 'Bang', pron: 'bahng', english: 'Scared / afraid' },
+      { dutch: 'Teleurgesteld', pron: 'tuh-lur-khuh-STELT', english: 'Disappointed' },
+      { dutch: 'Nerveus', pron: 'ner-VAYS', english: 'Nervous' },
+      { dutch: 'Opgelucht', pron: 'op-khuh-LUKHT', english: 'Relieved' },
+      { dutch: 'Trots', pron: 'trots', english: 'Proud' },
+      { dutch: 'Moe', pron: 'moo', english: 'Tired' },
+      { dutch: 'Hoe voel je je?', pron: 'hoo feel yuh yuh?', english: 'How do you feel?' },
+      { dutch: 'Ik voel me blij.', pron: 'ik feel muh blay', english: 'I feel happy.' },
+      { dutch: 'Jij voelt je blij.', pron: 'yay voolt yuh blay', english: 'You feel happy.' },
+      { dutch: 'Hij voelt zich blij.', pron: 'hay voolt zikh blay', english: 'He feels happy.' },
+      { dutch: 'Wij voelen ons blij.', pron: 'vay VOO-len ons blay', english: 'We feel happy.' },
+      { dutch: 'Jullie voelen je trots.', pron: 'YUL-ee VOO-len yuh trots', english: 'You (plural) feel proud.' },
+      { dutch: 'Zij voelen zich blij.', pron: 'zay VOO-len zikh blay', english: 'They feel happy.' },
+      { dutch: 'Ik ben boos.', pron: 'ik ben bohs', english: 'I am angry.' },
+      { dutch: 'Jij bent opgelucht.', pron: 'yay bent op-khuh-LUKHT', english: 'You are relieved.' },
+      { dutch: 'Zij zijn blij.', pron: 'zay zayn blay', english: 'They are happy.' },
+      { dutch: 'Zij is boos.', pron: 'zay is bohs', english: 'She is angry.' },
+      { dutch: 'Ik ben moe.', pron: 'ik ben moo', english: 'I am tired.' },
+      { dutch: 'Waarom ben je boos?', pron: 'vah-RAHM ben yuh bohs?', english: 'Why are you angry?' },
+      { dutch: 'Ik ben trots op jou.', pron: 'ik ben trots op yow', english: 'I am proud of you.' },
+    ],
+  },
+  {
+    title: 'Chapter 22: Narration 1',
+    phrases: [
+      { dutch: 'Koffie verkeerd', pron: 'KOFF-ee fer-KAYRT', english: 'Wrong coffee (mixed-up orders)' },
+      { dutch: 'Wat kan hier misgaan?', pron: 'vaht kan heer MIS-khahn?', english: 'What can go wrong here?' },
+      { dutch: 'Dit is Tom. Hij is in de stad en loopt een druk café binnen.', pron: 'dit is Tom. hay is in duh staht en lohpt un druk kah-FAY BIN-nen', english: 'This is Tom. He is in the city and walks into a busy café.' },
+      { dutch: 'Ik wil graag een cappuccino met havermelk.', pron: 'ik vil khraakh un kah-poo-CHEE-noh met HAH-ver-melk', english: 'I would like a cappuccino with oat milk.' },
+      { dutch: 'Dit is Sarah. Een meisje met bruin haar en een groene jas.', pron: 'dit is SAH-rah. un MAYs-yuh met brown haar en un KHROH-nuh yas', english: 'This is Sarah. A girl with brown hair and a green coat.' },
+      { dutch: 'Mag ik een muntthee?', pron: 'makh ik un MUNT-tay?', english: 'May I have a mint tea?' },
+      { dutch: 'De barista heeft het erg druk. Hij werkt snel om de drankjes klaar te maken.', pron: 'duh bah-REES-tah hayft het erkh druk. hay verkht snel om duh DRAHNK-yes klahr tuh MAH-ken', english: 'The barista is very busy. He works quickly to prepare the drinks.' },
+      { dutch: 'De fout: De barista zet twee bekers op de bar.', pron: 'duh fowt: duh bah-REES-tah zet tvay BEK-ers op duh bar', english: 'The mistake: The barista puts two cups on the counter.' },
+      { dutch: 'Hij kijkt niet goed en schrijft de verkeerde namen op de bekers.', pron: 'hay kaykt nayt khoot en skhrift duh fer-KAYR-duh NAH-men op duh BEK-ers', english: 'He does not look carefully and writes the wrong names on the cups.' },
+      { dutch: 'Bah. Dit is geen cappuccino. Dit is thee.', pron: 'bah. dit is khayn kah-poo-CHEE-noh. dit is tay', english: 'Ugh. This is not a cappuccino. This is tea.' },
+      { dutch: 'Leuk. Dit is geen thee. Dit is koffie met melk.', pron: 'luk. dit is khayn tay. dit is KOFF-ee met melk', english: 'Funny. This is not tea. This is coffee with milk.' },
+      { dutch: 'Zullen we samen zitten?', pron: 'ZUL-en vuh SAH-men ZIT-en?', english: 'Shall we sit together?' },
+      { dutch: 'Ze zitten samen. De koffie en thee zijn lekker. Het is een leuke dag.', pron: 'zuh ZIT-en SAH-men. duh KOFF-ee en tay zayn LEK-ker. het is un LOO-kuh dakh', english: 'They sit together. The coffee and tea are tasty. It is a nice day.' },
+    ],
+  },
 ];
 
 const EXERCISES = [
@@ -952,6 +1039,12 @@ const EXERCISES = [
   { task: 'Chapter 18 — Translate to Dutch: "My uncle is not famous. He does not live in a big house and has no car."', answer: 'Mijn oom is niet beroemd. Hij woont niet in een groot huis en heeft geen auto.' },
   { task: 'Chapter 19 — Translate to Dutch: "In the large white house the lamp is next to the window. The chair is in front of the table and it does not have a fridge."', answer: 'In het grote witte huis is de lamp naast het raam. De stoel is voor de tafel en het huis heeft geen koelkast.' },
   { task: 'Chapter 19 — Translate to Dutch: "Our kitchen is small and beautiful. It has a stove, a sink and does not have curtains."', answer: 'Onze keuken is klein en mooi. De keuken heeft een kookplaat en een wasbak, maar geen gordijnen.' },
+  { task: 'Chapter 20 — Translate to Dutch: "In winter it snows in the north. Maastricht is in the south and it is sunny there."', answer: 'In de winter sneeuwt het in het noorden. Maastricht ligt in het zuiden en daar is het zonnig.' },
+  { task: 'Chapter 20 — Translate to Dutch: "On Wednesday it rains. My mother is in The Hague in the west."', answer: 'Op woensdag regent het. Mijn moeder is in Den Haag in het westen.' },
+  { task: 'Chapter 21 — Translate to Dutch: "How do you feel? I feel proud. My brother is tired and sad."', answer: 'Hoe voel je je? Ik voel me trots. Mijn broer is moe en verdrietig.' },
+  { task: 'Chapter 21 — Translate to Dutch: "Why are you angry? My sister feels relieved after speaking with the doctor."', answer: 'Waarom ben je boos? Mijn zus voelt zich opgelucht na het spreken met de dokter.' },
+  { task: 'Chapter 22 — Translate to Dutch: "In the busy café the barista works quickly. Sarah orders mint tea."', answer: 'In het drukke café werkt de barista snel. Sarah bestelt een muntthee.' },
+  { task: 'Chapter 22 — Translate to Dutch: "They sit together in the café. The drinks are delicious and it is a nice day."', answer: 'Ze zitten samen in het café. De drankjes zijn lekker en het is een leuke dag.' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);
