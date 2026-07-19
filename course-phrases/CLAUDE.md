@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.28.0** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.28.3** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **678** |
 | **Chapters** | **22** |
 | **Unique words** | **617** |
@@ -52,7 +52,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 28, patch: 0 };
+const VERSION = { major: 1, minor: 28, patch: 3 };
 ```
 
 | Bump | When | Examples |
@@ -107,7 +107,7 @@ Runtime helpers (do not edit manually):
 
 ### Exercises (translation tasks)
 
-Each content chapter gets **2 exercises** in the `EXERCISES` array at the bottom of `index.html`. Exercises are **not** counted as phrases or chapters.
+Each content chapter gets **4 exercises** in the `EXERCISES` array at the bottom of `index.html` — exercises 1–2 are integrative multi-chapter scenarios; exercises 3–4 are labeled **Exercise 3** / **Exercise 4** and focus on chapter-aligned revision. Exercises are **not** counted as phrases or chapters.
 
 **Mandatory rule — integrative, not repetitive:**
 
@@ -117,11 +117,9 @@ When writing or rewriting exercises for chapter *N*, **never** copy or lightly r
 |----|-------|
 | Cross-chapter scenarios (e.g. Ch.15 *net zo mooi als* + Ch.13 *jurk* + Ch.12 *zaterdagavond* + Ch.2 *moeder* + Ch.6 *blauwe auto*) | Repeat a sentence from the new chapter with one word changed |
 | Use the **new chapter's grammar pattern** in a fresh context | Quote Amsterdam/Amstelveen or animal superlative chains verbatim from Ch.15 |
-| Label `Chapter N — Translate to Dutch: "…"` | Reuse the chapter's example sentences as answers |
+| Label `Chapter N — Exercise M — Translate to Dutch: "…"` (M is 1–4 per chapter) | Reuse the chapter's example sentences as answers | read the target chapter's phrases and confirm **neither exercise answer appears in that chapter** (or is a trivial variant). Prefer the style established in v1.16.2+ and Ch.13/14 user-authored multi-chapter scenarios.
 
-Before marking exercise work complete: read the target chapter's phrases and confirm **neither exercise answer appears in that chapter** (or is a trivial variant). Prefer the style established in v1.16.2+ and Ch.13/14 user-authored multi-chapter scenarios.
-
-When adding a new chapter, always add its 2 exercises in the **same change set** — do not defer exercises to a follow-up.
+When adding a new chapter, always add its 4 exercises in the **same change set** — do not defer exercises to a follow-up.
 
 ### Pronunciation guide (`pron`)
 
@@ -279,6 +277,9 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.26.0**: Chapter 18 — Positives/Negatives (*positief/negatief*, *geen*/*niet*, positive/negative adjectives, *Hoe gaat het?* / *Het gaat goed* / *Het gaat niet goed*, statement pairs); 28 new phrases; **2 Exercises** (36 tasks total). Exercises: cold Amsterdam in winter / *niet blij*; uncle *niet beroemd*, no big house, *geen auto*.
 - **v1.27.0**: Chapter 19 — Inside the House (*het huis*, rooms, living-room/kitchen/bedroom/bathroom vocabulary, welcome phrases, preposition sentences *naast/voor/op/achter/onder*); 36 new phrases; **2 Exercises** (38 tasks total). Exercises: lamp/raam/stoel/tafel in *grote witte huis*, *geen koelkast*; *onze keuken* klein en mooi with *kookplaat*, *wasbak*, *geen gordijnen*.
 - **v1.28.0**: Chapter 20 — Weather (*het weer*, weather nouns/conditions, compass directions, *liggen*, regional & weekday forecasts); 34 new phrases. Chapter 21 — Emotions (*emoties*, *voelen*, emotion adjectives, reflexive conjugation, *Ik ben trots op jou*); 25 new phrases. Chapter 22 — Narration 1 (*Koffie verkeerd* café story); 13 new phrases. **6 Exercises** (44 tasks total).
+- **v1.28.1**: Toolbar **+ Expand all** / **− Collapse all** buttons for all chapters and the Exercises section; shared `setSectionCollapsed()` helper.
+- **v1.28.2**: Add **Exercise 3** and **Exercise 4** for every chapter (Ch.1–22) — 44 revision exercises; **88 tasks** total (4 per chapter).
+- **v1.28.3**: Consistent exercise titles — all 88 tasks now use `Chapter N — Exercise M — Translate to Dutch:` format.
 
 ---
 

@@ -39,6 +39,8 @@ body.playback-active .wrap{padding-bottom:88px}
 #play-all:hover,#play-all.active{background:var(--orange);color:#fff}
 #print-btn{background:transparent;border:1.5px solid var(--blue);color:var(--blue);border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
 #print-btn:hover{background:var(--blue);color:#fff}
+#expand-all,#collapse-all{background:transparent;border:1.5px solid var(--muted);color:var(--muted);border-radius:20px;padding:6px 14px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s}
+#expand-all:hover,#collapse-all:hover{border-color:var(--blue);color:var(--blue);background:#f0f5fc}
 .card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .tbl{width:100%;border-collapse:collapse;font-size:.88rem}
 .tbl th{background:var(--blue);color:#fff;padding:9px 14px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
@@ -162,6 +164,8 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
   <div class="toolbar">
     <span id="phrase-count"></span>
     <div class="toolbar-actions">
+      <button type="button" id="expand-all" title="Expand all chapters and exercises">+ Expand all</button>
+      <button type="button" id="collapse-all" title="Collapse all chapters and exercises">− Collapse all</button>
       <button type="button" id="pause-btn" disabled title="Pause or resume playback">⏸ Pause</button>
       <button type="button" id="play-all">▶ Play All</button>
       <button type="button" id="print-btn" title="Open print dialog to save as PDF">🖨 Print / PDF</button>
@@ -197,7 +201,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 28, patch: 0 };
+const VERSION = { major: 1, minor: 28, patch: 3 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -1001,50 +1005,94 @@ const CHAPTERS = [
 ];
 
 const EXERCISES = [
-  { task: 'Chapter 1 — Translate to Dutch: "Hi. I am Govind. I live in Utrecht."', answer: 'Hoi. Ik ben Govind. Ik woon in Utrecht.' },
-  { task: 'Chapter 1 — Translate to Dutch: "Good day. Nice to meet you."', answer: 'Goedendag. Aangenaam.' },
-  { task: 'Chapter 2 — Translate to Dutch: "Our grandfather is called Arthur."', answer: 'Onze opa heet Arthur.' },
-  { task: 'Chapter 2 — Translate to Dutch: "This is my daughter. She is my sister."', answer: 'Dit is mijn dochter. Zij is mijn zus.' },
-  { task: 'Chapter 3 — Translate to Dutch: "Do you have a beard? Yes, I have brown eyes."', answer: 'Heb je een baard? Ja, ik heb bruine ogen.' },
-  { task: 'Chapter 3 — Translate to Dutch: "I have a nose and ears."', answer: 'Ik heb een neus en oren.' },
-  { task: 'Chapter 4 — Translate to Dutch: "Are you a person? Yes, I have books."', answer: 'Ben jij een persoon? Ja, ik heb boeken.' },
-  { task: 'Chapter 4 — Translate to Dutch: "This is Emma. She has books."', answer: 'Dit is Emma. Zij heeft boeken.' },
-  { task: 'Chapter 5 — Translate to Dutch: "She drinks coffee. He eats vegetables."', answer: 'Zij drinkt koffie. Hij eet groenten.' },
-  { task: 'Chapter 5 — Translate to Dutch: "She drinks tea. He eats a banana."', answer: 'Zij drinkt thee. Hij eet een banaan.' },
-  { task: 'Chapter 6 — Translate to Dutch: "The small car is green. The white house is beautiful."', answer: 'De kleine auto is groen. Het witte huis is mooi.' },
-  { task: 'Chapter 6 — Translate to Dutch: "The white house is small."', answer: 'Het witte huis is klein.' },
-  { task: 'Chapter 7 — Translate to Dutch: "I buy bread in the bakery. The apples are in the fruit section."', answer: 'Ik koop brood in de bakkerij. De appels liggen op de fruitafdeling.' },
-  { task: 'Chapter 7 — Translate to Dutch: "We are at the checkout. Card or cash?"', answer: 'We zijn bij de kassa. Pinnen of contant?' },
-  { task: 'Chapter 8 — Translate to Dutch: "Do you have a table for two? I would like pizza."', answer: 'Heeft u een tafel voor twee? Ik wil graag pizza.' },
-  { task: 'Chapter 8 — Translate to Dutch: "I would like coffee and an ice cream as dessert."', answer: 'Ik wil graag koffie en een ijsje als dessert.' },
-  { task: 'Chapter 9 — Translate to Dutch: "How many people are there in the house?"', answer: 'Hoeveel mensen zijn er in het huis?' },
-  { task: 'Chapter 9 — Translate to Dutch: "I live in Utrecht city with my family."', answer: 'Ik woon in de stad Utrecht met mijn gezin.' },
-  { task: 'Chapter 10 — Translate to Dutch: "How many apples are there in the fruit section? Sixty-seven."', answer: 'Hoeveel appels zijn er op de fruitafdeling? Zevenenzestig.' },
-  { task: 'Chapter 10 — Translate to Dutch: "How old is that large white house? Eighty years old."', answer: 'Hoe oud is dat grote witte huis? Tachtig jaar oud.' },
-  { task: 'Chapter 11 — Translate to Dutch: "I buy groceries at supermarket at 10 o\'clock in the morning"', answer: 'Ik koop boodschappen in de supermarkt om tien uur in de ochtend.' },
-  { task: 'Chapter 11 — Translate to Dutch: "I speak with my grandfather at 5:40 PM."', answer: 'Ik spreek om tien over half zes \'s avonds met mijn opa.' },
-  { task: 'Chapter 12 — Translate to Dutch: "In the winter I work on Friday."', answer: 'In de winter werk ik op vrijdag.' },
-  { task: 'Chapter 12 — Translate to Dutch: "The summer holiday is in August. I play football on the weekend."', answer: 'De zomervakantie is in augustus. Ik voetbal in het weekend.' },
-  { task: 'Chapter 13 — Translate to Dutch: "You wear a suit when you go to office tomorrow morning"', answer: 'Jij draagt een pak als jij morgenochtend naar kantoor gaat.' },
-  { task: 'Chapter 13 — Translate to Dutch: "Her socks are short, so she shops socks in the clothing section of the supermarket"', answer: 'Haar sokken zijn kort, dus zij koopt sokken in de kledingafdeling van de supermarkt.' },
-  { task: 'Chapter 14 — Translate to Dutch: "My aunt has stomach ache since morning. She ate fatty food."', answer: 'Mijn tante heeft sinds de ochtend buikpijn. Zij at vet eten.' },
-  { task: 'Chapter 14 — Translate to Dutch: "I have a cold after drinking cola bought in the supermarket."', answer: 'Ik ben verkouden na het drinken van cola uit de supermarkt.' },
-  { task: 'Chapter 15 — Translate to Dutch: "On Saturday evening my mother goes to Utrecht. Utrecht is as beautiful as Amsterdam"', answer: 'Op zaterdagavond gaat mijn moeder naar Utrecht. Utrecht is even mooi als Amsterdam.' },
-  { task: 'Chapter 15 — Translate to Dutch: "In winter my grandfather eats unhealthy food. Is the pleasure bigger than the health?"', answer: 'In de winter eet mijn opa ongezond eten. Is het plezier groter dan de gezondheid?' },
-  { task: 'Chapter 16 — Translate to Dutch: "On Wednesday morning my daughter wears a dress and goes to school. She wakes up at seven o\'clock."', answer: 'Op woensdagochtend draagt mijn dochter een jurk en gaat naar school. Zij wordt om zeven uur wakker.' },
-  { task: 'Chapter 16 — Translate to Dutch: "In the afternoon my father works and my sister buys groceries in the supermarket. At eleven o\'clock in the evening he goes to sleep."', answer: 'In de middag werkt mijn vader en koopt mijn zus boodschappen in de supermarkt. Om elf uur \'s avonds gaat hij slapen.' },
-  { task: 'Chapter 17 — Translate to Dutch: "In summer my brother goes by bike to the supermarket in the morning and buys ice and drinks."', answer: 'In de zomer gaat mijn broer in de ochtend met de fiets naar de supermarkt en koopt ijs en dranken.' },
-  { task: 'Chapter 17 — Translate to Dutch: "My father has to play sport in Utrecht, so he takes the car to Utrecht in the afternoon at 3:20 PM."', answer: 'Mijn vader moet in Utrecht sporten, dus hij neemt om twintig over drie in de middag de auto naar Utrecht.' },
-  { task: 'Chapter 18 — Translate to Dutch: "In winter Amsterdam is cold. She is not happy with the winter season."', answer: 'In de winter is Amsterdam koud. Zij is niet blij met de winter.' },
-  { task: 'Chapter 18 — Translate to Dutch: "My uncle is not famous. He does not live in a big house and has no car."', answer: 'Mijn oom is niet beroemd. Hij woont niet in een groot huis en heeft geen auto.' },
-  { task: 'Chapter 19 — Translate to Dutch: "In the large white house the lamp is next to the window. The chair is in front of the table and it does not have a fridge."', answer: 'In het grote witte huis is de lamp naast het raam. De stoel is voor de tafel en het huis heeft geen koelkast.' },
-  { task: 'Chapter 19 — Translate to Dutch: "Our kitchen is small and beautiful. It has a stove, a sink and does not have curtains."', answer: 'Onze keuken is klein en mooi. De keuken heeft een kookplaat en een wasbak, maar geen gordijnen.' },
-  { task: 'Chapter 20 — Translate to Dutch: "In winter it snows in the north. Maastricht is in the south and it is sunny there."', answer: 'In de winter sneeuwt het in het noorden. Maastricht ligt in het zuiden en daar is het zonnig.' },
-  { task: 'Chapter 20 — Translate to Dutch: "On Wednesday it rains. My mother is in The Hague in the west."', answer: 'Op woensdag regent het. Mijn moeder is in Den Haag in het westen.' },
-  { task: 'Chapter 21 — Translate to Dutch: "How do you feel? I feel proud. My brother is tired and sad."', answer: 'Hoe voel je je? Ik voel me trots. Mijn broer is moe en verdrietig.' },
-  { task: 'Chapter 21 — Translate to Dutch: "Why are you angry? My sister feels relieved after speaking with the doctor."', answer: 'Waarom ben je boos? Mijn zus voelt zich opgelucht na het spreken met de dokter.' },
-  { task: 'Chapter 22 — Translate to Dutch: "In the busy café the barista works quickly. Sarah orders mint tea."', answer: 'In het drukke café werkt de barista snel. Sarah bestelt een muntthee.' },
-  { task: 'Chapter 22 — Translate to Dutch: "They sit together in the café. The drinks are delicious and it is a nice day."', answer: 'Ze zitten samen in het café. De drankjes zijn lekker en het is een leuke dag.' },
+  { task: 'Chapter 1 — Exercise 1 — Translate to Dutch: "Hi. I am Govind. I live in Utrecht."', answer: 'Hoi. Ik ben Govind. Ik woon in Utrecht.' },
+  { task: 'Chapter 1 — Exercise 2 — Translate to Dutch: "Good day. Nice to meet you."', answer: 'Goedendag. Aangenaam.' },
+  { task: 'Chapter 1 — Exercise 3 — Translate to Dutch: "Good morning. I live and work in Utrecht."', answer: 'Goedemorgen. Ik woon en werk in Utrecht.' },
+  { task: 'Chapter 1 — Exercise 4 — Translate to Dutch: "Who are you? Nice to meet you, bye."', answer: 'Wie ben je? Aangenaam, doei.' },
+  { task: 'Chapter 2 — Exercise 1 — Translate to Dutch: "Our grandfather is called Arthur."', answer: 'Onze opa heet Arthur.' },
+  { task: 'Chapter 2 — Exercise 2 — Translate to Dutch: "This is my daughter. She is my sister."', answer: 'Dit is mijn dochter. Zij is mijn zus.' },
+  { task: 'Chapter 2 — Exercise 3 — Translate to Dutch: "Our neighbour is called Govind. He is my uncle."', answer: 'Onze buurman heet Govind. Hij is mijn oom.' },
+  { task: 'Chapter 2 — Exercise 4 — Translate to Dutch: "This is my family. She is my daughter and he is my grandfather."', answer: 'Dit is mijn gezin. Zij is mijn dochter en hij is mijn opa.' },
+  { task: 'Chapter 3 — Exercise 1 — Translate to Dutch: "Do you have a beard? Yes, I have brown eyes."', answer: 'Heb je een baard? Ja, ik heb bruine ogen.' },
+  { task: 'Chapter 3 — Exercise 2 — Translate to Dutch: "I have a nose and ears."', answer: 'Ik heb een neus en oren.' },
+  { task: 'Chapter 3 — Exercise 3 — Translate to Dutch: "She is a woman. She has long brown hair and blue eyes."', answer: 'Zij is een vrouw. Zij heeft lang bruin haar en blauwe ogen.' },
+  { task: 'Chapter 3 — Exercise 4 — Translate to Dutch: "He has a beard and glasses. My skin colour is brown."', answer: 'Hij heeft een baard en een bril. Mijn huidskleur is bruin.' },
+  { task: 'Chapter 4 — Exercise 1 — Translate to Dutch: "Are you a person? Yes, I have books."', answer: 'Ben jij een persoon? Ja, ik heb boeken.' },
+  { task: 'Chapter 4 — Exercise 2 — Translate to Dutch: "This is Emma. She has books."', answer: 'Dit is Emma. Zij heeft boeken.' },
+  { task: 'Chapter 4 — Exercise 3 — Translate to Dutch: "We are students. We have a house in Utrecht."', answer: 'Wij zijn studenten. Wij hebben een huis in Utrecht.' },
+  { task: 'Chapter 4 — Exercise 4 — Translate to Dutch: "You are a person. They are people and they have books."', answer: 'Jij bent een persoon. Zij zijn mensen en zij hebben boeken.' },
+  { task: 'Chapter 5 — Exercise 1 — Translate to Dutch: "She drinks coffee. He eats vegetables."', answer: 'Zij drinkt koffie. Hij eet groenten.' },
+  { task: 'Chapter 5 — Exercise 2 — Translate to Dutch: "She drinks tea. He eats a banana."', answer: 'Zij drinkt thee. Hij eet een banaan.' },
+  { task: 'Chapter 5 — Exercise 3 — Translate to Dutch: "You eat bread and I drink milk for breakfast."', answer: 'Jij eet brood en ik drink melk als ontbijt.' },
+  { task: 'Chapter 5 — Exercise 4 — Translate to Dutch: "He eats rice and chicken for dinner. Delicious."', answer: 'Hij eet rijst en kip als diner. Lekker.' },
+  { task: 'Chapter 6 — Exercise 1 — Translate to Dutch: "The small car is green. The white house is beautiful."', answer: 'De kleine auto is groen. Het witte huis is mooi.' },
+  { task: 'Chapter 6 — Exercise 2 — Translate to Dutch: "The white house is small."', answer: 'Het witte huis is klein.' },
+  { task: 'Chapter 6 — Exercise 3 — Translate to Dutch: "I want a small green car."', answer: 'Ik wil een kleine groene auto.' },
+  { task: 'Chapter 6 — Exercise 4 — Translate to Dutch: "The proud mother has a beautiful blue car."', answer: 'De trotse moeder heeft een mooie blauwe auto.' },
+  { task: 'Chapter 7 — Exercise 1 — Translate to Dutch: "I buy bread in the bakery. The apples are in the fruit section."', answer: 'Ik koop brood in de bakkerij. De appels liggen op de fruitafdeling.' },
+  { task: 'Chapter 7 — Exercise 2 — Translate to Dutch: "We are at the checkout. Card or cash?"', answer: 'We zijn bij de kassa. Pinnen of contant?' },
+  { task: 'Chapter 7 — Exercise 3 — Translate to Dutch: "I weigh the meat. It weighs five hundred grams."', answer: 'Ik weeg het vlees. Het weegt vijfhonderd gram.' },
+  { task: 'Chapter 7 — Exercise 4 — Translate to Dutch: "You pay at the checkout by card. Would you like the receipt?"', answer: 'Jij betaalt bij de kassa. Wil je het bonnetje?' },
+  { task: 'Chapter 8 — Exercise 1 — Translate to Dutch: "Do you have a table for two? I would like pizza."', answer: 'Heeft u een tafel voor twee? Ik wil graag pizza.' },
+  { task: 'Chapter 8 — Exercise 2 — Translate to Dutch: "I would like coffee and an ice cream as dessert."', answer: 'Ik wil graag koffie en een ijsje als dessert.' },
+  { task: 'Chapter 8 — Exercise 3 — Translate to Dutch: "Have you reserved a table? I would like the tacos as a starter."', answer: 'Heeft u een tafel gereserveerd? Ik wil graag de taco\'s als voorgerecht.' },
+  { task: 'Chapter 8 — Exercise 4 — Translate to Dutch: "I would like fries as a main course and a soft drink."', answer: 'Ik wil graag patat als hoofdgerecht en een frisdrank.' },
+  { task: 'Chapter 9 — Exercise 1 — Translate to Dutch: "How many people are there in the house?"', answer: 'Hoeveel mensen zijn er in het huis?' },
+  { task: 'Chapter 9 — Exercise 2 — Translate to Dutch: "I live in Utrecht city with my family."', answer: 'Ik woon in de stad Utrecht met mijn gezin.' },
+  { task: 'Chapter 9 — Exercise 3 — Translate to Dutch: "Why are you walking fast? Where is the restaurant?"', answer: 'Waarom loop je snel? Waar is het restaurant?' },
+  { task: 'Chapter 9 — Exercise 4 — Translate to Dutch: "What is he doing? Does he eat vegetables?"', answer: 'Wat doet hij? Eet hij groenten?' },
+  { task: 'Chapter 10 — Exercise 1 — Translate to Dutch: "How many apples are there in the fruit section? Sixty-seven."', answer: 'Hoeveel appels zijn er op de fruitafdeling? Zevenenzestig.' },
+  { task: 'Chapter 10 — Exercise 2 — Translate to Dutch: "How old is that large white house? Eighty years old."', answer: 'Hoe oud is dat grote witte huis? Tachtig jaar oud.' },
+  { task: 'Chapter 10 — Exercise 3 — Translate to Dutch: "How old are you? I am thirty-four years old."', answer: 'Hoe oud ben je? Ik ben vierendertig jaar oud.' },
+  { task: 'Chapter 10 — Exercise 4 — Translate to Dutch: "How many books do you have? I have twenty-five books."', answer: 'Hoeveel boeken heb je? Ik heb vijfentwintig boeken.' },
+  { task: 'Chapter 11 — Exercise 1 — Translate to Dutch: "I buy groceries at supermarket at 10 o\'clock in the morning"', answer: 'Ik koop boodschappen in de supermarkt om tien uur in de ochtend.' },
+  { task: 'Chapter 11 — Exercise 2 — Translate to Dutch: "I speak with my grandfather at 5:40 PM."', answer: 'Ik spreek om tien over half zes \'s avonds met mijn opa.' },
+  { task: 'Chapter 11 — Exercise 3 — Translate to Dutch: "What time is it? It is quarter past nine in the morning."', answer: 'Hoe laat is het? Het is kwart over negen in de ochtend.' },
+  { task: 'Chapter 11 — Exercise 4 — Translate to Dutch: "What time is it now? It is quarter to six in the afternoon."', answer: 'Hoe laat is het nu? Het is kwart voor zes in de middag.' },
+  { task: 'Chapter 12 — Exercise 1 — Translate to Dutch: "In the winter I work on Friday."', answer: 'In de winter werk ik op vrijdag.' },
+  { task: 'Chapter 12 — Exercise 2 — Translate to Dutch: "The summer holiday is in August. I play football on the weekend."', answer: 'De zomervakantie is in augustus. Ik voetbal in het weekend.' },
+  { task: 'Chapter 12 — Exercise 3 — Translate to Dutch: "In the spring I play football on Saturday morning."', answer: 'In de lente voetbal ik op zaterdagochtend.' },
+  { task: 'Chapter 12 — Exercise 4 — Translate to Dutch: "King\'s Day is in April. In the summer I work on Monday."', answer: 'Koningsdag is in april. In de zomer werk ik op maandag.' },
+  { task: 'Chapter 13 — Exercise 1 — Translate to Dutch: "You wear a suit when you go to office tomorrow morning"', answer: 'Jij draagt een pak als jij morgenochtend naar kantoor gaat.' },
+  { task: 'Chapter 13 — Exercise 2 — Translate to Dutch: "Her socks are short, so she shops socks in the clothing section of the supermarket"', answer: 'Haar sokken zijn kort, dus zij koopt sokken in de kledingafdeling van de supermarkt.' },
+  { task: 'Chapter 13 — Exercise 3 — Translate to Dutch: "She wears a dress and heels on Saturday evening."', answer: 'Zij draagt een jurk en hakken op zaterdagavond.' },
+  { task: 'Chapter 13 — Exercise 4 — Translate to Dutch: "I wear a coat in the winter. The trousers are big."', answer: 'Ik draag een jas in de winter. De broek is groot.' },
+  { task: 'Chapter 14 — Exercise 1 — Translate to Dutch: "My aunt has stomach ache since morning. She ate fatty food."', answer: 'Mijn tante heeft sinds de ochtend buikpijn. Zij at vet eten.' },
+  { task: 'Chapter 14 — Exercise 2 — Translate to Dutch: "I have a cold after drinking cola bought in the supermarket."', answer: 'Ik ben verkouden na het drinken van cola uit de supermarkt.' },
+  { task: 'Chapter 14 — Exercise 3 — Translate to Dutch: "My grandfather has a headache. He has a cold."', answer: 'Mijn opa heeft hoofdpijn. Hij is verkouden.' },
+  { task: 'Chapter 14 — Exercise 4 — Translate to Dutch: "What is the problem? My aunt has a stomach ache and a broken bone."', answer: 'Wat is het probleem? Mijn tante heeft buikpijn en een botbreuk.' },
+  { task: 'Chapter 15 — Exercise 1 — Translate to Dutch: "On Saturday evening my mother goes to Utrecht. Utrecht is as beautiful as Amsterdam"', answer: 'Op zaterdagavond gaat mijn moeder naar Utrecht. Utrecht is even mooi als Amsterdam.' },
+  { task: 'Chapter 15 — Exercise 2 — Translate to Dutch: "In winter my grandfather eats unhealthy food. Is the pleasure bigger than the health?"', answer: 'In de winter eet mijn opa ongezond eten. Is het plezier groter dan de gezondheid?' },
+  { task: 'Chapter 15 — Exercise 3 — Translate to Dutch: "The dog is bigger than the cat. The elephant is the biggest."', answer: 'De hond is groter dan de kat. De olifant is het grootst.' },
+  { task: 'Chapter 15 — Exercise 4 — Translate to Dutch: "My brother is as tall as my father. The house is bigger than the car."', answer: 'Mijn broer is even lang als mijn vader. Het huis is groter dan de auto.' },
+  { task: 'Chapter 16 — Exercise 1 — Translate to Dutch: "On Wednesday morning my daughter wears a dress and goes to school. She wakes up at seven o\'clock."', answer: 'Op woensdagochtend draagt mijn dochter een jurk en gaat naar school. Zij wordt om zeven uur wakker.' },
+  { task: 'Chapter 16 — Exercise 2 — Translate to Dutch: "In the afternoon my father works and my sister buys groceries in the supermarket. At eleven o\'clock in the evening he goes to sleep."', answer: 'In de middag werkt mijn vader en koopt mijn zus boodschappen in de supermarkt. Om elf uur \'s avonds gaat hij slapen.' },
+  { task: 'Chapter 16 — Exercise 3 — Translate to Dutch: "I wake up at seven o\'clock and eat breakfast in the morning."', answer: 'Ik word wakker om zeven uur en eet ontbijt in de ochtend.' },
+  { task: 'Chapter 16 — Exercise 4 — Translate to Dutch: "In the evening my brother travels home by train and goes to sleep at eleven o\'clock."', answer: 'In de avond reist mijn broer met de trein naar huis en gaat om elf uur slapen.' },
+  { task: 'Chapter 17 — Exercise 1 — Translate to Dutch: "In summer my brother goes by bike to the supermarket in the morning and buys ice and drinks."', answer: 'In de zomer gaat mijn broer in de ochtend met de fiets naar de supermarkt en koopt ijs en dranken.' },
+  { task: 'Chapter 17 — Exercise 2 — Translate to Dutch: "My father has to play sport in Utrecht, so he takes the car to Utrecht in the afternoon at 3:20 PM."', answer: 'Mijn vader moet in Utrecht sporten, dus hij neemt om twintig over drie in de middag de auto naar Utrecht.' },
+  { task: 'Chapter 17 — Exercise 3 — Translate to Dutch: "I take the train from Utrecht to Amsterdam in the morning."', answer: 'Ik neem de trein van Utrecht naar Amsterdam in de ochtend.' },
+  { task: 'Chapter 17 — Exercise 4 — Translate to Dutch: "She travels by plane to Schiphol. He goes by bike to the station."', answer: 'Zij reist met het vliegtuig naar Schiphol. Hij gaat met de fiets naar het station.' },
+  { task: 'Chapter 18 — Exercise 1 — Translate to Dutch: "In winter Amsterdam is cold. She is not happy with the winter season."', answer: 'In de winter is Amsterdam koud. Zij is niet blij met de winter.' },
+  { task: 'Chapter 18 — Exercise 2 — Translate to Dutch: "My uncle is not famous. He does not live in a big house and has no car."', answer: 'Mijn oom is niet beroemd. Hij woont niet in een groot huis en heeft geen auto.' },
+  { task: 'Chapter 18 — Exercise 3 — Translate to Dutch: "How are you? It is going very well. My day is fantastic."', answer: 'Hoe gaat het? Het gaat heel goed. Mijn dag is fantastisch.' },
+  { task: 'Chapter 18 — Exercise 4 — Translate to Dutch: "I do not have a bike and I do not live in Amsterdam."', answer: 'Ik heb geen fiets en ik woon niet in Amsterdam.' },
+  { task: 'Chapter 19 — Exercise 1 — Translate to Dutch: "In the large white house the lamp is next to the window. The chair is in front of the table and it does not have a fridge."', answer: 'In het grote witte huis is de lamp naast het raam. De stoel is voor de tafel en het huis heeft geen koelkast.' },
+  { task: 'Chapter 19 — Exercise 2 — Translate to Dutch: "Our kitchen is small and beautiful. It has a stove, a sink and does not have curtains."', answer: 'Onze keuken is klein en mooi. De keuken heeft een kookplaat en een wasbak, maar geen gordijnen.' },
+  { task: 'Chapter 19 — Exercise 3 — Translate to Dutch: "Welcome to the bedroom. The bed is next to the window and the lamp is on the table."', answer: 'Welkom in de slaapkamer. Het bed is naast het raam en de lamp is op de tafel.' },
+  { task: 'Chapter 19 — Exercise 4 — Translate to Dutch: "The television is in the living room. The chair is behind the table."', answer: 'De televisie is in de woonkamer. De stoel is achter de tafel.' },
+  { task: 'Chapter 20 — Exercise 1 — Translate to Dutch: "In winter it snows in the north. Maastricht is in the south and it is sunny there."', answer: 'In de winter sneeuwt het in het noorden. Maastricht ligt in het zuiden en daar is het zonnig.' },
+  { task: 'Chapter 20 — Exercise 2 — Translate to Dutch: "On Wednesday it rains. My mother is in The Hague in the west."', answer: 'Op woensdag regent het. Mijn moeder is in Den Haag in het westen.' },
+  { task: 'Chapter 20 — Exercise 3 — Translate to Dutch: "What is the weather like? It is cloudy in the east and it is foggy in the west."', answer: 'Hoe is het weer? Het is bewolkt in het oosten en het is mistig in het westen.' },
+  { task: 'Chapter 20 — Exercise 4 — Translate to Dutch: "On Monday it is sunny in the south. Rotterdam is in the west."', answer: 'Op maandag is het zonnig in het zuiden. Rotterdam ligt in het westen.' },
+  { task: 'Chapter 21 — Exercise 1 — Translate to Dutch: "How do you feel? I feel proud. My brother is tired and sad."', answer: 'Hoe voel je je? Ik voel me trots. Mijn broer is moe en verdrietig.' },
+  { task: 'Chapter 21 — Exercise 2 — Translate to Dutch: "Why are you angry? My sister feels relieved after speaking with the doctor."', answer: 'Waarom ben je boos? Mijn zus voelt zich opgelucht na het spreken met de dokter.' },
+  { task: 'Chapter 21 — Exercise 3 — Translate to Dutch: "How do you feel? I feel nervous and scared."', answer: 'Hoe voel je je? Ik voel me nerveus en bang.' },
+  { task: 'Chapter 21 — Exercise 4 — Translate to Dutch: "We feel proud and my brother is surprised."', answer: 'Wij voelen ons trots en mijn broer is verrast.' },
+  { task: 'Chapter 22 — Exercise 1 — Translate to Dutch: "In the busy café the barista works quickly. Sarah orders mint tea."', answer: 'In het drukke café werkt de barista snel. Sarah bestelt een muntthee.' },
+  { task: 'Chapter 22 — Exercise 2 — Translate to Dutch: "They sit together in the café. The drinks are delicious and it is a nice day."', answer: 'Ze zitten samen in het café. De drankjes zijn lekker en het is een leuke dag.' },
+  { task: 'Chapter 22 — Exercise 3 — Translate to Dutch: "Tom walks into a busy café and would like a cappuccino with oat milk."', answer: 'Tom loopt een druk café binnen en wil graag een cappuccino met havermelk.' },
+  { task: 'Chapter 22 — Exercise 4 — Translate to Dutch: "The barista is busy and writes the wrong names on the cups. Shall we sit together?"', answer: 'De barista heeft het druk en schrijft de verkeerde namen op de bekers. Zullen we samen zitten?' },
 ];
 
 const PHRASES = CHAPTERS.flatMap(ch => ch.phrases);
@@ -1228,19 +1276,47 @@ function phraseRowSource() {
   return 'chapter';
 }
 
+function setSectionCollapsed(header, collapsed) {
+  if (!header) return;
+  const collapseBtn = header.querySelector('.collapse-btn');
+  if (!collapseBtn) return;
+  const isExercises = header.dataset.exercises === '1';
+  header.classList.toggle('collapsed', collapsed);
+  collapseBtn.textContent = collapsed ? '+' : '−';
+  collapseBtn.setAttribute('aria-expanded', String(!collapsed));
+  collapseBtn.setAttribute('aria-label', collapsed
+    ? (isExercises ? 'Expand exercises' : 'Expand chapter')
+    : (isExercises ? 'Collapse exercises' : 'Collapse chapter'));
+  if (isExercises) {
+    document.querySelectorAll('tr.exercise-row[data-exercises="1"]').forEach(row => {
+      row.classList.toggle('hidden', collapsed);
+    });
+  } else {
+    const chIdx = collapseBtn.dataset.ch;
+    if (chIdx !== undefined) {
+      document.querySelectorAll(`tr.phrase-row[data-chapter="${chIdx}"]`).forEach(row => {
+        row.classList.toggle('hidden', collapsed);
+      });
+    }
+  }
+}
+
+function expandAllSections() {
+  document.querySelectorAll('tr.ch-hdr[data-chapter], tr.ch-hdr[data-exercises]').forEach(hdr => {
+    setSectionCollapsed(hdr, false);
+  });
+}
+
+function collapseAllSections() {
+  document.querySelectorAll('tr.ch-hdr[data-chapter], tr.ch-hdr[data-exercises]').forEach(hdr => {
+    setSectionCollapsed(hdr, true);
+  });
+}
+
 function expandChapter(chIdx) {
   const header = document.querySelector(`tr.ch-hdr[data-chapter="${chIdx}"]`);
   if (!header || !header.classList.contains('collapsed')) return;
-  const btn = header.querySelector('.collapse-btn');
-  header.classList.remove('collapsed');
-  if (btn) {
-    btn.textContent = '−';
-    btn.setAttribute('aria-expanded', 'true');
-    btn.setAttribute('aria-label', 'Collapse chapter');
-  }
-  document.querySelectorAll(`tr.phrase-row[data-chapter="${chIdx}"]`).forEach(row => {
-    row.classList.remove('hidden');
-  });
+  setSectionCollapsed(header, false);
 }
 
 function scrollToPhraseRow(row) {
@@ -1657,22 +1733,8 @@ const tbody = document.getElementById('phrase-body');
 tbody.addEventListener('click', e => {
   const collapseBtn = e.target.closest('.collapse-btn');
   if (collapseBtn) {
-    const isExercises = collapseBtn.dataset.exercises === '1';
     const header = collapseBtn.closest('tr.ch-hdr');
-    const isCollapsed = header.classList.toggle('collapsed');
-    collapseBtn.textContent = isCollapsed ? '+' : '−';
-    collapseBtn.setAttribute('aria-expanded', String(!isCollapsed));
-    collapseBtn.setAttribute('aria-label', isCollapsed ? (isExercises ? 'Expand exercises' : 'Expand chapter') : (isExercises ? 'Collapse exercises' : 'Collapse chapter'));
-    if (isExercises) {
-      document.querySelectorAll('tr.exercise-row[data-exercises="1"]').forEach(row => {
-        row.classList.toggle('hidden', isCollapsed);
-      });
-    } else {
-      const chIdx = Number(collapseBtn.dataset.ch);
-      document.querySelectorAll(`tr.phrase-row[data-chapter="${chIdx}"]`).forEach(row => {
-        row.classList.toggle('hidden', isCollapsed);
-      });
-    }
+    setSectionCollapsed(header, !header.classList.contains('collapsed'));
     return;
   }
   const bmBtn = e.target.closest('.bm-btn');
@@ -1709,6 +1771,8 @@ tbody.addEventListener('click', e => {
 });
 
 document.getElementById('play-all').addEventListener('click', togglePlayAll);
+document.getElementById('expand-all').addEventListener('click', expandAllSections);
+document.getElementById('collapse-all').addEventListener('click', collapseAllSections);
 document.getElementById('print-btn').addEventListener('click', () => window.print());
 
 const speedSlider = document.getElementById('speed-slider');
