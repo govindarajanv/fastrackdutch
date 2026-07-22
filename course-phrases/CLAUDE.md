@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.28.3** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.28.4** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **678** |
 | **Chapters** | **22** |
 | **Unique words** | **617** |
@@ -52,7 +52,7 @@ Unique-word tokenisation (must match `countUniqueDutchWords()` in `index.html`):
 Single source of truth:
 
 ```js
-const VERSION = { major: 1, minor: 28, patch: 3 };
+const VERSION = { major: 1, minor: 28, patch: 4 };
 ```
 
 | Bump | When | Examples |
@@ -280,6 +280,7 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.28.1**: Toolbar **+ Expand all** / **− Collapse all** buttons for all chapters and the Exercises section; shared `setSectionCollapsed()` helper.
 - **v1.28.2**: Add **Exercise 3** and **Exercise 4** for every chapter (Ch.1–22) — 44 revision exercises; **88 tasks** total (4 per chapter).
 - **v1.28.3**: Consistent exercise titles — all 88 tasks now use `Chapter N — Exercise M — Translate to Dutch:` format.
+- **v1.28.4**: Ch.1 Exercise 3 → *Goedemorgen. Ik ben vierenveertig jaar oud en mijn woonplaats is in Hoofdorp.*
 
 ---
 
