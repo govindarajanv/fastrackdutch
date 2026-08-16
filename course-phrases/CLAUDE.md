@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.29.0** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.29.1** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **742** |
 | **Chapters** | **22** |
 | **Unique words** | **650** |
