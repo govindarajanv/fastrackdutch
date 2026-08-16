@@ -201,7 +201,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 28, patch: 4 };
+const VERSION = { major: 1, minor: 29, patch: 0 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -214,6 +214,75 @@ applyVersion();
 // ── Add your course phrases here ─────────────────────────────────────
 // pron: approximate English phonetics (kh = Dutch G, ay = long A, oo/oh as in guide)
 const CHAPTERS = [
+  {
+    title: 'Quick Review',
+    phrases: [
+      { dutch: 'voor', pron: 'fohr', english: 'for' },
+      { dutch: 'als', pron: 'als', english: 'if' },
+      { dutch: 'dan', pron: 'dahn', english: 'then' },
+      { dutch: 'anders', pron: 'AHN-ders', english: 'else' },
+      { dutch: 'tenzij', pron: 'TEN-zay', english: 'unless' },
+      { dutch: 'of', pron: 'ohf', english: 'whether' },
+      { dutch: 'of', pron: 'ohf', english: 'either' },
+      { dutch: 'noch', pron: 'nohkh', english: 'neither' },
+      { dutch: 'noch', pron: 'nohkh', english: 'nor' },
+      { dutch: 'en', pron: 'en', english: 'and' },
+      { dutch: 'een', pron: 'ayn', english: 'an' },
+      { dutch: 'maar', pron: 'mahr', english: 'but' },
+      { dutch: 'echter', pron: 'EKH-ter', english: 'however' },
+      { dutch: 'daarom', pron: 'dah-RAHM', english: 'therefore' },
+      { dutch: 'dus', pron: 'dus', english: 'thus' },
+      { dutch: 'dus', pron: 'dus', english: 'hence' },
+      { dutch: 'omdat', pron: 'ohm-DAHT', english: 'because' },
+      { dutch: 'zo', pron: 'zoh', english: 'so' },
+      { dutch: 'hoewel', pron: 'HOH-vel', english: 'although' },
+      { dutch: 'van', pron: 'fan', english: 'of' },
+      { dutch: 'of', pron: 'ohf', english: 'or' },
+      { dutch: 'sinds', pron: 'SINTS', english: 'since' },
+      { dutch: 'van', pron: 'fan', english: 'from' },
+      { dutch: 'naar', pron: 'naar', english: 'to' },
+      { dutch: 'altijd', pron: 'AHL-tayt', english: 'always' },
+      { dutch: 'nooit', pron: 'noyt', english: 'never' },
+      { dutch: 'zelden', pron: 'ZEL-den', english: 'rarely' },
+      { dutch: 'elke', pron: 'EL-kuh', english: 'every' },
+      { dutch: 'soms', pron: 'SOMS', english: 'sometimes' },
+      { dutch: 'sommige', pron: 'SOH-mi-khuh', english: 'some' },
+      { dutch: 'meer', pron: 'mayr', english: 'more' },
+      { dutch: 'veel', pron: 'fayl', english: 'many' },
+      { dutch: 'weinig', pron: 'VAY-nikh', english: 'little' },
+      { dutch: 'veel', pron: 'fayl', english: 'much' },
+      { dutch: 'op', pron: 'ohp', english: 'at' },
+      { dutch: 'in', pron: 'in', english: 'in' },
+      { dutch: 'op', pron: 'ohp', english: 'on' },
+      { dutch: 'boven', pron: 'BOH-ven', english: 'above' },
+      { dutch: 'beneden', pron: 'buh-NAY-den', english: 'below' },
+      { dutch: 'omhoog', pron: 'ohm-HOHKH', english: 'up' },
+      { dutch: 'omlaag', pron: 'ohm-LAHKH', english: 'down' },
+      { dutch: 'met', pron: 'met', english: 'with' },
+      { dutch: 'voordat', pron: 'fohr-DAHT', english: 'before' },
+      { dutch: 'na', pron: 'nah', english: 'after' },
+      { dutch: 'tijdens', pron: 'TAY-dens', english: 'during' },
+      { dutch: 'terwijl', pron: 'tuhr-VAYL', english: 'while' },
+      { dutch: 'tot', pron: 'toht', english: 'till' },
+      { dutch: 'over', pron: 'OH-ver', english: 'across' },
+      { dutch: 'rond', pron: 'rohnt', english: 'around' },
+      { dutch: 'af', pron: 'ahf', english: 'off' },
+      { dutch: 'over', pron: 'OH-ver', english: 'over' },
+      { dutch: 'onder', pron: 'ON-der', english: 'under' },
+      { dutch: 'de / het', pron: 'duh / het', english: 'the' },
+      { dutch: 'dit', pron: 'dit', english: 'this' },
+      { dutch: 'dat', pron: 'daht', english: 'that' },
+      { dutch: 'hier', pron: 'HEER', english: 'here' },
+      { dutch: 'daar', pron: 'dahr', english: 'there' },
+      { dutch: 'zijn / haar', pron: 'zayn / hahr', english: 'his / her' },
+      { dutch: 'hun', pron: 'huen', english: 'their' },
+      { dutch: 'mijn', pron: 'main', english: 'mine' },
+      { dutch: 'ons', pron: 'ohns', english: 'our' },
+      { dutch: 'alle', pron: 'AL-luh', english: 'all' },
+      { dutch: 'ten minste', pron: 'ten MIN-stuh', english: 'at least' },
+      { dutch: 'ten hoogste', pron: 'ten HOHKH-stuh', english: 'at most' },
+    ],
+  },
   {
     title: 'Chapter 1: Introducing Yourself',
     phrases: [

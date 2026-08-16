@@ -6,10 +6,10 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.28.4** (independent semver — not tied to FastrackDutch) |
-| **Phrases** | **678** |
+| **Version** | **v1.29.0** (independent semver — not tied to FastrackDutch) |
+| **Phrases** | **742** |
 | **Chapters** | **22** |
-| **Unique words** | **617** |
+| **Unique words** | **650** |
 | **Link from main app** | Header → `course-phrases/` |
 | **Deploy** | Copied with `index.html` via `.github/workflows/deploy.yml` |
 
@@ -281,11 +281,13 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.28.2**: Add **Exercise 3** and **Exercise 4** for every chapter (Ch.1–22) — 44 revision exercises; **88 tasks** total (4 per chapter).
 - **v1.28.3**: Consistent exercise titles — all 88 tasks now use `Chapter N — Exercise M — Translate to Dutch:` format.
 - **v1.28.4**: Ch.1 Exercise 3 → *Goedemorgen. Ik ben vierenveertig jaar oud en mijn woonplaats is in Hoofdorp.*
+- **v1.29.0**: Add unnumbered **Quick Review** chapter above Chapter 1 (below Bookmarks) — 63 reference entries: English function words (conjunctions, prepositions, pronouns, quantifiers) with their Dutch equivalents and English-phonetic guides. Existing chapter numbers unchanged.
 
 ---
 
-## Current Chapters (v1.28.0)
+## Current Chapters (v1.29.0)
 
+- Quick Review (unnumbered, above Chapter 1)
 1. Introducing Yourself  
 2. Family  
 3. Describing People  
