@@ -6,7 +6,7 @@ Personal phrase revision player for an external Dutch course. **Separate from Fa
 |---|---|
 | **File** | `course-phrases/index.html` (single file — HTML, CSS, JS, data) |
 | **Title** | My Dutch Daily Course Notes v*major*.*minor*.*patch* |
-| **Version** | **v1.29.1** (independent semver — not tied to FastrackDutch) |
+| **Version** | **v1.29.2** (independent semver — not tied to FastrackDutch) |
 | **Phrases** | **742** |
 | **Chapters** | **22** |
 | **Unique words** | **650** |
@@ -282,6 +282,8 @@ There is no dev server for this static file, and no project run-skill or `chromi
 - **v1.28.3**: Consistent exercise titles — all 88 tasks now use `Chapter N — Exercise M — Translate to Dutch:` format.
 - **v1.28.4**: Ch.1 Exercise 3 → *Goedemorgen. Ik ben vierenveertig jaar oud en mijn woonplaats is in Hoofdorp.*
 - **v1.29.0**: Add unnumbered **Quick Review** chapter above Chapter 1 (below Bookmarks) — 63 reference entries: English function words (conjunctions, prepositions, pronouns, quantifiers) with their Dutch equivalents and English-phonetic guides. Existing chapter numbers unchanged.
+- **v1.29.1**: (no source change) bump to trigger GitHub Pages rebuild.
+- **v1.29.2**: Fix bookmark UX — toggling a phrase bookmark no longer re-renders the whole table, so chapters stay expanded, the phrase stays in view/scroll position, and active chapter/bookmarks queue playback is not stopped mid-play. Bookmark toggles now update only the star button(s), the Bookmarks section, and the count label; a playing Bookmarks queue re-binds its Stop button after the section refresh. Bookmark **Import** also preserves chapter collapse state and scroll position across its re-render.
 
 ---
 

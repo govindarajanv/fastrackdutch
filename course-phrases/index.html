@@ -201,7 +201,7 @@ tr.phrase-row.hidden,tr.exercise-row.hidden{display:none}
 // MAJOR: breaking restructure (layout, data model, removed chapters)
 // MINOR: new features or new chapters
 // PATCH: fixes, phrase tweaks, pronunciation corrections, small UI polish
-const VERSION = { major: 1, minor: 29, patch: 1 };
+const VERSION = { major: 1, minor: 29, patch: 2 };
 const VERSION_STR = `${VERSION.major}.${VERSION.minor}.${VERSION.patch}`;
 
 function applyVersion() {
@@ -1382,6 +1382,22 @@ function collapseAllSections() {
   });
 }
 
+function captureSectionState() {
+  const state = {};
+  document.querySelectorAll('tr.ch-hdr[data-chapter], tr.ch-hdr[data-exercises]').forEach(hdr => {
+    const key = hdr.dataset.chapter !== undefined ? `ch:${hdr.dataset.chapter}` : 'ex';
+    state[key] = hdr.classList.contains('collapsed');
+  });
+  return state;
+}
+
+function restoreSectionState(state) {
+  document.querySelectorAll('tr.ch-hdr[data-chapter], tr.ch-hdr[data-exercises]').forEach(hdr => {
+    const key = hdr.dataset.chapter !== undefined ? `ch:${hdr.dataset.chapter}` : 'ex';
+    if (key in state) setSectionCollapsed(hdr, state[key]);
+  });
+}
+
 function expandChapter(chIdx) {
   const header = document.querySelector(`tr.ch-hdr[data-chapter="${chIdx}"]`);
   if (!header || !header.classList.contains('collapsed')) return;
@@ -1711,8 +1727,12 @@ function normalizeBookmarkImport(data) {
 function applyBookmarks(next) {
   bookmarks = next;
   saveBookmarks();
+  const prevScroll = window.scrollY;
+  const state = captureSectionState();
   if (isPlaybackActive()) stopPlayback();
   renderTable();
+  restoreSectionState(state);
+  window.scrollTo(0, prevScroll);
 }
 
 function importBookmarksFromText(text) {
@@ -1727,8 +1747,38 @@ function toggleBookmark(idx) {
   if (pos >= 0) bookmarks.splice(pos, 1);
   else bookmarks.push(idx);
   saveBookmarks();
-  if (isPlaybackActive()) stopPlayback();
-  renderTable();
+  const wasBookmarksQueue = !!(queueState && queueState.btn && queueState.btn.classList.contains('bm-play'));
+  refreshBookmarkButtons(idx);
+  refreshBookmarksSection();
+  if (wasBookmarksQueue && queueState) {
+    queueState.btn = document.querySelector(`.bm-play[data-mode="${queueState.mode}"]`);
+    if (queueState.btn) {
+      queueState.btn.textContent = '■ Stop';
+      queueState.btn.classList.add('active');
+    }
+  }
+  updatePhraseCountLabel();
+}
+
+function refreshBookmarkButtons(idx) {
+  const on = bookmarks.includes(idx);
+  document.querySelectorAll(`.bm-btn[data-idx="${idx}"]`).forEach(btn => {
+    btn.classList.toggle('on', on);
+    btn.textContent = on ? '★' : '☆';
+    btn.title = on ? 'Remove bookmark' : 'Bookmark for quick practice';
+  });
+}
+
+function refreshBookmarksSection() {
+  const tbody = document.getElementById('phrase-body');
+  const anchor = tbody.querySelector('tr.ch-hdr[data-chapter]');
+  tbody.querySelectorAll('tr.ch-hdr.bookmarks, tr.bm-empty, tr.phrase-row[data-source="bookmark"]').forEach(r => r.remove());
+  const tmp = document.createElement('tbody');
+  tmp.innerHTML = renderBookmarksSection();
+  const frag = document.createDocumentFragment();
+  while (tmp.firstChild) frag.appendChild(tmp.firstChild);
+  if (anchor) anchor.before(frag);
+  else tbody.appendChild(frag);
 }
 
 // ── Render ───────────────────────────────────────────────────────────
@@ -1792,6 +1842,10 @@ function renderTable() {
   }).join('');
   const exercises = EXERCISES.length ? renderExercisesSection() : '';
   tbody.innerHTML = renderBookmarksSection() + chapters + exercises;
+  updatePhraseCountLabel();
+}
+
+function updatePhraseCountLabel() {
   const bmLabel = bookmarks.length ? ` · ${bookmarks.length} bookmark${bookmarks.length === 1 ? '' : 's'}` : '';
   document.getElementById('phrase-count').textContent = `${PHRASES.length} phrase${PHRASES.length === 1 ? '' : 's'} · ${CHAPTERS.length} chapter${CHAPTERS.length === 1 ? '' : 's'} · ${UNIQUE_WORD_COUNT} unique words${bmLabel}`;
 }
